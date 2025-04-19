@@ -4,11 +4,13 @@ class Rect extends PhysicsObject {
     this.w = w;
     this.h = h;
     this.corners = {
-      tl: new Vec2(-this.w / 2, this.h / 2),
-      tr: new Vec2(this.w / 2, this.h / 2),
-      bl: new Vec2(-this.w / 2, this.h / 2),
+      tl: new Vec2(-this.w / 2, this.h / 2), // Top Left
+      tr: new Vec2(this.w / 2, this.h / 2), // Top Right
+      bl: new Vec2(-this.w / 2, -this.h / 2), // Bottom Left
+      br: new Vec2(this.w / 2, -this.h / 2), // Bottom Right
     };
     this.normals = [];
+    this.updateNormals();
   }
 
   /**
@@ -22,7 +24,13 @@ class Rect extends PhysicsObject {
     pop();
   }
 
-  updateNormals() {}
+  updateNormals() {
+    let tempVec = new Vec2();
+    this.normals[0] = tempVec.subtractVectors(this.corners.tr, this.corners.tl).hat().normalize().clone(); // Top normal
+    this.normals[1] = tempVec.subtractVectors(this.corners.br, this.corners.tr).hat().normalize().clone(); // Right normal
+    this.normals[2] = tempVec.subtractVectors(this.corners.bl, this.corners.br).hat().normalize().clone(); // Bottom normal
+    this.normals[3] = tempVec.subtractVectors(this.corners.tl, this.corners.bl).hat().normalize().clone(); // Left normal
+  }
 
   /**
    * Change the Velocity if Obejct collides with Wall

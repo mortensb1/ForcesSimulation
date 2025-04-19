@@ -14,6 +14,22 @@ class Vec2 {
   }
 
   /**
+   *
+   * @returns {Vec2} Returns the Cross vector (Rotated 90°)
+   */
+  hat() {
+    let tempX = this.x;
+    this.x = -this.y;
+    this.y = tempX;
+    return this;
+  }
+
+  normalize() {
+    this.scale(1 / this.length());
+    return this;
+  }
+
+  /**
    * Return a clone of the Vector
    * @returns {Vec2}
    */
@@ -61,7 +77,7 @@ class Vec2 {
    * Subtract Vectors
    * @param {Vec2} a
    * @param {Vec2} b
-   * @returns {Vec2}
+   * @returns {Vec2} (a - b)
    */
   subtractVectors(a, b) {
     this.x = a.x - b.x;

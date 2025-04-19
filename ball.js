@@ -18,7 +18,7 @@ class Ball extends PhysicsObject {
    * Draw object
    */
   draw() {
-    circle(this.pos.x, this.pos.y, 2 * this.r);
+    circle(this.pos.x + width / 2, height / 2 - this.pos.y, 2 * this.r);
   }
 
   /**
@@ -26,19 +26,19 @@ class Ball extends PhysicsObject {
    */
   wallCollision() {
     // Check if Collide with Left and Right, and change Vel
-    if (this.pos.x + this.r >= width) {
-      this.pos.x = width - this.r; // Correction
+    if (this.pos.x + this.r >= width / 2) {
+      this.pos.x = width / 2 - this.r; // Correction
       this.vel.x = -this.vel.x * this.elasticity;
-    } else if (this.pos.x - this.r <= 0) {
-      this.pos.x = 0 + this.r; // Correction
+    } else if (this.pos.x - this.r <= -width / 2) {
+      this.pos.x = -width / 2 + this.r; // Correction
       this.vel.x = -this.vel.x * this.elasticity;
     }
     // Check if Collide with Top and Bottom, and change Vel
-    if (this.pos.y + this.r >= height) {
-      this.pos.y = height - this.r; // Correction
+    if (this.pos.y + this.r >= height / 2) {
+      this.pos.y = height / 2 - this.r; // Correction
       this.vel.y = -this.vel.y * this.elasticity;
-    } else if (this.pos.y - this.r <= 0) {
-      this.pos.y = 0 + this.r; // Correction
+    } else if (this.pos.y - this.r <= -height / 2) {
+      this.pos.y = -height / 2 + this.r; // Correction
       this.vel.y = -this.vel.y * this.elasticity;
     }
   }

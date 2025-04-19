@@ -5,14 +5,12 @@ let vely = 2;
 const fps = 60;
 let G;
 let balls = [];
-
-/** @type {Ball} */
-let bal;
+let rects = [];
 
 function setup() {
   rectMode(CENTER);
   angleMode(DEGREES);
-  G = new Vec2(0, 9.82);
+  G = new Vec2(0, -9.82);
 
   createCanvas(400, 400);
   frameRate(fps);
@@ -20,10 +18,12 @@ function setup() {
   // balls.push(new Ball(300,200,10,2,5))
 
   for (i = 0; i < 10; i++) {
-    balls.push(new Ball(random(20, 300), random(20, 300), 10, random(-50, 50), random(0, 4), 10, 1));
+    balls.push(new Ball(random(-150, 150), random(-150, 150), 10, random(-150, 150), random(0, 4), 10, 0.5));
   }
 
-  objRect = new Rect(200, 200, 50, 20, 10, 0, 20);
+  rects.push(new Rect(0, 0, 50, 20, 10, 0, 20));
+  // rects.push(new Rect(300, 200, 50, 20, 0, 0, 20));
+
   // bal = new Ball(260, 100, 10, 1, 10, 10);
 }
 
@@ -40,10 +40,11 @@ function draw() {
     ball.wallCollision();
   }
 
-  objRect.draw();
-  objRect.update();
-  // objRect.rot += 1;
-  objRect.wallCollision();
+  for (let i = 0; i < rects.length; i++) {
+    rects[i].draw();
+    rects[i].update();
+    rects[i].wallCollision();
+  }
 
   // colRectCir(objRect, bal);
 }

@@ -9,6 +9,7 @@
  */
 function collision(obj1, obj2) {
   if (typeof obj1 === Ball && typeof obj2 === Ball) {
+    
   }
 }
 

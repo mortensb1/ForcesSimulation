@@ -1,5 +1,3 @@
-import { Vector } from "../../../../../../.vscode/extensions/samplavigne.p5-vscode-1.2.16/p5types/index";
-
 let x = 200;
 let y = 200;
 let velx = 2;
@@ -12,6 +10,7 @@ let balls = [];
 let bal;
 
 function setup() {
+  rectMode(CENTER);
   G = new Vec2(0, 9.82);
 
   createCanvas(400, 400);

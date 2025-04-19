@@ -9,17 +9,21 @@ class Rect extends PhysicsObject {
    * Draw Object
    */
   draw() {
-    rect(this.pos.x, this.pos.y, this.w, this.h);
+    push();
+    rotate(this.rot);
+    translate(this.pos.x, this.pos.y);
+    rect(0, 0, this.w, this.h);
+    pop();
   }
 
   /**
    * Change the Velocity if Obejct collides with Wall
    */
   wallCollision() {
-    if (this.pos.x > width - this.w || this.pos.x < 0) {
+    if (this.pos.x > width - this.w / 2 || this.pos.x < 0 + this.w / 2) {
       this.vel.x = -this.vel.x;
     }
-    if (this.pos.y > height - this.h || this.pos.y < 0) {
+    if (this.pos.y > height - this.h / 2 || this.pos.y < 0 + this.h / 2) {
       this.vel.y = -this.vel.y;
     }
   }

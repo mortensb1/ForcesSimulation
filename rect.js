@@ -1,6 +1,6 @@
 class Rect extends PhysicsObject {
-  constructor(x, y, w, h, velX, velY, mass) {
-    super(x, y, velX, velY, mass);
+  constructor(x, y, w, h, velX, velY, mass, elasticity = 1, rot = 0, rotVel = 0, isStatic = false) {
+    super(x, y, velX, velY, mass, elasticity, rot, rotVel, isStatic);
     this.w = w;
     this.h = h;
   }
@@ -10,8 +10,8 @@ class Rect extends PhysicsObject {
    */
   draw() {
     push();
-    rotate(this.rot);
     translate(this.pos.x, this.pos.y);
+    rotate(this.rot);
     rect(0, 0, this.w, this.h);
     pop();
   }

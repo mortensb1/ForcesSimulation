@@ -1,6 +1,16 @@
 class Ball extends PhysicsObject {
-  constructor(x, y, r, velX, velY, mass) {
-    super(x, y, velX, velY, mass);
+  /**
+   *
+   * @param {number} x Start x posistion
+   * @param {number} y Start y posistion
+   * @param {number} r Radius of ball
+   * @param {number} velX Start x velocity
+   * @param {number} velY Start y velocity
+   * @param {number} mass Mass of ball
+   * @param {number} elasticity The restituion (How much energi is kept)
+   */
+  constructor(x, y, r, velX, velY, mass, elasticity = 1) {
+    super(x, y, velX, velY, mass, elasticity);
     this.r = r;
   }
 
@@ -16,12 +26,20 @@ class Ball extends PhysicsObject {
    */
   wallCollision() {
     // Check if Collide with Left and Right, and change Vel
-    if (this.pos.x + this.r >= width || this.pos.x - this.r <= 0) {
-      this.vel.x = -this.vel.x;
+    if (this.pos.x + this.r >= width) {
+      this.pos.x = width - this.r; // Correction
+      this.vel.x = -this.vel.x * this.elasticity;
+    } else if (this.pos.x - this.r <= 0) {
+      this.pos.x = 0 + this.r; // Correction
+      this.vel.x = -this.vel.x * this.elasticity;
     }
     // Check if Collide with Top and Bottom, and change Vel
-    if (this.pos.y + this.r >= height || this.pos.y - this.r <= 0) {
-      this.vel.y = -this.vel.y;
+    if (this.pos.y + this.r >= height) {
+      this.pos.y = height - this.r; // Correction
+      this.vel.y = -this.vel.y * this.elasticity;
+    } else if (this.pos.y - this.r <= 0) {
+      this.pos.y = 0 + this.r; // Correction
+      this.vel.y = -this.vel.y * this.elasticity;
     }
   }
 

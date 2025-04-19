@@ -12,6 +12,7 @@ class Ball extends PhysicsObject {
   constructor(x, y, r, velX, velY, mass, elasticity = 1) {
     super(x, y, velX, velY, mass, elasticity);
     this.r = r;
+    this.type = Ball;
   }
 
   /**

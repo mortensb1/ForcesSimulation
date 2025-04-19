@@ -1,9 +1,9 @@
 class PhysicsObject {
-  constructor(x, y, velX, velY, mass, elasticity = 1, rot = 0, rotVel = 0, isStatic = false) {
+  constructor(x, y, velX, velY, mass, elasticity = 1, angle = 0, rotVel = 0, isStatic = false) {
     this.pos = new Vec2(x, y);
     this.vel = new Vec2(velX, velY);
     this.mass = mass;
-    this.rot = rot;
+    this.angle = angle;
     this.rotVel = rotVel;
 
     this.elasticity = elasticity;

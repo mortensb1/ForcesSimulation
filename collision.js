@@ -14,7 +14,9 @@ function collision(obj1, obj2) {
   for (let i = 0; i < obj1.normals.length + obj2.normals.length; i++) {
     let normal;
     if (i < obj1.normals.length) normal = obj1.normals[i];
-    else normal = obj2.normals[i - obj1.normals.length];
+    else {
+      normal = obj2.normals[i - obj1.normals.length];
+    }
 
     let min1 = Infinity;
     let min2 = Infinity;
@@ -36,7 +38,8 @@ function collision(obj1, obj2) {
     // print("mins:", round(min1, 2), round(min2, 2), "   Maxs:", round(max1, 2), round(max2, 2));
     // print("Collision:", (min1 <= max2 && min1 >= min2) || (max1 <= max2 && max1 >= min2));
 
-    if (!((min1 <= max2 && min1 >= min2) || (max1 <= max2 && max1 >= min2))) return false;
+    // if (!((min1 <= max2 && min1 >= min2) || (max1 <= max2 && max1 >= min2))) return false;
+    if (min1 >= max2 || min2 >= max1) return false;
   }
 
   return true;

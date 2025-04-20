@@ -7,7 +7,7 @@
  * @param {Rect} obj1
  * @param {Rect} obj2
  */
-function collision(obj1, obj2) {
+function collisionRect(obj1, obj2) {
   obj1.updateCorners();
   obj2.updateCorners();
 
@@ -66,6 +66,35 @@ function collision(obj1, obj2) {
 
   // If no space is found then there is a collision
   return { collision: true, normal: normal, depth: depth };
+}
+
+function collisionRectBall(rect, ball) {
+  rect.updateCorners();
+
+  let axis = new Vec2();
+  axis.subtractVectors(rect.pos, ball.pos).normalize();
+
+  let minRect = Infinity;
+  let minBall = Infinity;
+
+  let maxRect = -Infinity;
+  let maxBall = -Infinity;
+
+  // Calc the max and min points of the rect projected on the axis
+  for (let point in rect.corners) {
+    let dotProduct = rect.corners[point].dot(axis);
+    minRect = min(minRect, dotProduct);
+    maxRect = max(maxRect, dotProduct);
+  }
+
+  // Calc the max and min points of the circle projected on the axis
+  minBall = ball.pos.clone().add(axis, -ball.r).dot(axis);
+  maxBall = ball.pos.clone().add(axis, ball.r).dot(axis);
+
+  if (minRect >= maxBall || minBall >= maxRect) return { collision: false, normal: null, depth: null };
+
+  let depth = min(maxBall - minRect, maxRect - minBall);
+  return { collision: true, normal: axis, depth: depth };
 }
 
 function drawNormalsRect(rect) {

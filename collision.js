@@ -11,11 +11,17 @@ function collision(obj1, obj2) {
   obj1.updateCorners();
   obj2.updateCorners();
 
+  let depth = Infinity;
+  let normal;
+
+  // Check for all Normals
   for (let i = 0; i < obj1.normals.length + obj2.normals.length; i++) {
-    let normal;
-    if (i < obj1.normals.length) normal = obj1.normals[i];
-    else {
-      normal = obj2.normals[i - obj1.normals.length];
+    // Select the Normal
+    let axis;
+    if (i < obj1.normals.length) {
+      axis = obj1.normals[i];
+    } else {
+      axis = obj2.normals[i - obj1.normals.length];
     }
 
     let min1 = Infinity;
@@ -24,25 +30,43 @@ function collision(obj1, obj2) {
     let max1 = -Infinity;
     let max2 = -Infinity;
 
+    // Calc the max and min points projected on the axis
     for (let point in obj1.corners) {
-      let dotProduct = obj1.corners[point].dot(normal);
+      let dotProduct = obj1.corners[point].dot(axis);
       min1 = min(min1, dotProduct);
       max1 = max(max1, dotProduct);
     }
 
+    // Calc the max and min points on the axis
     for (let point in obj2.corners) {
-      let dotProduct = obj2.corners[point].dot(normal);
+      let dotProduct = obj2.corners[point].dot(axis);
       min2 = min(min2, dotProduct);
       max2 = max(max2, dotProduct);
     }
-    // print("mins:", round(min1, 2), round(min2, 2), "   Maxs:", round(max1, 2), round(max2, 2));
-    // print("Collision:", (min1 <= max2 && min1 >= min2) || (max1 <= max2 && max1 >= min2));
 
-    // if (!((min1 <= max2 && min1 >= min2) || (max1 <= max2 && max1 >= min2))) return false;
-    if (min1 >= max2 || min2 >= max1) return false;
+    // Check if there is a space
+    if (min1 >= max2 || min2 >= max1) return { collision: false, normal: null, depth: null };
+
+    let axisDepth = min(max2 - min1, max1 - min2);
+    if (axisDepth < depth) {
+      depth = axisDepth;
+      normal = axis;
+    }
   }
 
-  return true;
+  // Normalize the depth of the intersection and the normal
+  let normalLen = normal.length();
+  depth = depth / normalLen;
+  normal.scale(1 / normalLen);
+
+  // If no space is found then there is a collision
+  return { collision: true, normal: normal, depth: depth };
+}
+
+function drawNormalsRect(rect) {
+  for (let i = 0; i < rect.normals.length; i++) {
+    line(rect.pos.x + width / 2, height / 2 - rect.pos.y, rect.pos.x + rect.normals[i].x + width / 2, height / 2 - (rect.pos.y + rect.normals[i].y));
+  }
 }
 
 function colCirCir(cir1, cir2) {}

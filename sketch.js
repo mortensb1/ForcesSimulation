@@ -22,9 +22,9 @@ function setup() {
   //   balls.push(new Ball(random(-150, 150), random(-150, 150), 10, random(-150, 150), random(0, 4), 10, 0.5));
   // }
 
-  rects.push(new Rect(0, 0, 50, 20, 20, 0, 20));
+  rects.push(new Rect(0, 0, 50, 20, 50, 0, 20));
   // rects.push(new Rect(0, 0, 50, 20, 0, 0, 20));
-  rects.push(new Rect(80, 10, 50, 20, 0, 0, 20, 1, 30));
+  rects.push(new Rect(-80, 10, 50, 20, 0, 0, 20, 1, 30));
 
   collision(rects[0], rects[1]);
 
@@ -48,30 +48,11 @@ function draw() {
 
   // rects[1].rotate(1);
 
-  for (let i = 0; i < rects[1].normals.length; i++) {
-    line(rects[1].pos.x + width / 2, height / 2 - rects[1].pos.y, rects[1].pos.x + rects[1].normals[i].x + width / 2, height / 2 - (rects[1].pos.y + rects[1].normals[i].y));
+  let res = collision(rects[0], rects[1]);
+  if (res.collision) {
+    rects[0].pos.add(res.normal, -res.depth / 2);
+    rects[1].pos.add(res.normal, res.depth / 2);
   }
 
-  for (let i = 0; i < rects[1].normals.length; i++) {
-    line(rects[0].pos.x + width / 2, height / 2 - rects[0].pos.y, rects[0].pos.x + rects[0].normals[i].x + width / 2, height / 2 - (rects[0].pos.y + rects[0].normals[i].y));
-  }
-
-  // collision(rects[0], rects[1]);
-  // for (let point in rects[0].corners) {
-  //   print(rects[1].corners[point]);
-  // }
-  // print(rects[0].pos);
-
-  // for (let point in rects[1].corners) {
-  //   circle(rects[1].corners[point].x + width / 2, height / 2 - rects[1].corners[point].y, 10);
-  // }
-
-  console.log(collision(rects[0], rects[1]));
-  // print(collision(rects[0], rects[1]));
-
-  // print(rects[0].corners.tl.x);
-
-  // circle(60 + width / 2, height / 2 - 35, 10);
-
-  // colRectCir(objRect, bal);
+  print(res);
 }

@@ -59,6 +59,11 @@ function collision(obj1, obj2) {
   depth = depth / normalLen;
   normal.scale(1 / normalLen);
 
+  // Check normal direction
+  let posDif = new Vec2();
+  posDif.subtractVectors(obj1.pos, obj2.pos);
+  if (posDif.dot(normal) < 0) normal.scale(-1);
+
   // If no space is found then there is a collision
   return { collision: true, normal: normal, depth: depth };
 }

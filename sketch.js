@@ -24,7 +24,7 @@ function setup() {
 
   rects.push(new Rect(0, 0, 50, 20, 50, 0, 20));
   // rects.push(new Rect(0, 0, 50, 20, 0, 0, 20));
-  rects.push(new Rect(-80, 10, 50, 20, 0, 0, 20, 1, 30));
+  rects.push(new Rect(80, 10, 50, 20, 0, 0, 20, 1, -30));
 
   collision(rects[0], rects[1]);
 
@@ -50,8 +50,8 @@ function draw() {
 
   let res = collision(rects[0], rects[1]);
   if (res.collision) {
-    rects[0].pos.add(res.normal, -res.depth / 2);
-    rects[1].pos.add(res.normal, res.depth / 2);
+    rects[0].pos.add(res.normal, res.depth / 2);
+    rects[1].pos.add(res.normal, -res.depth / 2);
   }
 
   print(res);

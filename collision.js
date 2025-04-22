@@ -71,8 +71,9 @@ function collisionRect(obj1, obj2) {
   let m1 = obj1.mass;
   let m2 = obj2.mass;
 
-  let newV1 = (m1 * v1 + m2 * v2 - m2 * (v1 - v2) * 0.7) / (m1 + m2);
-  let newV2 = (m1 * v1 + m2 * v2 - m1 * (v2 - v1) * 0.7) / (m1 + m2);
+  // Calculate the new Velocities
+  let newV1 = (m1 * v1 + m2 * v2 - m2 * (v1 - v2) * obj1.elasticity) / (m1 + m2);
+  let newV2 = (m1 * v1 + m2 * v2 - m1 * (v2 - v1) * obj2.elasticity) / (m1 + m2);
 
   obj1.vel.add(normal, newV1 - v1);
   obj2.vel.add(normal, newV2 - v2);

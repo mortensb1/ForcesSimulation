@@ -65,6 +65,24 @@ function collisionRect(obj1, obj2) {
   posDif.subtractVectors(obj1.pos, obj2.pos);
   if (posDif.dot(normal) < 0) normal.scale(-1);
 
+  // Calculate the current velocoties in the collision direction
+  let v1 = obj1.vel.dot(normal);
+  let v2 = obj2.vel.dot(normal);
+
+  let m1 = obj1.mass;
+  let m2 = obj2.mass;
+
+  // Calculate the new Velocities
+  let newV1 = (m1 * v1 + m2 * v2 - m2 * (v1 - v2) * obj1.elasticity) / (m1 + m2);
+  let newV2 = (m1 * v1 + m2 * v2 - m1 * (v2 - v1) * obj2.elasticity) / (m1 + m2);
+
+  obj1.vel.add(normal, newV1 - v1);
+  obj2.vel.add(normal, newV2 - v2);
+
+  // Correct for the intersection, so that it doesn get stuck inside
+  obj1.pos.add(normal, depth/2);
+  obj2.pos.add(normal, -depth/2);
+
   // If no space is found then there is a collision
   return { collision: true, normal: normal, depth: depth };
 }

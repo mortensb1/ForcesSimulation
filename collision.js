@@ -45,8 +45,9 @@ function collisionRect(obj1, obj2) {
     }
 
     // Check if there is a space
-    if (min1 >= max2 || min2 >= max1) return { collision: false, normal: null, depth: null };
-
+    if (min1 >= max2 || min2 >= max1) {
+        return { collision: false, normal: null, depth: null };
+    }
     let axisDepth = min(max2 - min1, max1 - min2);
     if (axisDepth < depth) {
       depth = axisDepth;

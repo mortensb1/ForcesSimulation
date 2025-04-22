@@ -3,7 +3,6 @@ class Rect extends PhysicsObject {
     super(x, y, velX, velY, mass, elasticity, angle, rotVel, isStatic);
     this.w = w;
     this.h = h;
-    this.r = sqrt((this.w / 2) ** 2 + (this.h / 2) ** 2);
     this.corners = {
       tl: new Vec2(-this.w / 2, this.h / 2), // Top Left
       tr: new Vec2(this.w / 2, this.h / 2), // Top Right
@@ -66,6 +65,16 @@ class Rect extends PhysicsObject {
     this.Sin = sin(this.angle);
     this.updateCorners();
     this.updateNormals();
+  }
+
+  getCornersMinAndMaxPos() {
+    this.updateCorners();
+    return cornersMinAndMax = {
+      minX: min(this.corners.tl.x, this.corners.bl.x, this.corners.tr.x, this.corners.br.x),
+      minY: min(this.corners.tl.y, this.corners.bl.y, this.corners.tr.y, this.corners.br.y),
+      maxX: min(this.corners.tl.x, this.corners.bl.x, this.corners.tr.x, this.corners.br.x),
+      maxY: min(this.corners.tl.y, this.corners.bl.y, this.corners.tr.y, this.corners.br.y)
+    }
   }
 
   /**

@@ -9,6 +9,7 @@ class Rect extends PhysicsObject {
       bl: new Vec2(-this.w / 2, -this.h / 2), // Bottom Left
       br: new Vec2(this.w / 2, -this.h / 2), // Bottom Right
     };
+    this.cornersMinAndMax = {};
     this.normals = [];
     this.type = Rect;
 
@@ -67,24 +68,25 @@ class Rect extends PhysicsObject {
     this.updateNormals();
   }
 
-  getCornersMinAndMaxPos() {
+  updateCornersMinAndMax() {
     this.updateCorners();
-    return cornersMinAndMax = {
+    this.cornersMinAndMax = {
       minX: min(this.corners.tl.x, this.corners.bl.x, this.corners.tr.x, this.corners.br.x),
       minY: min(this.corners.tl.y, this.corners.bl.y, this.corners.tr.y, this.corners.br.y),
-      maxX: min(this.corners.tl.x, this.corners.bl.x, this.corners.tr.x, this.corners.br.x),
-      maxY: min(this.corners.tl.y, this.corners.bl.y, this.corners.tr.y, this.corners.br.y)
-    }
+      maxX: max(this.corners.tl.x, this.corners.bl.x, this.corners.tr.x, this.corners.br.x),
+      maxY: max(this.corners.tl.y, this.corners.bl.y, this.corners.tr.y, this.corners.br.y)
+    };
   }
 
   /**
    * Change the Velocity if Obejct collides with Wall
    */
   wallCollision() {
-    if (this.pos.x > (width - this.w) / 2 || this.pos.x < (-width + this.w) / 2) {
+    this.updateCornersMinAndMax();
+    if (this.cornersMinAndMax.maxX > width / 2 || this.cornersMinAndMax.minX < -width / 2) {
       this.vel.x = -this.vel.x;
     }
-    if (this.pos.y > (height - this.h) / 2 || this.pos.y < (-height + this.h) / 2) {
+    if (this.cornersMinAndMax.maxY > height / 2 || this.cornersMinAndMax.minY < -height / 2) {
       this.vel.y = -this.vel.y;
     }
   }

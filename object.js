@@ -17,4 +17,13 @@ class PhysicsObject {
     this.vel.add(G, 1 / fps);
     this.pos.add(this.vel, 1 / fps);
   }
+
+  /**
+   * Apply an Force the the Object
+   * @param {Vec2} f 
+   * @param {number} s 
+   */
+  force(f, s = 1) {
+    this.vel.add(f, s);
+  }
 }

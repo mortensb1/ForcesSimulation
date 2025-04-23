@@ -4,10 +4,10 @@ class Rect extends PhysicsObject {
     this.w = w;
     this.h = h;
     this.corners = {
-      tl: new Vec2(-this.w / 2, this.h / 2), // Top Left
-      tr: new Vec2(this.w / 2, this.h / 2), // Top Right
-      bl: new Vec2(-this.w / 2, -this.h / 2), // Bottom Left
-      br: new Vec2(this.w / 2, -this.h / 2), // Bottom Right
+      tl: new Vec2(), // Top Left
+      tr: new Vec2(), // Top Right
+      bl: new Vec2(), // Bottom Left
+      br: new Vec2(), // Bottom Right
     };
     this.cornersMinAndMax = {};
     this.normals = [];

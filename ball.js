@@ -48,7 +48,7 @@ class Ball extends PhysicsObject {
    * Checks for collision with other Ball object
    * @param {Ball} ball2  Other ball object to check collision.
    * @param {number} elasticity
-   * @returns Coid
+   * @returns Void
    */
   checkCollisionBall(ball2, elasticity) {
     // Calc the distance for the balls

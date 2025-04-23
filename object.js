@@ -20,10 +20,12 @@ class PhysicsObject {
 
   /**
    * Apply an Force the the Object
-   * @param {Vec2} f 
-   * @param {number} s 
+   * @param {Vec2} f
+   * @param {number} s
    */
   force(f, s = 1) {
     this.vel.add(f, s);
+
+    line(this.x + width / 2, height / 2 - this.y, this.x + width / 2 + f.x, height / 2 - (this.y + f.y));
   }
 }

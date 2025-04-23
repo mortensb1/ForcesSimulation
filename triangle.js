@@ -53,5 +53,9 @@ class Triangle extends PhysicsObject {
         this.Cos = cos(this.angle);
         this.Sin = sin(this.angle);
         this.updateCorners();
-      }
+    }
+
+    wallCollision() {
+        
+    }
 }

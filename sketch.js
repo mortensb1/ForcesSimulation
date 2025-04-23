@@ -35,7 +35,6 @@ function setup() {
 
 function draw() {
   background(220);
-
   for (ball of balls) {
     ball.draw();
     ball.update();

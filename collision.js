@@ -104,6 +104,25 @@ function collisionRectBall(rect, ball) {
   return { collision: true, normal: axis, depth: depth };
 }
 
+function collisionBall(ball1, ball2) {
+  let normal = new Vec2();
+  normal.subtractVectors(ball2.pos, ball1.pos);
+
+  depth = ball1.r + ball2.r - normal.length();
+
+  if (depth < 0) {
+    return { collision: false, normal: null, depth: null };
+  }
+
+  normal.normalize();
+
+  // Correct for the intersection, so that it doesn get stuck inside
+  ball1.pos.add(normal, -depth / 2);
+  ball2.pos.add(normal, depth / 2);
+
+  return { collision: true, normal: normal, depth: depth };
+}
+
 function resolveCollision(obj1, obj2, normal) {
   let relativeVel = new Vec2();
   relativeVel.subtractVectors(obj2.vel, obj1.vel);
@@ -113,7 +132,6 @@ function resolveCollision(obj1, obj2, normal) {
   let j = (1 + e) * relativeVel.dot(normal);
   j = j / (1 / obj1.mass + 1 / obj2.mass);
 
-  print(j);
   obj1.force(normal, j / obj1.mass);
   obj2.force(normal, -j / obj2.mass);
 }

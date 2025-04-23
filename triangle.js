@@ -10,6 +10,12 @@ class Triangle extends PhysicsObject {
             p2: new Vec2(),
             p3: new Vec2()
         }
+        this.normals = [];
+        this.Cos = cos(this.angle);
+        this.Sin = sin(this.angle);
+
+        this.updateCorners();
+        this.updateNormals();
     }
 
     draw() {
@@ -18,6 +24,13 @@ class Triangle extends PhysicsObject {
         rotate(-this.angle);
         triangle(this.startP1.x, -this.startP1.y, this.startP2.x, -this.startP2.y, this.startP3.x, -this.startP3.y);
         pop();
+    }
+
+    updateNormals() {
+        let tempVec = new Vec2();
+        this.normals[0] = tempVec.subtractVectors(this.corners.p1, this.corners.p2).hat().clone();
+        this.normals[1] = tempVec.subtractVectors(this.corners.p2, this.corners.p3).hat().clone();
+        this.normals[2] = tempVec.subtractVectors(this.corners.p3, this.corners.p1).hat().clone();
     }
 
     updateCorners() {

@@ -170,7 +170,6 @@ function resolveCollision(obj1, obj2, normal) {
   let impulse = normal.clone();
   impulse.scale(j);
 
-  console.log(impulse);
   obj1.force(impulse, -1);
   obj2.force(impulse, 1);
 }

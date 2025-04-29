@@ -63,8 +63,14 @@ function collisionRect(obj1, obj2) {
   if (posDif.dot(normal) < 0) normal.scale(-1);
 
   // Correct for the intersection, so that it doesn get stuck inside
-  obj1.pos.add(normal, depth / 2);
-  obj2.pos.add(normal, -depth / 2);
+  if (obj1.isStatic) {
+    obj2.pos.add(normal, -depth);
+  } else if (obj2.isStatic) {
+    obj1.pos.add(normal, depth);
+  } else {
+    obj1.pos.add(normal, depth / 2);
+    obj2.pos.add(normal, -depth / 2);
+  }
 
   // If no space is found then there is a collision
   return { collision: true, normal: normal, depth: depth };
@@ -98,12 +104,24 @@ function collisionRectBall(rect, ball) {
   let depth = min(maxBall - minRect, maxRect - minBall);
 
   // Correct for the intersection, so that it doesn get stuck inside
-  rect.pos.add(axis, depth / 2);
-  ball.pos.add(axis, -depth / 2);
+  if (rect.isStatic) {
+    ball.pos.add(axis, -depth);
+  } else if (ball.isStatic) {
+    rect.pos.add(axis, depth);
+  } else {
+    rect.pos.add(axis, depth / 2);
+    ball.pos.add(axis, -depth / 2);
+  }
 
   return { collision: true, normal: axis, depth: depth };
 }
 
+/**
+ *
+ * @param {Ball} ball1
+ * @param {Ball} ball2
+ * @returns
+ */
 function collisionBall(ball1, ball2) {
   let normal = new Vec2();
   normal.subtractVectors(ball2.pos, ball1.pos);
@@ -117,23 +135,44 @@ function collisionBall(ball1, ball2) {
   normal.normalize();
 
   // Correct for the intersection, so that it doesn get stuck inside
-  ball1.pos.add(normal, -depth / 2);
-  ball2.pos.add(normal, depth / 2);
+  if (ball1.isStatic) {
+    ball2.pos.add(normal, depth);
+  } else if (ball2.isStatic) {
+    ball1.pos.add(normal, -depth);
+  } else {
+    ball1.pos.add(normal, -depth / 2);
+    ball2.pos.add(normal, depth / 2);
+  }
 
   return { collision: true, normal: normal, depth: depth };
 }
 
+/**
+ * Resolve collisions between 2 objects
+ * @param {PhysicsObject} obj1
+ * @param {PhysicsObject} obj2
+ * @param {Vec2} normal
+ */
 function resolveCollision(obj1, obj2, normal) {
   let relativeVel = new Vec2();
   relativeVel.subtractVectors(obj2.vel, obj1.vel);
 
+  // Do nothing if objects are already moving apart
+  if (relativeVel.dot(normal) > 0) {
+    return;
+  }
+
   let e = min(obj1.elasticity, obj1.elasticity);
 
-  let j = (1 + e) * relativeVel.dot(normal);
-  j = j / (1 / obj1.mass + 1 / obj2.mass);
+  let j = -(1 + e) * relativeVel.dot(normal);
+  j = j / (obj1.invMass + obj2.invMass);
 
-  obj1.force(normal, j / obj1.mass);
-  obj2.force(normal, -j / obj2.mass);
+  let impulse = normal.clone();
+  impulse.scale(j);
+
+  console.log(impulse);
+  obj1.force(impulse, -obj1.invMass);
+  obj2.force(impulse, obj2.invMass);
 }
 
 function drawNormalsRect(rect) {

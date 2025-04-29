@@ -8,6 +8,12 @@ class PhysicsObject {
 
     this.elasticity = elasticity;
     this.isStatic = isStatic;
+
+    if (!this.isStatic) {
+      this.invMass = 1 / this.mass;
+    } else {
+      this.invMass = 0;
+    }
   }
 
   /**

@@ -13,7 +13,7 @@ function setup() {
   G = new Vec2(0, -9.82);
   // G = new Vec2(0, 0);
 
-  polygons.push(new Triangle(0, 0, new Vec2(0, 20), new Vec2(-20, 0), new Vec2(20, 0), 10, 0, 20));
+  // polygons.push(new Triangle(0, 0, new Vec2(0, 20), new Vec2(-20, 0), new Vec2(20, 0), 10, 0, 20));
 
   createCanvas(400, 400);
   frameRate(fps);
@@ -21,12 +21,13 @@ function setup() {
   // balls.push(new Ball(-150, 30, 10, 0, 0, 20));
 
   for (i = 0; i < 10; i++) {
-    balls.push(new Ball(random(-150, 150), random(-150, 150), 10, random(-150, 150), random(0, 4), 10, 1));
+    balls.push(new Ball(random(-150, 150), random(-150, 150), 10, random(-150, 150), random(-50, 50), 10, 1));
   }
 
   polygons.push(new Rect(0, 0, 50, 20, 50, 0, 20));
   // rects.push(new Rect(0, 0, 50, 20, 0, 0, 20));
-  polygons.push(new Rect(100, 10, 50, 20, -5, 0, 20, 1, 0));
+  polygons.push(new Rect(100, 10, 50, 20, -5, 0, 20, 1, 0, 0, false));
+  polygons.push(new Rect(0, 100, 50, 20, 0, 0, 20, 1, 0, 0, true));
 }
 
 function draw() {
@@ -58,7 +59,7 @@ function draw() {
     for (let j = i + 1; j < polygons.length; j++) {
       let res = collisionRect(polygons[i], polygons[j]);
       if (res.collision) {
-        resolveCollision(polygons[i], polygons[j], res.normal);
+        resolveCollision(polygons[j], polygons[i], res.normal);
       }
     }
     polygons[i].wallCollision();

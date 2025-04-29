@@ -171,8 +171,8 @@ function resolveCollision(obj1, obj2, normal) {
   impulse.scale(j);
 
   console.log(impulse);
-  obj1.force(impulse, -obj1.invMass);
-  obj2.force(impulse, obj2.invMass);
+  obj1.force(impulse, -1);
+  obj2.force(impulse, 1);
 }
 
 function drawNormalsRect(rect) {

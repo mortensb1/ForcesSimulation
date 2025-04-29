@@ -20,17 +20,23 @@ class PhysicsObject {
    * Update Vel and Pos
    */
   update() {
-    this.vel.add(G, 1 / fps);
+    if (!this.isStatic) {
+      this.vel.add(G, 1 / fps);
+    }
     this.pos.add(this.vel, 1 / fps);
   }
 
   /**
-   * Apply an Force the the Object
+   * Apply a Force the the Object
    * @param {Vec2} f
    * @param {number} s
    */
   force(f, s = 1) {
-    this.vel.add(f, s);
+
+    let acc = f.clone();
+    acc.scale(this.invMass);
+
+    this.vel.add(acc, s);
 
     line(this.x + width / 2, height / 2 - this.y, this.x + width / 2 + f.x, height / 2 - (this.y + f.y));
   }

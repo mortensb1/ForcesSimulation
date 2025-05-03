@@ -120,4 +120,13 @@ class Vec2 {
     dot(v) {
         return this.x * v.x + this.y * v.y;
     }
+
+    /**
+     * Check if vector equal to other
+     * @param {Vec2} v
+     * @returns
+     */
+    equal(v) {
+        return compareFloat(this.x, v.x) && compareFloat(this.y, v.y);
+    }
 }

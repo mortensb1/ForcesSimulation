@@ -183,6 +183,8 @@ class Scene {
 
     sceneDal() {
         if (this.initializeScene) {
+            this.initializeScene = false;
+
             let dalGroundHeight = 170;
             let dalTriangleWidth = 500;
             let dalTriangleHeight = 200;
@@ -194,36 +196,27 @@ class Scene {
             for (let i = 0; i < 10; i++) {
                 this.balls.push(new Ball(random(-150, 150), random(-150, 150), 50, random(-150, 150), random(-50, 50), 10, 1));
             }
-            this.initializeScene = false;
         }
 
-        this.checkSettings();
-        if (this.tintHome) {
-            tint(this.tintValSettings);
-            image(images.home, this.homePos.x, this.homePos.y, this.homeSize, this.homeSize);
-            this.tintHome = false;
-            noTint();
-        }
-        else {
-            image(images.home, this.homePos.x, this.homePos.y, this.homeSize, this.homeSize);
-        }
-        if (this.tintInfo) {
-            tint(this.tintValSettings);
-            image(images.info, this.infoPos.x, this.infoPos.y, this.infoSize, this.infoSize);
-            this.tintInfo = false;
-            noTint();
-        }
-        else {
-            image(images.info, this.infoPos.x, this.infoPos.y, this.infoSize, this.infoSize);
-        }
-        
-        
+        this.checkAndDrawSettings();        
     }
 
     scenePlatform() {
+        let groundHeight = 150;
+
         if (this.initializeScene) {
             this.initializeScene = false;
+
+            this.polygons.push(new Rect(0, -height/2 + groundHeight/2, width, groundHeight, 0, 0, 20, 1, 0, 0, true, this.staticColor));
+            this.polygons.push(new Rect(-450, 30, 555, 35, 0, 0, 20, 1, -25, 0,true, this.staticColor));
+
+            for (let i = 0; i < 10; i++) {
+                this.balls.push(new Ball(random(-150, 150), random(-150, 150), 50, random(-150, 150), random(-50, 50), 10, 1));
+            }
         }
+
+        this.checkAndDrawSettings();   
+
     }
 
     clearScene() {
@@ -233,7 +226,7 @@ class Scene {
 
 
     // Checks if hovering and clicking on settings (home and info) is happening
-    checkSettings() {
+    checkAndDrawSettings() {
         //Hovering over home:
         if (mouseX < this.homeSize/2 + this.homePos.x 
             && mouseX > this.homePos.x - this.homeSize/2 
@@ -255,6 +248,25 @@ class Scene {
             if (mouseIsPressed) {
                 
             }
+        }
+
+        if (this.tintHome) {
+            tint(this.tintValSettings);
+            image(images.home, this.homePos.x, this.homePos.y, this.homeSize, this.homeSize);
+            this.tintHome = false;
+            noTint();
+        }
+        else {
+            image(images.home, this.homePos.x, this.homePos.y, this.homeSize, this.homeSize);
+        }
+        if (this.tintInfo) {
+            tint(this.tintValSettings);
+            image(images.info, this.infoPos.x, this.infoPos.y, this.infoSize, this.infoSize);
+            this.tintInfo = false;
+            noTint();
+        }
+        else {
+            image(images.info, this.infoPos.x, this.infoPos.y, this.infoSize, this.infoSize);
         }
     }
 }

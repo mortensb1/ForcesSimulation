@@ -5,12 +5,27 @@ class Scene {
         this.polygons = [];
         this.currentScene = this.sceneDal;
         this.staticColor = [96, 88, 88];
+
+        this.homeSize = 80;
+        this.homePos = new Vec2(15, 15);
     }
 
     update() {
         this.currentScene();
-
         let collisions = [];
+
+        if (this.currentScene == this.sceneDal) {
+            if (mouseX < this.homeSize + this.homePos.x && mouseX > this.homePos.x && mouseY < this.homeSize + this.homePos.y && mouseY > this.homePos.y) {
+                tint(150);
+                if (mouseIsPressed) {
+                    this.currentScene = this.sceneMenu;
+                    this.clearScene();
+                    return;
+                }
+            } else {
+                tint(255);
+            }
+        }
 
         // UPDATING SHAPES
         // UPDATING SHAPES
@@ -54,6 +69,10 @@ class Scene {
         if (this.initializeScene) {
             this.initializeScene = false;
         }
+
+        textSize(100);
+        textFont(fonts.regular);
+        text("SIMULATION OF FORCES", width / 2, height / 2 - 200);
     }
 
     sceneOppefra() {
@@ -64,27 +83,31 @@ class Scene {
 
     sceneDal() {
         if (this.initializeScene) {
-            let dalGroundHeight = 150;
+            let dalGroundHeight = 170;
             let dalTriangleWidth = 500;
             let dalTriangleHeight = 200;
             this.polygons.push(new Rect(0, -height / 2 + dalGroundHeight / 2, width, dalGroundHeight, 0, 0, 20, 1, 0, 0, true, this.staticColor));
 
-            //this.polygons.push(new Triangle(width - dalTriangleWidth*, dalGroundHeight, new Vec2(dalTriangleWidth/2, 0), new Vec2(-dalTriangleWidth/2, 0), new Vec2(dalTriangleWidth/2, dalTriangleHeight), 0, 0, 20, 1, 0, 0, true, this.staticColor));
+            this.polygons.push(new Triangle(width / 2 - dalTriangleWidth / 2, -height / 2 + dalGroundHeight, new Vec2(dalTriangleWidth / 2, 0), new Vec2(-dalTriangleWidth / 2, 0), new Vec2(dalTriangleWidth / 2, dalTriangleHeight), 0, 0, 20, 1, 0, 0, true, this.staticColor));
+            this.polygons.push(new Triangle(-width / 2 + dalTriangleWidth / 2, -height / 2 + dalGroundHeight, new Vec2(dalTriangleWidth / 2, 0), new Vec2(-dalTriangleWidth / 2, 0), new Vec2(-dalTriangleWidth / 2, dalTriangleHeight), 0, 0, 20, 1, 0, 0, true, this.staticColor));
 
-            this.polygons.push(new Rect(-300, 0, 50, 20, 0, 0, 20));
-            // rects.push(new Rect(0, 0, 50, 20, 0, 0, 20));
-            this.polygons.push(new Rect(-300, 40, 50, 20, -5, 0, 20, 1, 0, 0, false));
-            for (i = 0; i < 10; i++) {
+            for (let i = 0; i < 10; i++) {
                 this.balls.push(new Ball(random(-150, 150), random(-150, 150), 10, random(-150, 150), random(-50, 50), 10, 1));
             }
-
             this.initializeScene = false;
         }
+
+        image(images.home, this.homePos.x, this.homePos.y, this.homeSize, this.homeSize);
     }
 
     scenePlatform() {
         if (this.initializeScene) {
             this.initializeScene = false;
         }
+    }
+
+    clearScene() {
+        this.balls = [];
+        this.polygons = [];
     }
 }

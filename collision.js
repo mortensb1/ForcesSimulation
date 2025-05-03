@@ -173,27 +173,6 @@ function collisionRectBall(rect, ball) {
 }
 
 /**
- * Calculate the closest points on polygon to point
- * @param {Vec2} pos
- * @param {Array<Vec2>} verts
- */
-function closestPointOnPolygon(pos, verts) {
-    let minDist = Infinity;
-    let minPoint;
-
-    let tempVec = new Vec2();
-    for (let vert in verts) {
-        let dis = min(tempVec.subtractVectors(verts[vert], pos).length(), minDist);
-        if (dis < minDist) {
-            minDist = dis;
-            minPoint = verts[vert].clone();
-        }
-    }
-
-    return minPoint;
-}
-
-/**
  *
  * @param {Ball} ball1
  * @param {Ball} ball2
@@ -225,7 +204,28 @@ function collisionBall(ball1, ball2) {
 }
 
 /**
- *
+ * Calculate the closest points on polygon to point
+ * @param {Vec2} pos
+ * @param {Array<Vec2>} verts
+ */
+function closestPointOnPolygon(pos, verts) {
+    let minDist = Infinity;
+    let minPoint;
+
+    let tempVec = new Vec2();
+    for (let vert in verts) {
+        let dis = min(tempVec.subtractVectors(verts[vert], pos).length(), minDist);
+        if (dis < minDist) {
+            minDist = dis;
+            minPoint = verts[vert].clone();
+        }
+    }
+
+    return minPoint;
+}
+
+/**
+ * Find the contact points between 2 objects
  * @param {PhysicsObject} bodyA
  * @param {PhysicsObject} bodyB
  * @returns
@@ -238,6 +238,10 @@ function findContactPoints(bodyA, bodyB) {
     // Select the right combination
     if (bodyA.type == Rect || bodyA.type == Triangle) {
         if (bodyB.type == Rect || bodyA.type == Triangle) {
+            let res = findContactRect(bodyA, bodyB);
+            contact1 = res.contact1;
+            contact2 = res.contact2;
+            contactCount = res.contactCount;
         } else if (bodyB.type == Ball) {
             contact1 = findContactBallRect(bodyB, bodyA);
             contactCount = 1;
@@ -300,6 +304,73 @@ function findContactBallRect(ball, rect) {
     return contactPoint;
 }
 
+function findContactRect(rect1, rect2) {
+    let contact1 = new Vec2();
+    let contact2 = new Vec2();
+    let contactCount = 0;
+
+    let minDistSq = Infinity;
+
+    let verts1 = [];
+    for (let p in rect1.corners) {
+        verts1.push(rect1.corners[p]);
+    }
+    let verts2 = [];
+    for (let p in rect2.corners) {
+        verts2.push(rect2.corners[p]);
+    }
+
+    for (let i = 0; i < verts1.length; i++) {
+        let p = verts1[i];
+
+        for (let j = 0; j < verts2.length; j++) {
+            let va = verts2[j];
+            let vb = verts2[(j + 1) % verts2.length];
+
+            let res = pointLineDistance(p, va, vb);
+            let distSquared = res.distanceSquared;
+            let contact = res.contact;
+
+            if (compareFloat(distSquared, minDistSq)) {
+                if (!contact.equal(contact1)) {
+                    contact2 = contact;
+                    contactCount = 2;
+                }
+            } else if (distSquared < minDistSq) {
+                minDistSq = distSquared;
+                contact1 = contact;
+                contactCount = 1;
+            }
+        }
+    }
+
+    for (let i = 0; i < verts2.length; i++) {
+        let p = verts2[i];
+
+        for (let j = 0; j < verts1.length; j++) {
+            let va = verts1[j];
+            let vb = verts1[(j + 1) % verts1.length];
+
+            let res = pointLineDistance(p, va, vb);
+            let distSquared = res.distanceSquared;
+            let contact = res.contact;
+
+            if (compareFloat(distSquared, minDistSq)) {
+                if (!contact.equal(contact1)) {
+                    contact2 = contact;
+                    contactCount = 2;
+                }
+            } else if (distSquared < minDistSq) {
+                minDistSq = distSquared;
+                contact1 = contact;
+                contactCount = 1;
+            }
+        }
+    }
+
+    return { contact1: contact1, contact2: contact2, contactCount: contactCount };
+}
+
 /**
  * Calc distance from line to point
  * @param {Vec2} p Point
@@ -319,7 +390,7 @@ function pointLineDistance(p, a, b) {
     let abLenSq = ab.lengthSquared();
     let d = projection / abLenSq;
 
-    if (d == 0) {
+    if (d <= 0) {
         contactPoint = a.clone();
     } else if (d >= 1) {
         contactPoint = b.clone();
@@ -366,4 +437,8 @@ function drawNormalsRect(rect) {
     for (let i = 0; i < rect.normals.length; i++) {
         line(rect.pos.x + width / 2, height / 2 - rect.pos.y, rect.pos.x + rect.normals[i].x + width / 2, height / 2 - (rect.pos.y + rect.normals[i].y));
     }
+}
+
+function compareFloat(a, b) {
+    return abs(a - b) < 0.00001;
 }

@@ -44,7 +44,8 @@ class Scene {
             for (let j = i + 1; j < this.polygons.length; j++) {
                 let res = collisionRect(this.polygons[i], this.polygons[j]);
                 if (res.collision) {
-                    collisions.push(new Manifold(this.polygons[j], this.polygons[i], res.normal, res.depth, new Vec2(), new Vec2()));
+                    let contacts = findContactPoints(this.polygons[i], this.polygons[j]);
+                    collisions.push(new Manifold(this.polygons[j], this.polygons[i], res.normal, res.depth, contacts.contact1, contacts.contact2, contacts.contactCount));
                 }
             }
             this.polygons[i].wallCollision();
@@ -53,17 +54,18 @@ class Scene {
         for (let i = 0; i < collisions.length; i++) {
             resolveCollision(collisions[i]);
 
+            // console.log(collisions[i]);
             if (collisions[i].contactCount > 0) {
                 contactPointsList.push(collisions[i].contact1);
                 if (collisions[i].contactCount > 1) {
-                    contactPointsList.push(collisions.contact2);
+                    contactPointsList.push(collisions[i].contact2);
                 }
             }
         }
 
         for (let i = 0; i < contactPointsList.length; i++) {
             fill(255, 0, 0);
-            square(width / 2 + contactPointsList[i].x, height / 2 - contactPointsList[i].y, 20);
+            square(width / 2 + contactPointsList[i].x, height / 2 - contactPointsList[i].y, 10);
             fill(255);
         }
     }
@@ -78,8 +80,8 @@ class Scene {
         let simTextPos = new Vec2(width / 2, height / 2 - 200);
         let firstScenePos = new Vec2(387.5, 666.5);
         let secondScenePos = new Vec2(firstScenePos.x + sceneSpace, firstScenePos.y);
-        let thirdScenePos = new Vec2(firstScenePos.x + 2*sceneSpace, firstScenePos.y)
-        
+        let thirdScenePos = new Vec2(firstScenePos.x + 2 * sceneSpace, firstScenePos.y);
+
         let scenesScale = [415, 233];
 
         textSize(100);
@@ -97,10 +99,6 @@ class Scene {
         image(images.dalScene, secondScenePos.x, secondScenePos.y, scenesScale[0], scenesScale[1]);
         fill(204);
         rect(thirdScenePos.x, thirdScenePos.y, scenesScale[0], scenesScale[1]);
-
-        
-        
-
     }
 
     sceneOppefra() {
@@ -140,22 +138,19 @@ class Scene {
         this.polygons = [];
     }
 
-
     // Checks if hovering and clicking on settings (home and info) is happening
     checkSettings() {
-
         //Hovering over home:
-        if (mouseX < this.homeSize/2 + this.homePos.x && mouseX > this.homePos.x - this.homeSize/2 && mouseY < this.homeSize/2 + this.homePos.y && mouseY > this.homePos.y - this.homeSize/2) {
+        if (mouseX < this.homeSize / 2 + this.homePos.x && mouseX > this.homePos.x - this.homeSize / 2 && mouseY < this.homeSize / 2 + this.homePos.y && mouseY > this.homePos.y - this.homeSize / 2) {
             tint(150);
             if (mouseIsPressed) {
                 this.currentScene = this.sceneMenu;
                 this.clearScene();
                 return;
             }
-        } else if (false) { // hovering over questionmark
-
-        }
-        else {
+        } else if (false) {
+            // hovering over questionmark
+        } else {
             tint(255);
         }
     }

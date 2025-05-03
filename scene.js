@@ -24,10 +24,9 @@ class Scene {
     }
 
     update() {
-        this.currentScene();
         let collisions = [];
         let contactPointsList = [];
-
+        
         // UPDATING SHAPES
         // UPDATING SHAPES
         for (let i = 0; i < this.balls.length; i++) {
@@ -40,7 +39,7 @@ class Scene {
                     collisions.push(new Manifold(this.balls[i], this.balls[j], res.normal, res.depth, contacts.contact1, contacts.contact2, contacts.contactCount));
                 }
             }
-
+            
             for (let j = 0; j < this.polygons.length; j++) {
                 let res = collisionRectBall(this.polygons[j], this.balls[i]);
                 if (res.collision) {
@@ -50,7 +49,7 @@ class Scene {
             }
             this.balls[i].wallCollision();
         }
-
+        
         for (let i = 0; i < this.polygons.length; i++) {
             this.polygons[i].draw();
             this.polygons[i].update();
@@ -63,10 +62,10 @@ class Scene {
             }
             this.polygons[i].wallCollision();
         }
-
+        
         for (let i = 0; i < collisions.length; i++) {
             resolveCollision(collisions[i]);
-
+            
             // console.log(collisions[i]);
             if (collisions[i].contactCount > 0) {
                 contactPointsList.push(collisions[i].contact1);
@@ -75,14 +74,15 @@ class Scene {
                 }
             }
         }
-
+        
         for (let i = 0; i < contactPointsList.length; i++) {
             fill(255, 0, 0);
             square(width / 2 + contactPointsList[i].x, height / 2 - contactPointsList[i].y, 10);
             fill(255);
         }
+        this.currentScene();
     }
-
+    
     sceneMenu() {
         if (this.initializeScene) {
             this.initializeScene = false;
@@ -261,9 +261,10 @@ class Scene {
 
     // Checks if hovering and clicking on settings (home and info) is happening
     checkAndDrawSettings() {
-        //Hovering over home:
+        // Hovering over home:
         if (mouseX < this.homeSize / 2 + this.homePos.x && mouseX > this.homePos.x - this.homeSize / 2 && mouseY < this.homeSize / 2 + this.homePos.y && mouseY > this.homePos.y - this.homeSize / 2) {
             this.tintHome = true;
+            // If home is pressed go home
             if (mouseIsPressed && !this.reading) {
                 this.initializeScene = true;
                 this.currentScene = this.sceneMenu;
@@ -275,21 +276,40 @@ class Scene {
             mouseX < this.infoSize / 2 + this.infoPos.x &&
             mouseX > this.infoPos.x - this.infoSize / 2 &&
             mouseY < this.infoSize / 2 + this.infoPos.y &&
-            mouseY > this.infoPos.y - this.infoSize / 2
-        ) {
+            mouseY > this.infoPos.y - this.infoSize / 2) {
             this.tintInfo = true;
+            // If questionmark is pressed, change color on everything and show text info
             if (mouseIsPressed && !this.reading){
                 this.reading = true;
                 this.changeColorOnAll([-this.readingColorChangeVal, -this.readingColorChangeVal, -this.readingColorChangeVal]);
             }
         }
 
+        if(this.reading) {
+            fill(255);
+            console.log(this.currentScene);
+            textSize(100);
+            textFont(fonts.regular)
+            if(this.currentScene == this.sceneDal) {
+                text("VALLEY", width/2, height/2 - 300);
+            }
+            else if(this.currentScene == this.sceneOppefra) {
+                text("FROM ABOVE", width/2, height/2 - 300);
+            }
+            else if(this.currentScene == this.scenePlatform) {
+                text("PLATFORM", width/2, height/2 - 300);
+            }
+            
+        }
+
+        // If info is showing and mouse has been relesed once, the colors are allowed to change
         if (mouseIsPressed && this.allowColorChange) {
             this.reading = false;
             this.allowColorChange = false;
             this.changeColorOnAll([this.readingColorChangeVal, this.readingColorChangeVal, this.readingColorChangeVal]);
         }
 
+        // Tinting the images
         if (this.tintHome) {
             tint(this.tintValSettings);
             image(images.home, this.homePos.x, this.homePos.y, this.homeSize, this.homeSize);

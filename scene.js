@@ -8,6 +8,16 @@ class Scene {
 
         this.homeSize = 80;
         this.homePos = new Vec2(55, 55);
+        this.infoSize = 80;
+        this.infoPos = new Vec2(this.homePos.x + this.homeSize + 20, 55);
+        this.tintHome = false;
+        this.tintInfo = false;
+        this.tintOppefra = false;
+        this.tintPlatform = false;
+        this.tintDal = false;
+        this.tintValSettings = 150;
+        this.tintValScenes = 220;
+        
     }
 
     update() {
@@ -94,21 +104,92 @@ class Scene {
         text("Valley", secondScenePos.x, secondScenePos.y - textSpace);
         text("From above", thirdScenePos.x, thirdScenePos.y - textSpace);
 
-        tint(240);
-        image(images.platformScene, firstScenePos.x, firstScenePos.y, scenesScale[0], scenesScale[1]);
-        image(images.dalScene, secondScenePos.x, secondScenePos.y, scenesScale[0], scenesScale[1]);
-        fill(204);
-        rect(thirdScenePos.x, thirdScenePos.y, scenesScale[0], scenesScale[1]);
+        if(this.tintPlatform) {
+            tint(this.tintValScenes);
+            image(images.platformScene, firstScenePos.x, firstScenePos.y, scenesScale[0], scenesScale[1]);
+            this.tintPlatform = false;
+        }
+        else {
+            tint(240);
+            image(images.platformScene, firstScenePos.x, firstScenePos.y, scenesScale[0], scenesScale[1]);
+        }
+        if(this.tintDal) {
+            tint(this.tintValScenes);
+            image(images.dalScene, secondScenePos.x, secondScenePos.y, scenesScale[0], scenesScale[1]);
+            this.tintDal = false;
+        }
+        else {
+            tint(240);
+            image(images.dalScene, secondScenePos.x, secondScenePos.y, scenesScale[0], scenesScale[1]);
+        }
+        if(this.tintOppefra) {
+            fill(184);
+            rect(thirdScenePos.x, thirdScenePos.y, scenesScale[0], scenesScale[1]);
+            this.tintOppefra = false;
+        }
+        else {
+            fill(204);
+            rect(thirdScenePos.x, thirdScenePos.y, scenesScale[0], scenesScale[1]);
+        }
+        
+        
+        
+
+        //Check if mouse is hovering over scene-choice
+        if(mouseX < firstScenePos.x + scenesScale[0]/2 
+          && mouseX > firstScenePos.x - scenesScale[0]/2 
+          && mouseY < firstScenePos.y + scenesScale[1]/2 
+          && mouseY > firstScenePos.y - scenesScale[1]/2) {
+            this.tintPlatform = true;
+            if(mouseIsPressed) {
+                this.initializeScene = true;
+                this.currentScene = this.scenePlatform;
+                this.clearScene();
+                return;
+            }
+        }
+        else if (mouseX < secondScenePos.x + scenesScale[0]/2 
+                && mouseX > secondScenePos.x - scenesScale[0]/2 
+                && mouseY < secondScenePos.y + scenesScale[1]/2 
+                && mouseY > secondScenePos.y - scenesScale[1]/2) {
+            this.tintDal = true;
+            if(mouseIsPressed) {
+                this.initializeScene = true;
+                this.currentScene = this.sceneDal;
+                this.clearScene();
+                return;
+            }
+        }
+        else if (mouseX < thirdScenePos.x + scenesScale[0]/2 
+                && mouseX > thirdScenePos.x - scenesScale[0]/2 
+                && mouseY < thirdScenePos.y + scenesScale[1]/2 
+                && mouseY > thirdScenePos.y - scenesScale[1]/2) {
+            this.tintOppefra = true;
+            if(mouseIsPressed) {
+                this.initializeScene = true;
+                this.currentScene = this.sceneOppefra;
+                this.clearScene();
+                return;
+            }
+        else {
+            noTint();
+        }
+    }
     }
 
     sceneOppefra() {
         if (this.initializeScene) {
             this.initializeScene = false;
+ 
         }
+
+        this.checkAndDrawSettings();
     }
 
     sceneDal() {
         if (this.initializeScene) {
+            this.initializeScene = false;
+
             let dalGroundHeight = 170;
             let dalTriangleWidth = 500;
             let dalTriangleHeight = 200;
@@ -120,17 +201,27 @@ class Scene {
             for (let i = 0; i < 10; i++) {
                 this.balls.push(new Ball(random(-150, 150), random(-150, 150), 50, random(-150, 150), random(-50, 50), 10, 1));
             }
-            this.initializeScene = false;
         }
 
-        this.checkSettings();
-        image(images.home, this.homePos.x, this.homePos.y, this.homeSize, this.homeSize);
+        this.checkAndDrawSettings();        
     }
 
     scenePlatform() {
+        let groundHeight = 150;
+
         if (this.initializeScene) {
             this.initializeScene = false;
+
+            this.polygons.push(new Rect(0, -height/2 + groundHeight/2, width, groundHeight, 0, 0, 20, 1, 0, 0, true, this.staticColor));
+            this.polygons.push(new Rect(-450, 30, 555, 35, 0, 0, 20, 1, -25, 0,true, this.staticColor));
+
+            for (let i = 0; i < 10; i++) {
+                this.balls.push(new Ball(random(-150, 150), random(-150, 150), 50, random(-150, 150), random(-50, 50), 10, 1));
+            }
         }
+
+        this.checkAndDrawSettings();   
+
     }
 
     clearScene() {
@@ -139,19 +230,47 @@ class Scene {
     }
 
     // Checks if hovering and clicking on settings (home and info) is happening
-    checkSettings() {
+    checkAndDrawSettings() {
         //Hovering over home:
-        if (mouseX < this.homeSize / 2 + this.homePos.x && mouseX > this.homePos.x - this.homeSize / 2 && mouseY < this.homeSize / 2 + this.homePos.y && mouseY > this.homePos.y - this.homeSize / 2) {
-            tint(150);
+        if (mouseX < this.homeSize/2 + this.homePos.x 
+            && mouseX > this.homePos.x - this.homeSize/2 
+            && mouseY < this.homeSize/2 + this.homePos.y 
+            && mouseY > this.homePos.y - this.homeSize/2) {
+            this.tintHome = true;
             if (mouseIsPressed) {
+                this.initializeScene = true;
                 this.currentScene = this.sceneMenu;
                 this.clearScene();
                 return;
             }
-        } else if (false) {
-            // hovering over questionmark
-        } else {
-            tint(255);
+        // hovering over questionmark:
+        } else if (mouseX < this.infoSize/2 + this.infoPos.x 
+            && mouseX > this.infoPos.x - this.infoSize/2 
+            && mouseY < this.infoSize/2 + this.infoPos.y 
+            && mouseY > this.infoPos.y - this.infoSize/2) { 
+            this.tintInfo = true;
+            if (mouseIsPressed) {
+                
+            }
+        }
+
+        if (this.tintHome) {
+            tint(this.tintValSettings);
+            image(images.home, this.homePos.x, this.homePos.y, this.homeSize, this.homeSize);
+            this.tintHome = false;
+            noTint();
+        }
+        else {
+            image(images.home, this.homePos.x, this.homePos.y, this.homeSize, this.homeSize);
+        }
+        if (this.tintInfo) {
+            tint(this.tintValSettings);
+            image(images.info, this.infoPos.x, this.infoPos.y, this.infoSize, this.infoSize);
+            this.tintInfo = false;
+            noTint();
+        }
+        else {
+            image(images.info, this.infoPos.x, this.infoPos.y, this.infoSize, this.infoSize);
         }
     }
 }

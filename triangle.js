@@ -22,6 +22,7 @@ class Triangle extends PhysicsObject {
         push();
         translate(this.pos.x + width / 2, height / 2 - this.pos.y);
         rotate(-this.angle);
+        fill(this.color);
         triangle(this.startP1.x, -this.startP1.y, this.startP2.x, -this.startP2.y, this.startP3.x, -this.startP3.y);
         pop();
     }

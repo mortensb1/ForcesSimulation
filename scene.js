@@ -13,6 +13,7 @@ class Scene {
     update() {
         this.currentScene();
         let collisions = [];
+        let contactPointsList = [];
 
         if (this.currentScene == this.sceneDal) {
             if (mouseX < this.homeSize + this.homePos.x && mouseX > this.homePos.x && mouseY < this.homeSize + this.homePos.y && mouseY > this.homePos.y) {
@@ -35,7 +36,8 @@ class Scene {
             for (let j = i + 1; j < this.balls.length; j++) {
                 let res = collisionBall(this.balls[i], this.balls[j]);
                 if (res.collision) {
-                    collisions.push(new Manifold(this.balls[i], this.balls[j], res.normal, res.depth, new Vec2(), new Vec2()));
+                    let contacts = findContactPoints(this.balls[i], this.balls[j]);
+                    collisions.push(new Manifold(this.balls[i], this.balls[j], res.normal, res.depth, contacts.contact1, contacts.contact2, contacts.contactCount));
                 }
             }
 
@@ -62,6 +64,21 @@ class Scene {
 
         for (let i = 0; i < collisions.length; i++) {
             resolveCollision(collisions[i]);
+
+            if (collisions[i].contactCount > 0) {
+                // console.log(collisions[i].contact1);
+                contactPointsList.push(collisions[i].contact1);
+                if (collisions[i].contactCount > 1) {
+                    contactPointsList.push(collisions.contact2);
+                }
+            }
+        }
+
+        for (let i = 0; i < contactPointsList.length; i++) {
+            fill(255, 0, 0);
+            square(width / 2 + contactPointsList[i].x, height / 2 - contactPointsList[i].y, 20);
+            // circle(width / 2 + contactPointsList[i].x, height / 2 - contactPointsList[i].y, 20);
+            fill(255);
         }
     }
 
@@ -110,7 +127,7 @@ class Scene {
             this.polygons.push(new Triangle(-width / 2 + dalTriangleWidth / 2, -height / 2 + dalGroundHeight, new Vec2(dalTriangleWidth / 2, 0), new Vec2(-dalTriangleWidth / 2, 0), new Vec2(-dalTriangleWidth / 2, dalTriangleHeight), 0, 0, 20, 1, 0, 0, true, this.staticColor));
 
             for (let i = 0; i < 10; i++) {
-                this.balls.push(new Ball(random(-150, 150), random(-150, 150), 10, random(-150, 150), random(-50, 50), 10, 1));
+                this.balls.push(new Ball(random(-150, 150), random(-150, 150), 50, random(-150, 150), random(-50, 50), 10, 1));
             }
             this.initializeScene = false;
         }

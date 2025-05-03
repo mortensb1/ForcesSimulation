@@ -10,6 +10,8 @@ class Scene {
         this.homePos = new Vec2(55, 55);
         this.infoSize = 80;
         this.infoPos = new Vec2(this.homePos.x + this.homeSize + 20, 55);
+        this.tintHome = false;
+        this.tintInfo = false;
     }
 
     update() {
@@ -127,16 +129,16 @@ class Scene {
             }
         }
         else if (mouseX < thirdScenePos.x + scenesScale[0]/2 
-            && mouseX > thirdScenePos.x - scenesScale[0]/2 
-            && mouseY < thirdScenePos.y + scenesScale[1]/2 
-            && mouseY > thirdScenePos.y - scenesScale[1]/2) {
-        tint(255,0,0);
-        if(mouseIsPressed) {
-            this.initializeScene = true;
-            this.currentScene = this.sceneOppefra;
-            this.clearScene();
-            return;
-        }
+                && mouseX > thirdScenePos.x - scenesScale[0]/2 
+                && mouseY < thirdScenePos.y + scenesScale[1]/2 
+                && mouseY > thirdScenePos.y - scenesScale[1]/2) {
+            tint(255,0,0);
+            if(mouseIsPressed) {
+                this.initializeScene = true;
+                this.currentScene = this.sceneOppefra;
+                this.clearScene();
+                return;
+            }
         else {
             noTint();
         }
@@ -166,8 +168,26 @@ class Scene {
         }
 
         this.checkSettings();
-        image(images.home, this.homePos.x, this.homePos.y, this.homeSize, this.homeSize);
-        image(images.info, this.infoPos.x, this.infoPos.y, this.infoSize, this.infoSize);
+        if (this.tintHome) {
+            tint(150);
+            image(images.home, this.homePos.x, this.homePos.y, this.homeSize, this.homeSize);
+            this.tintHome = false;
+            noTint();
+        }
+        else {
+            image(images.home, this.homePos.x, this.homePos.y, this.homeSize, this.homeSize);
+        }
+        if (this.tintInfo) {
+            tint(150);
+            image(images.info, this.infoPos.x, this.infoPos.y, this.infoSize, this.infoSize);
+            this.tintInfo = false;
+            noTint();
+        }
+        else {
+            image(images.info, this.infoPos.x, this.infoPos.y, this.infoSize, this.infoSize);
+        }
+        
+        
     }
 
     scenePlatform() {
@@ -184,21 +204,27 @@ class Scene {
 
     // Checks if hovering and clicking on settings (home and info) is happening
     checkSettings() {
-
         //Hovering over home:
-        if (mouseX < this.homeSize/2 + this.homePos.x && mouseX > this.homePos.x - this.homeSize/2 && mouseY < this.homeSize/2 + this.homePos.y && mouseY > this.homePos.y - this.homeSize/2) {
-            tint(150);
+        if (mouseX < this.homeSize/2 + this.homePos.x 
+            && mouseX > this.homePos.x - this.homeSize/2 
+            && mouseY < this.homeSize/2 + this.homePos.y 
+            && mouseY > this.homePos.y - this.homeSize/2) {
+            this.tintHome = true;
             if (mouseIsPressed) {
                 this.initializeScene = true;
                 this.currentScene = this.sceneMenu;
                 this.clearScene();
                 return;
             }
-        } else if (false) { // hovering over questionmark
-
-        }
-        else {
-            tint(255);
+        // hovering over questionmark:
+        } else if (mouseX < this.infoSize/2 + this.infoPos.x 
+            && mouseX > this.infoPos.x - this.infoSize/2 
+            && mouseY < this.infoSize/2 + this.infoPos.y 
+            && mouseY > this.infoPos.y - this.infoSize/2) { 
+            this.tintInfo = true;
+            if (mouseIsPressed) {
+                
+            }
         }
     }
 }

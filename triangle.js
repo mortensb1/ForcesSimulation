@@ -5,11 +5,13 @@ class Triangle extends PhysicsObject {
         this.startP2 = p2;
         this.startP3 = p3;
 
+        this.type = Triangle;
+
         this.corners = {
             p1: new Vec2(),
             p2: new Vec2(),
-            p3: new Vec2()
-        }
+            p3: new Vec2(),
+        };
         this.normals = [];
         this.Cos = cos(this.angle);
         this.Sin = sin(this.angle);
@@ -34,16 +36,16 @@ class Triangle extends PhysicsObject {
     }
 
     updateCorners() {
-        this.corners.p1.x = this.Cos * (this.startP1.x) - this.Sin * (this.startP1.y);
-        this.corners.p1.y = this.Sin * (this.startP1.x) + this.Cos * (this.startP1.y);
+        this.corners.p1.x = this.Cos * this.startP1.x - this.Sin * this.startP1.y;
+        this.corners.p1.y = this.Sin * this.startP1.x + this.Cos * this.startP1.y;
         this.corners.p1.add(this.pos);
 
-        this.corners.p2.x = this.Cos * (this.startP2.x) - this.Sin * (this.startP2.y);
-        this.corners.p2.y = this.Sin * (this.startP2.x) + this.Cos * (this.startP2.y);
+        this.corners.p2.x = this.Cos * this.startP2.x - this.Sin * this.startP2.y;
+        this.corners.p2.y = this.Sin * this.startP2.x + this.Cos * this.startP2.y;
         this.corners.p2.add(this.pos);
 
-        this.corners.p3.x = this.Cos * (this.startP3.x) - this.Sin * (this.startP3.y);
-        this.corners.p3.y = this.Sin * (this.startP3.x) + this.Cos * (this.startP3.y);
+        this.corners.p3.x = this.Cos * this.startP3.x - this.Sin * this.startP3.y;
+        this.corners.p3.y = this.Sin * this.startP3.x + this.Cos * this.startP3.y;
         this.corners.p3.add(this.pos);
     }
 
@@ -55,7 +57,5 @@ class Triangle extends PhysicsObject {
         this.updateCorners();
     }
 
-    wallCollision() {
-
-    }
+    wallCollision() {}
 }

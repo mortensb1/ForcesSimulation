@@ -178,7 +178,10 @@ class Scene {
     sceneOppefra() {
         if (this.initializeScene) {
             this.initializeScene = false;
+ 
         }
+
+        this.checkAndDrawSettings();
     }
 
     sceneDal() {

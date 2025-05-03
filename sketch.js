@@ -8,6 +8,7 @@ let balls = [];
 let polygons = [];
 let images = {};
 let fonts = {};
+let backgroundColor = [217, 217, 217];
 
 function preload() {
     images.home = loadImage("Images/Home.png");
@@ -32,6 +33,6 @@ function setup() {
 }
 
 function draw() {
-    background(217);
+    background(backgroundColor);
     scene.update();
 }

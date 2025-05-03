@@ -17,6 +17,9 @@ class Scene {
         this.tintDal = false;
         this.tintValSettings = 150;
         this.tintValScenes = 220;
+        this.reading = false;
+        this.allowColorChange = false;
+        this.readingColorChangeVal = 60;
         
     }
 
@@ -236,7 +239,7 @@ class Scene {
             && mouseY < this.homeSize/2 + this.homePos.y 
             && mouseY > this.homePos.y - this.homeSize/2) {
             this.tintHome = true;
-            if (mouseIsPressed) {
+            if (mouseIsPressed && !this.reading) {
                 this.initializeScene = true;
                 this.currentScene = this.sceneMenu;
                 this.clearScene();
@@ -248,9 +251,17 @@ class Scene {
             && mouseY < this.infoSize/2 + this.infoPos.y 
             && mouseY > this.infoPos.y - this.infoSize/2) { 
             this.tintInfo = true;
-            if (mouseIsPressed) {
-                
+            if (mouseIsPressed && !this.reading){
+                this.reading = true;
+                this.changeColorOnAll([-this.readingColorChangeVal, -this.readingColorChangeVal, -this.readingColorChangeVal]);
             }
+        }
+
+        if (mouseIsPressed && this.allowColorChange) {
+            this.reading = false;
+            this.allowColorChange = false;
+            console.log("tjek");
+            this.changeColorOnAll([this.readingColorChangeVal, this.readingColorChangeVal, this.readingColorChangeVal]);
         }
 
         if (this.tintHome) {
@@ -271,5 +282,27 @@ class Scene {
         else {
             image(images.info, this.infoPos.x, this.infoPos.y, this.infoSize, this.infoSize);
         }
+    }
+
+    changeColorOnAll(col) {
+        backgroundColor[0] += col[0];
+        backgroundColor[1] += col[1];
+        backgroundColor[2] += col[2];
+        console.log("hej");
+        for (let i = 0; i < this.balls.length; i++) {
+            this.balls[i].changeColor([this.balls[i].color[0] + col[0], this.balls[i].color[1] + col[1], this.balls[i].color[2] + col[2]]);
+        }
+        for (let i = 0; i < this.polygons.length; i++) {
+            this.polygons[i].changeColor([this.polygons[i].color[0] + col[0], this.polygons[i].color[1] + col[1], this.polygons[i].color[2] + col[2]]);
+        }
+        console.log("HEJ");
+    }
+
+}
+
+function mouseReleased() {
+    if(scene.reading) {
+        console.log("læser" + scene.reading);
+        scene.allowColorChange = true;
     }
 }

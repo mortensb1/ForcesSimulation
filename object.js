@@ -44,4 +44,8 @@ class PhysicsObject {
         line(this.pos.x + width / 2, height / 2 - this.pos.y, this.pos.x + width / 2 + (f.x / 20) * s, height / 2 - (this.pos.y + (f.y / 20) * s));
         strokeWeight(1);
     }
+
+    changeColor(newColor) {
+        this.color = newColor;
+    }
 }

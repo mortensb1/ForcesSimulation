@@ -313,21 +313,18 @@ class Scene {
         backgroundColor[0] += col[0];
         backgroundColor[1] += col[1];
         backgroundColor[2] += col[2];
-        console.log("hej");
         for (let i = 0; i < this.balls.length; i++) {
             this.balls[i].changeColor([this.balls[i].color[0] + col[0], this.balls[i].color[1] + col[1], this.balls[i].color[2] + col[2]]);
         }
         for (let i = 0; i < this.polygons.length; i++) {
             this.polygons[i].changeColor([this.polygons[i].color[0] + col[0], this.polygons[i].color[1] + col[1], this.polygons[i].color[2] + col[2]]);
         }
-        console.log("HEJ");
     }
 
 }
 
 function mouseReleased() {
     if(scene.reading) {
-        console.log("læser" + scene.reading);
         scene.allowColorChange = true;
     }
 }

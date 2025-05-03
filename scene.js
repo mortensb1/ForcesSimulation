@@ -12,6 +12,12 @@ class Scene {
         this.infoPos = new Vec2(this.homePos.x + this.homeSize + 20, 55);
         this.tintHome = false;
         this.tintInfo = false;
+        this.tintOppefra = false;
+        this.tintPlatform = false;
+        this.tintDal = false;
+        this.tintValSettings = 150;
+        this.tintValScenes = 220;
+        
     }
 
     update() {
@@ -82,7 +88,7 @@ class Scene {
         let simTextPos = new Vec2(width / 2, height / 2 - 200);
         let firstScenePos = new Vec2(387.5, 666.5);
         let secondScenePos = new Vec2(firstScenePos.x + sceneSpace, firstScenePos.y);
-        let thirdScenePos = new Vec2(firstScenePos.x + 2*sceneSpace, firstScenePos.y)
+        let thirdScenePos = new Vec2(firstScenePos.x + 2*sceneSpace, firstScenePos.y);
         
         let scenesScale = [415, 233];
 
@@ -96,19 +102,43 @@ class Scene {
         text("Valley", secondScenePos.x, secondScenePos.y - textSpace);
         text("From above", thirdScenePos.x, thirdScenePos.y - textSpace);
 
-        tint(240);
-        image(images.platformScene, firstScenePos.x, firstScenePos.y, scenesScale[0], scenesScale[1]);
-        image(images.dalScene, secondScenePos.x, secondScenePos.y, scenesScale[0], scenesScale[1]);
-        fill(204);
-        rect(thirdScenePos.x, thirdScenePos.y, scenesScale[0], scenesScale[1]);
+        if(this.tintPlatform) {
+            tint(this.tintValScenes);
+            image(images.platformScene, firstScenePos.x, firstScenePos.y, scenesScale[0], scenesScale[1]);
+            this.tintPlatform = false;
+        }
+        else {
+            tint(240);
+            image(images.platformScene, firstScenePos.x, firstScenePos.y, scenesScale[0], scenesScale[1]);
+        }
+        if(this.tintDal) {
+            tint(this.tintValScenes);
+            image(images.dalScene, secondScenePos.x, secondScenePos.y, scenesScale[0], scenesScale[1]);
+            this.tintDal = false;
+        }
+        else {
+            tint(240);
+            image(images.dalScene, secondScenePos.x, secondScenePos.y, scenesScale[0], scenesScale[1]);
+        }
+        if(this.tintOppefra) {
+            fill(184);
+            rect(thirdScenePos.x, thirdScenePos.y, scenesScale[0], scenesScale[1]);
+            this.tintOppefra = false;
+        }
+        else {
+            fill(204);
+            rect(thirdScenePos.x, thirdScenePos.y, scenesScale[0], scenesScale[1]);
+        }
+        
+        
+        
 
         //Check if mouse is hovering over scene-choice
         if(mouseX < firstScenePos.x + scenesScale[0]/2 
           && mouseX > firstScenePos.x - scenesScale[0]/2 
           && mouseY < firstScenePos.y + scenesScale[1]/2 
           && mouseY > firstScenePos.y - scenesScale[1]/2) {
-            tint(0);
-            console.log("hover");
+            this.tintPlatform = true;
             if(mouseIsPressed) {
                 this.initializeScene = true;
                 this.currentScene = this.scenePlatform;
@@ -120,7 +150,7 @@ class Scene {
                 && mouseX > secondScenePos.x - scenesScale[0]/2 
                 && mouseY < secondScenePos.y + scenesScale[1]/2 
                 && mouseY > secondScenePos.y - scenesScale[1]/2) {
-            tint(255,0,0);
+            this.tintDal = true;
             if(mouseIsPressed) {
                 this.initializeScene = true;
                 this.currentScene = this.sceneDal;
@@ -132,7 +162,7 @@ class Scene {
                 && mouseX > thirdScenePos.x - scenesScale[0]/2 
                 && mouseY < thirdScenePos.y + scenesScale[1]/2 
                 && mouseY > thirdScenePos.y - scenesScale[1]/2) {
-            tint(255,0,0);
+            this.tintOppefra = true;
             if(mouseIsPressed) {
                 this.initializeScene = true;
                 this.currentScene = this.sceneOppefra;
@@ -169,7 +199,7 @@ class Scene {
 
         this.checkSettings();
         if (this.tintHome) {
-            tint(150);
+            tint(this.tintValSettings);
             image(images.home, this.homePos.x, this.homePos.y, this.homeSize, this.homeSize);
             this.tintHome = false;
             noTint();
@@ -178,7 +208,7 @@ class Scene {
             image(images.home, this.homePos.x, this.homePos.y, this.homeSize, this.homeSize);
         }
         if (this.tintInfo) {
-            tint(150);
+            tint(this.tintValSettings);
             image(images.info, this.infoPos.x, this.infoPos.y, this.infoSize, this.infoSize);
             this.tintInfo = false;
             noTint();

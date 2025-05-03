@@ -20,6 +20,7 @@ function setup() {
     rectMode(CENTER);
     angleMode(DEGREES);
     textAlign(CENTER, CENTER);
+    imageMode(CENTER);
     createCanvas(1920, 1080);
     frameRate(fps);
     noStroke();

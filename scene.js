@@ -8,6 +8,8 @@ class Scene {
 
         this.homeSize = 80;
         this.homePos = new Vec2(55, 55);
+        this.infoSize = 80;
+        this.infoPos = new Vec2(this.homePos.x + this.homeSize + 20, 55);
     }
 
     update() {
@@ -165,6 +167,7 @@ class Scene {
 
         this.checkSettings();
         image(images.home, this.homePos.x, this.homePos.y, this.homeSize, this.homeSize);
+        image(images.info, this.infoPos.x, this.infoPos.y, this.infoSize, this.infoSize);
     }
 
     scenePlatform() {

@@ -11,6 +11,7 @@ let fonts = {};
 
 function preload() {
     images.home = loadImage("Images/Home.png");
+    images.info = loadImage("Images/QuestionMark.png");
     images.platformScene = loadImage("Images/Platform.png");
     images.dalScene = loadImage("Images/Dal.png");
     fonts.regular = loadFont("Fonts/QuicksandRegular.ttf");

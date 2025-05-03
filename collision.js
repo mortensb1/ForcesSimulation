@@ -226,21 +226,29 @@ function collisionBall(ball1, ball2) {
 
 /**
  *
- * @param {Manifold} manifold
+ * @param {PhysicsObject} bodyA
+ * @param {PhysicsObject} bodyB
+ * @returns
  */
-function findContactPoints(manifold) {
+function findContactPoints(bodyA, bodyB) {
+    let contact1 = new Vec2();
+    let contact2 = new Vec2();
+    let contactCount = 0;
+
     // Select the right combination
-    if (manifold.bodyA.type == Rect || manifold.bodyA.type == Triangle) {
-        if (manifold.bodyB.type == Rect || manifold.bodyA.type == Triangle) {
-        } else if (manifold.bodyB.type == Ball) {
+    if (bodyA.type == Rect || bodyA.type == Triangle) {
+        if (bodyB.type == Rect || bodyA.type == Triangle) {
+        } else if (bodyB.type == Ball) {
         }
-    } else if (manifold.bodyA.type == Ball) {
-        if (manifold.bodyB.type == Rect || manifold.bodyA.type == Triangle) {
-        } else if (manifold.bodyB.type == Ball) {
-            manifold.contact1 = findContactBall(manifold.bodyA, manifold.bodyB);
-            manifold.contactCount = 1;
+    } else if (bodyA.type == Ball) {
+        if (bodyB.type == Rect || bodyA.type == Triangle) {
+        } else if (bodyB.type == Ball) {
+            contact1 = findContactBall(bodyA, bodyB);
+            contactCount = 1;
         }
     }
+
+    return { contact1: contact1, contact2: contact2, contactCount: contactCount };
 }
 
 function findContactBall(ball1, ball2) {

@@ -13,6 +13,13 @@ class Ball extends PhysicsObject {
         super(x, y, velX, velY, mass, elasticity, color);
         this.r = r;
         this.type = Ball;
+
+        this.inertia = this.calcRotInertia();
+        if (!this.isStatic) {
+            this.invInertia = 1 / this.inertia;
+        } else {
+            this.invInertia = 0;
+        }
     }
 
     /**
@@ -42,5 +49,9 @@ class Ball extends PhysicsObject {
             this.pos.y = -height / 2 + this.r; // Correction
             this.vel.y = -this.vel.y * this.elasticity;
         }
+    }
+
+    calcRotInertia() {
+        return (1 / 2) * this.mass * this.r ** 2;
     }
 }

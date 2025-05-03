@@ -17,6 +17,13 @@ class Rect extends PhysicsObject {
         this.Sin = sin(this.angle);
         this.updateCorners();
         this.updateNormals();
+
+        this.inertia = this.calcRotInertia();
+        if (!this.isStatic) {
+            this.invInertia = 1 / this.inertia;
+        } else {
+            this.invInertia = 0;
+        }
     }
 
     /**
@@ -90,5 +97,9 @@ class Rect extends PhysicsObject {
         if (this.cornersMinAndMax.maxY > height / 2 || this.cornersMinAndMax.minY < -height / 2) {
             this.vel.y = -this.vel.y;
         }
+    }
+
+    calcRotInertia() {
+        return (1 / 12) * this.mass * (this.w ** 2 + this.h ** 2);
     }
 }

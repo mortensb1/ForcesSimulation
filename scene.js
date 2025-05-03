@@ -99,9 +99,47 @@ class Scene {
         fill(204);
         rect(thirdScenePos.x, thirdScenePos.y, scenesScale[0], scenesScale[1]);
 
-        
-        
-
+        //Check if mouse is hovering over scene-choice
+        if(mouseX < firstScenePos.x + scenesScale[0]/2 
+          && mouseX > firstScenePos.x - scenesScale[0]/2 
+          && mouseY < firstScenePos.y + scenesScale[1]/2 
+          && mouseY > firstScenePos.y - scenesScale[1]/2) {
+            tint(0);
+            console.log("hover");
+            if(mouseIsPressed) {
+                this.initializeScene = true;
+                this.currentScene = this.scenePlatform;
+                this.clearScene();
+                return;
+            }
+        }
+        else if (mouseX < secondScenePos.x + scenesScale[0]/2 
+                && mouseX > secondScenePos.x - scenesScale[0]/2 
+                && mouseY < secondScenePos.y + scenesScale[1]/2 
+                && mouseY > secondScenePos.y - scenesScale[1]/2) {
+            tint(255,0,0);
+            if(mouseIsPressed) {
+                this.initializeScene = true;
+                this.currentScene = this.sceneDal;
+                this.clearScene();
+                return;
+            }
+        }
+        else if (mouseX < thirdScenePos.x + scenesScale[0]/2 
+            && mouseX > thirdScenePos.x - scenesScale[0]/2 
+            && mouseY < thirdScenePos.y + scenesScale[1]/2 
+            && mouseY > thirdScenePos.y - scenesScale[1]/2) {
+        tint(255,0,0);
+        if(mouseIsPressed) {
+            this.initializeScene = true;
+            this.currentScene = this.sceneOppefra;
+            this.clearScene();
+            return;
+        }
+        else {
+            noTint();
+        }
+    }
     }
 
     sceneOppefra() {
@@ -149,6 +187,7 @@ class Scene {
         if (mouseX < this.homeSize/2 + this.homePos.x && mouseX > this.homePos.x - this.homeSize/2 && mouseY < this.homeSize/2 + this.homePos.y && mouseY > this.homePos.y - this.homeSize/2) {
             tint(150);
             if (mouseIsPressed) {
+                this.initializeScene = true;
                 this.currentScene = this.sceneMenu;
                 this.clearScene();
                 return;

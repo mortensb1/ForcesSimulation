@@ -93,6 +93,16 @@ class Vec2 {
         return Math.sqrt(this.x * this.x + this.y * this.y);
     }
 
+    lengthSquared() {
+        return this.x * this.x + this.y * this.y;
+    }
+
+    distanceSquared(v) {
+        let dx = this.x - v.x;
+        let dy = this.y - v.y;
+        return dx * dx + dy * dy;
+    }
+
     /**
      * Scale the Vector
      * @param {number} s

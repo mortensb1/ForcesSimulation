@@ -44,7 +44,8 @@ class Scene {
             for (let j = 0; j < this.polygons.length; j++) {
                 let res = collisionRectBall(this.polygons[j], this.balls[i]);
                 if (res.collision) {
-                    collisions.push(new Manifold(this.balls[i], this.polygons[j], res.normal, res.depth, new Vec2(), new Vec2()));
+                    let contacts = findContactPoints(this.balls[i], this.polygons[j]);
+                    collisions.push(new Manifold(this.balls[i], this.polygons[j], res.normal, res.depth, contacts.contact1, contacts.contact2, contacts.contactCount));
                 }
             }
             this.balls[i].wallCollision();
@@ -66,7 +67,6 @@ class Scene {
             resolveCollision(collisions[i]);
 
             if (collisions[i].contactCount > 0) {
-                // console.log(collisions[i].contact1);
                 contactPointsList.push(collisions[i].contact1);
                 if (collisions[i].contactCount > 1) {
                     contactPointsList.push(collisions.contact2);
@@ -77,7 +77,6 @@ class Scene {
         for (let i = 0; i < contactPointsList.length; i++) {
             fill(255, 0, 0);
             square(width / 2 + contactPointsList[i].x, height / 2 - contactPointsList[i].y, 20);
-            // circle(width / 2 + contactPointsList[i].x, height / 2 - contactPointsList[i].y, 20);
             fill(255);
         }
     }

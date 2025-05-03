@@ -285,21 +285,36 @@ class Scene {
             }
         }
 
+        // Gives information when the questionmark is pressed
         if(this.reading) {
+            let titleSpace = height/2 - 350;
+            let underTitleSpace = titleSpace + 100;
+            let textSpace = 70;
             fill(255);
             console.log(this.currentScene);
             textSize(100);
             textFont(fonts.regular)
             if(this.currentScene == this.sceneDal) {
-                text("VALLEY", width/2, height/2 - 300);
+                text("VALLEY", width/2, titleSpace);
+                textSize(40);
+                text("This scene contaions two slopes and is seen from a normal perspective.", width/2, underTitleSpace);
             }
             else if(this.currentScene == this.sceneOppefra) {
-                text("FROM ABOVE", width/2, height/2 - 300);
+                text("FROM ABOVE", width/2, titleSpace);
+                textSize(40);
+                text("This scene is seen from above. For that reason there is no gravity.", width/2, underTitleSpace);
             }
             else if(this.currentScene == this.scenePlatform) {
-                text("PLATFORM", width/2, height/2 - 300);
+                text("PLATFORM", width/2, titleSpace);
+                textSize(40);
+                text("This scene contains a platform with a slope.", width/2, underTitleSpace);
             }
-            
+            text("- The colors of the arrows, checkboxes and sliders indicate the force they belong to.", width/2, underTitleSpace + 100);
+            text("- The arrows on the objects symbolizes the direction and magnitude of the force.", width/2, underTitleSpace + 100 + textSpace);
+            text("No arrow of that force means none of that force is acting on the object", width/2, underTitleSpace + 140 + textSpace);
+            text("- Checkboxes turn off and on the arrows, but the forces will remain.", width/2, underTitleSpace + 140 + 2*textSpace);
+            text("- Sliders can be used to modify the magnitude of the forces.", width/2, underTitleSpace + 140 + 3*textSpace)
+            text("- Grab an object with the mouse and see how it affects other objects.", width/2, underTitleSpace + 140 + 4*textSpace)
         }
 
         // If info is showing and mouse has been relesed once, the colors are allowed to change

@@ -178,7 +178,6 @@ function collisionRectBall(rect, ball) {
  * @param {Array<Vec2>} verts
  */
 function closestPointOnPolygon(pos, verts) {
-  print(verts);
   let minDist = Infinity;
   let minPoint;
 
@@ -226,12 +225,15 @@ function collisionBall(ball1, ball2) {
 }
 
 /**
- * Resolve collisions between 2 objects
- * @param {PhysicsObject} obj1
- * @param {PhysicsObject} obj2
- * @param {Vec2} normal
+ * Resolves collision between two objects
+ * @param {Manifold} manifold
+ * @returns
  */
-function resolveCollision(obj1, obj2, normal) {
+function resolveCollision(manifold) {
+  console.log(manifold);
+  let obj1 = manifold.bodyA;
+  let obj2 = manifold.bodyB;
+  let normal = manifold.normal;
   let relativeVel = new Vec2();
   relativeVel.subtractVectors(obj2.vel, obj1.vel);
 
@@ -257,4 +259,3 @@ function drawNormalsRect(rect) {
     line(rect.pos.x + width / 2, height / 2 - rect.pos.y, rect.pos.x + rect.normals[i].x + width / 2, height / 2 - (rect.pos.y + rect.normals[i].y));
   }
 }
-

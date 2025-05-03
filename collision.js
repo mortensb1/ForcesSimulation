@@ -239,9 +239,13 @@ function findContactPoints(bodyA, bodyB) {
     if (bodyA.type == Rect || bodyA.type == Triangle) {
         if (bodyB.type == Rect || bodyA.type == Triangle) {
         } else if (bodyB.type == Ball) {
+            contact1 = findContactBallRect(bodyB, bodyA);
+            contactCount = 1;
         }
     } else if (bodyA.type == Ball) {
-        if (bodyB.type == Rect || bodyA.type == Triangle) {
+        if (bodyB.type == Rect || bodyB.type == Triangle) {
+            contact1 = findContactBallRect(bodyA, bodyB);
+            contactCount = 1;
         } else if (bodyB.type == Ball) {
             contact1 = findContactBall(bodyA, bodyB);
             contactCount = 1;
@@ -251,13 +255,82 @@ function findContactPoints(bodyA, bodyB) {
     return { contact1: contact1, contact2: contact2, contactCount: contactCount };
 }
 
+/**
+ * Find contact point between two balls
+ * @param {Ball} ball1
+ * @param {Ball} ball2
+ * @returns
+ */
 function findContactBall(ball1, ball2) {
-    let centerPoint = new Vec2();
-    centerPoint.subtractVectors(ball2.pos, ball1.pos);
-    centerPoint.normalize().scale(ball1.r);
-    centerPoint.add(ball1.pos);
+    let contactPoint = new Vec2();
+    contactPoint.subtractVectors(ball2.pos, ball1.pos);
+    contactPoint.normalize().scale(ball1.r);
+    contactPoint.add(ball1.pos);
 
-    return centerPoint;
+    return contactPoint;
+}
+
+/**
+ * Find contact point between ball and rect
+ * @param {Ball} ball
+ * @param {Rect} rect
+ * @returns Contact point
+ */
+function findContactBallRect(ball, rect) {
+    let minDist = Infinity;
+    let contactPoint;
+    let verts = [];
+    for (p in rect.corners) {
+        verts.push(rect.corners[p]);
+    }
+    for (let i = 0; i < verts.length; i++) {
+        let va = verts[i];
+        let vb = verts[(i + 1) % verts.length];
+
+        let res = pointLineDistance(ball.pos, va, vb);
+        let distSquared = res.distanceSquared;
+        let contact = res.contact;
+
+        if (distSquared < minDist) {
+            minDist = distSquared;
+            contactPoint = contact;
+        }
+    }
+
+    return contactPoint;
+}
+
+/**
+ * Calc distance from line to point
+ * @param {Vec2} p Point
+ * @param {Vec2} a Line point 1
+ * @param {Vec2} b Line point 2
+ * @returns Distance and Contact point
+ */
+function pointLineDistance(p, a, b) {
+    let contactPoint;
+
+    let ab = new Vec2();
+    ab.subtractVectors(b, a);
+    let ap = new Vec2();
+    ap.subtractVectors(p, a);
+
+    let projection = ap.dot(ab);
+    let abLenSq = ab.lengthSquared();
+    let d = projection / abLenSq;
+
+    if (d == 0) {
+        contactPoint = a.clone();
+    } else if (d >= 1) {
+        contactPoint = b.clone();
+    } else {
+        contactPoint = a.clone();
+        ab.scale(d);
+        contactPoint.add(ab);
+    }
+
+    let distanceSquared = p.distanceSquared(contactPoint);
+    return { distanceSquared: distanceSquared, contact: contactPoint };
 }
 
 /**

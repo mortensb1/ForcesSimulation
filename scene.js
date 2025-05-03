@@ -291,7 +291,6 @@ class Scene {
             let underTitleSpace = titleSpace + 100;
             let textSpace = 70;
             fill(255);
-            console.log(this.currentScene);
             textSize(100);
             textFont(fonts.regular)
             if(this.currentScene == this.sceneDal) {

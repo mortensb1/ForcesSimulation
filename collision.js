@@ -76,11 +76,52 @@ function collisionRect(obj1, obj2) {
   return { collision: true, normal: normal, depth: depth };
 }
 
+/**
+ *
+ * @param {Rect} rect
+ * @param {Ball} ball
+ */
 function collisionRectBall(rect, ball) {
   rect.updateCorners();
+  let depth = Infinity;
+  let normal;
 
-  let axis = new Vec2();
-  axis.subtractVectors(rect.pos, ball.pos).normalize();
+  for (let i = 0; i < rect.normals.length; i++) {
+    let axis = rect.normals[i];
+
+    axis.normalize();
+
+    let minRect = Infinity;
+    let minBall = Infinity;
+
+    let maxRect = -Infinity;
+    let maxBall = -Infinity;
+
+    // Calc the max and min points projected on the axis
+    minBall = ball.pos.clone().add(axis, -ball.r).dot(axis);
+    maxBall = ball.pos.clone().add(axis, ball.r).dot(axis);
+
+    // Calc the max and min points projected on the axis
+    for (let point in rect.corners) {
+      let dotProduct = rect.corners[point].dot(axis);
+      minRect = min(minRect, dotProduct);
+      maxRect = max(maxRect, dotProduct);
+    }
+
+    if (minRect >= maxBall || minBall >= maxRect) {
+      return { collision: false, normal: null, depth: null };
+    }
+
+    let axisDepth = min(maxBall - minRect, maxRect - minBall);
+    if (axisDepth < depth) {
+      depth = axisDepth;
+      normal = axis;
+    }
+  }
+
+  // Find the closest point on polygon
+  let minPoint = closestPointOnPolygon(ball.pos, rect.corners);
+  let axis = minPoint.subtract(ball.pos).normalize();
 
   let minRect = Infinity;
   let minBall = Infinity;
@@ -88,32 +129,64 @@ function collisionRectBall(rect, ball) {
   let maxRect = -Infinity;
   let maxBall = -Infinity;
 
-  // Calc the max and min points of the rect projected on the axis
+  // Calc the max and min points projected on the axis
+  minBall = ball.pos.clone().add(axis, -ball.r).dot(axis);
+  maxBall = ball.pos.clone().add(axis, ball.r).dot(axis);
+
+  // Calc the max and min points projected on the axis
   for (let point in rect.corners) {
     let dotProduct = rect.corners[point].dot(axis);
     minRect = min(minRect, dotProduct);
     maxRect = max(maxRect, dotProduct);
   }
 
-  // Calc the max and min points of the circle projected on the axis
-  minBall = ball.pos.clone().add(axis, -ball.r).dot(axis);
-  maxBall = ball.pos.clone().add(axis, ball.r).dot(axis);
+  if (minRect >= maxBall || minBall >= maxRect) {
+    return { collision: false, normal: null, depth: null };
+  }
 
-  if (minRect >= maxBall || minBall >= maxRect) return { collision: false, normal: null, depth: null };
-
-  let depth = min(maxBall - minRect, maxRect - minBall);
+  let axisDepth = min(maxBall - minRect, maxRect - minBall);
+  if (axisDepth < depth) {
+    depth = axisDepth;
+    normal = axis;
+  }
 
   // Correct for the intersection, so that it doesn get stuck inside
   if (rect.isStatic) {
-    ball.pos.add(axis, -depth);
+    ball.pos.add(normal, -depth);
   } else if (ball.isStatic) {
-    rect.pos.add(axis, depth);
+    rect.pos.add(normal, depth);
   } else {
-    rect.pos.add(axis, depth / 2);
-    ball.pos.add(axis, -depth / 2);
+    rect.pos.add(normal, depth / 2);
+    ball.pos.add(normal, -depth / 2);
   }
 
-  return { collision: true, normal: axis, depth: depth };
+  let posDif = new Vec2();
+  posDif.subtractVectors(rect.pos, ball.pos);
+  if (posDif.dot(normal) < 0) normal.scale(-1);
+
+  return { collision: true, normal: normal, depth: depth };
+}
+
+/**
+ * Calculate the closest points on polygon to point
+ * @param {Vec2} pos
+ * @param {Array<Vec2>} verts
+ */
+function closestPointOnPolygon(pos, verts) {
+  print(verts);
+  let minDist = Infinity;
+  let minPoint;
+
+  let tempVec = new Vec2();
+  for (let vert in verts) {
+    let dis = min(tempVec.subtractVectors(verts[vert], pos).length(), minDist);
+    if (dis < minDist) {
+      minDist = dis;
+      minPoint = verts[vert].clone();
+    }
+  }
+
+  return minPoint;
 }
 
 /**

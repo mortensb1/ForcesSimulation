@@ -11,6 +11,8 @@ let fonts = {};
 
 function preload() {
     images.home = loadImage("Images/Home.png");
+    images.platformScene = loadImage("Images/Platform.png");
+    images.dalScene = loadImage("Images/Dal.png");
     fonts.regular = loadFont("Fonts/QuicksandRegular.ttf");
 }
 
@@ -18,6 +20,7 @@ function setup() {
     rectMode(CENTER);
     angleMode(DEGREES);
     textAlign(CENTER, CENTER);
+    imageMode(CENTER);
     createCanvas(1920, 1080);
     frameRate(fps);
     noStroke();

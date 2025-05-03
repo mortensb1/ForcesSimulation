@@ -7,26 +7,13 @@ class Scene {
         this.staticColor = [96, 88, 88];
 
         this.homeSize = 80;
-        this.homePos = new Vec2(15, 15);
+        this.homePos = new Vec2(55, 55);
     }
 
     update() {
         this.currentScene();
         let collisions = [];
         let contactPointsList = [];
-
-        if (this.currentScene == this.sceneDal) {
-            if (mouseX < this.homeSize + this.homePos.x && mouseX > this.homePos.x && mouseY < this.homeSize + this.homePos.y && mouseY > this.homePos.y) {
-                tint(150);
-                if (mouseIsPressed) {
-                    this.currentScene = this.sceneMenu;
-                    this.clearScene();
-                    return;
-                }
-            } else {
-                tint(255);
-            }
-        }
 
         // UPDATING SHAPES
         // UPDATING SHAPES
@@ -86,9 +73,34 @@ class Scene {
             this.initializeScene = false;
         }
 
+        let sceneSpace = 572;
+        let textSpace = 170;
+        let simTextPos = new Vec2(width / 2, height / 2 - 200);
+        let firstScenePos = new Vec2(387.5, 666.5);
+        let secondScenePos = new Vec2(firstScenePos.x + sceneSpace, firstScenePos.y);
+        let thirdScenePos = new Vec2(firstScenePos.x + 2*sceneSpace, firstScenePos.y)
+        
+        let scenesScale = [415, 233];
+
         textSize(100);
         textFont(fonts.regular);
-        text("SIMULATION OF FORCES", width / 2, height / 2 - 200);
+        fill(this.staticColor);
+        text("SIMULATION OF FORCES", simTextPos.x, simTextPos.y);
+
+        textSize(50);
+        text("Platform", firstScenePos.x, firstScenePos.y - textSpace);
+        text("Valley", secondScenePos.x, secondScenePos.y - textSpace);
+        text("From above", thirdScenePos.x, thirdScenePos.y - textSpace);
+
+        tint(240);
+        image(images.platformScene, firstScenePos.x, firstScenePos.y, scenesScale[0], scenesScale[1]);
+        image(images.dalScene, secondScenePos.x, secondScenePos.y, scenesScale[0], scenesScale[1]);
+        fill(204);
+        rect(thirdScenePos.x, thirdScenePos.y, scenesScale[0], scenesScale[1]);
+
+        
+        
+
     }
 
     sceneOppefra() {
@@ -113,6 +125,7 @@ class Scene {
             this.initializeScene = false;
         }
 
+        this.checkSettings();
         image(images.home, this.homePos.x, this.homePos.y, this.homeSize, this.homeSize);
     }
 
@@ -125,5 +138,25 @@ class Scene {
     clearScene() {
         this.balls = [];
         this.polygons = [];
+    }
+
+
+    // Checks if hovering and clicking on settings (home and info) is happening
+    checkSettings() {
+
+        //Hovering over home:
+        if (mouseX < this.homeSize/2 + this.homePos.x && mouseX > this.homePos.x - this.homeSize/2 && mouseY < this.homeSize/2 + this.homePos.y && mouseY > this.homePos.y - this.homeSize/2) {
+            tint(150);
+            if (mouseIsPressed) {
+                this.currentScene = this.sceneMenu;
+                this.clearScene();
+                return;
+            }
+        } else if (false) { // hovering over questionmark
+
+        }
+        else {
+            tint(255);
+        }
     }
 }

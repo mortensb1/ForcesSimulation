@@ -1,6 +1,6 @@
 class Triangle extends PhysicsObject {
-    constructor(x, y, p1, p2, p3, velX, velY, mass, elasticity = 1, angle = 0, rotVel = 0, isStatic = false) {
-        super(x, y, velX, velY, mass, elasticity, angle, rotVel, isStatic);
+    constructor(x, y, p1, p2, p3, velX, velY, mass, elasticity = 1, angle = 0, rotVel = 0, isStatic = false, color = [255, 255, 255]) {
+        super(x, y, velX, velY, mass, elasticity, angle, rotVel, isStatic, color);
         this.startP1 = p1;
         this.startP2 = p2;
         this.startP3 = p3;
@@ -56,6 +56,6 @@ class Triangle extends PhysicsObject {
     }
 
     wallCollision() {
-        
+
     }
 }

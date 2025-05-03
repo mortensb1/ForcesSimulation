@@ -1,6 +1,6 @@
 class Rect extends PhysicsObject {
-  constructor(x, y, w, h, velX, velY, mass, elasticity = 1, angle = 0, rotVel = 0, isStatic = false) {
-    super(x, y, velX, velY, mass, elasticity, angle, rotVel, isStatic);
+  constructor(x, y, w, h, velX, velY, mass, elasticity = 1, angle = 0, rotVel = 0, isStatic = false, color = [255, 255, 255]) {
+    super(x, y, velX, velY, mass, elasticity, angle, rotVel, isStatic, color);
     this.w = w;
     this.h = h;
     this.corners = {
@@ -26,6 +26,7 @@ class Rect extends PhysicsObject {
     push();
     translate(this.pos.x + width / 2, height / 2 - this.pos.y);
     rotate(-this.angle);
+    fill(this.color[0], this.color[1], this.color[2]);
     rect(0, 0, this.w, this.h);
     pop();
   }

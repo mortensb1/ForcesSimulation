@@ -9,8 +9,8 @@ class Ball extends PhysicsObject {
    * @param {number} mass Mass of ball
    * @param {number} elasticity The restituion (How much energi is kept)
    */
-  constructor(x, y, r, velX, velY, mass, elasticity = 1) {
-    super(x, y, velX, velY, mass, elasticity);
+  constructor(x, y, r, velX, velY, mass, elasticity = 1, color = [255, 255, 255]) {
+    super(x, y, velX, velY, mass, elasticity, color);
     this.r = r;
     this.type = Ball;
   }

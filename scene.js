@@ -70,9 +70,27 @@ class Scene {
             this.initializeScene = false;
         }
 
+        let simTextPos = new Vec2(width / 2, height / 2 - 200);
+        let firstScenePos = new Vec2(180, 550);
+        let sceneSpace = 572;
+        let scenesScale = [415, 233];
+
         textSize(100);
         textFont(fonts.regular);
-        text("SIMULATION OF FORCES", width / 2, height / 2 - 200);
+        fill(this.staticColor);
+        text("SIMULATION OF FORCES", simTextPos.x, simTextPos.y);
+
+        textSize(50);
+        text("Platform", firstScenePos.x + scenesScale[0]/2, firstScenePos.y - scenesScale[1]/2 + 70);
+        text("Valley", firstScenePos.x + scenesScale[0]/2 + sceneSpace, firstScenePos.y - scenesScale[1]/2 + 70);
+        text("From above", firstScenePos.x + scenesScale[0]/2 + 2*sceneSpace, firstScenePos.y - scenesScale[1]/2 + 70);
+
+        tint(240);
+        image(images.platformScene, firstScenePos.x, firstScenePos.y, scenesScale[0], scenesScale[1]);
+        image(images.dalScene, firstScenePos.x + sceneSpace, firstScenePos.y, scenesScale[0], scenesScale[1]);
+        fill(204);
+        rect(firstScenePos.x + 2*sceneSpace + scenesScale[0]/2, firstScenePos.y + scenesScale[1]/2, scenesScale[0], scenesScale[1]);
+
     }
 
     sceneOppefra() {

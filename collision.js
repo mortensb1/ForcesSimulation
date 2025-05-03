@@ -3,7 +3,7 @@
 // Project (dot product) the vertecies on the
 
 /**
- *
+ * Check for collision between two polygons
  * @param {Rect} obj1
  * @param {Rect} obj2
  */
@@ -77,7 +77,7 @@ function collisionRect(obj1, obj2) {
 }
 
 /**
- *
+ * Check for collision between polygon and ball
  * @param {Rect} rect
  * @param {Ball} ball
  */
@@ -86,9 +86,9 @@ function collisionRectBall(rect, ball) {
   let depth = Infinity;
   let normal;
 
+  // Check collision for the rect normals first
   for (let i = 0; i < rect.normals.length; i++) {
     let axis = rect.normals[i];
-
     axis.normalize();
 
     let minRect = Infinity;
@@ -108,10 +108,12 @@ function collisionRectBall(rect, ball) {
       maxRect = max(maxRect, dotProduct);
     }
 
+    // If NO collision return false
     if (minRect >= maxBall || minBall >= maxRect) {
       return { collision: false, normal: null, depth: null };
     }
 
+    // Calculate the dept of the intersection and save the smallest
     let axisDepth = min(maxBall - minRect, maxRect - minBall);
     if (axisDepth < depth) {
       depth = axisDepth;
@@ -119,7 +121,7 @@ function collisionRectBall(rect, ball) {
     }
   }
 
-  // Find the closest point on polygon
+  // Find the closest point on polygon and calculate the axis between the point and the ball center
   let minPoint = closestPointOnPolygon(ball.pos, rect.corners);
   let axis = minPoint.subtract(ball.pos).normalize();
 
@@ -140,15 +142,22 @@ function collisionRectBall(rect, ball) {
     maxRect = max(maxRect, dotProduct);
   }
 
+  // If NO collision return false
   if (minRect >= maxBall || minBall >= maxRect) {
     return { collision: false, normal: null, depth: null };
   }
 
+  // Calculate the dept of the intersection and save the smallest
   let axisDepth = min(maxBall - minRect, maxRect - minBall);
   if (axisDepth < depth) {
     depth = axisDepth;
     normal = axis;
   }
+
+  // Make sure the normal is not rotated 180 degrees
+  let posDif = new Vec2();
+  posDif.subtractVectors(rect.pos, ball.pos);
+  if (posDif.dot(normal) < 0) normal.scale(-1);
 
   // Correct for the intersection, so that it doesn get stuck inside
   if (rect.isStatic) {
@@ -159,10 +168,6 @@ function collisionRectBall(rect, ball) {
     rect.pos.add(normal, depth / 2);
     ball.pos.add(normal, -depth / 2);
   }
-
-  let posDif = new Vec2();
-  posDif.subtractVectors(rect.pos, ball.pos);
-  if (posDif.dot(normal) < 0) normal.scale(-1);
 
   return { collision: true, normal: normal, depth: depth };
 }

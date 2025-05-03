@@ -15,19 +15,6 @@ class Scene {
         let collisions = [];
         let contactPointsList = [];
 
-        if (this.currentScene == this.sceneDal) {
-            if (mouseX < this.homeSize + this.homePos.x && mouseX > this.homePos.x && mouseY < this.homeSize + this.homePos.y && mouseY > this.homePos.y) {
-                tint(150);
-                if (mouseIsPressed) {
-                    this.currentScene = this.sceneMenu;
-                    this.clearScene();
-                    return;
-                }
-            } else {
-                tint(255);
-            }
-        }
-
         // UPDATING SHAPES
         // UPDATING SHAPES
         for (let i = 0; i < this.balls.length; i++) {
@@ -132,6 +119,7 @@ class Scene {
             this.initializeScene = false;
         }
 
+        this.checkSettings();
         image(images.home, this.homePos.x, this.homePos.y, this.homeSize, this.homeSize);
     }
 
@@ -144,5 +132,25 @@ class Scene {
     clearScene() {
         this.balls = [];
         this.polygons = [];
+    }
+
+
+    // Checks if hovering and clicking on settings (home and info) is happening
+    checkSettings() {
+
+        //Hovering over home:
+        if (mouseX < this.homeSize + this.homePos.x && mouseX > this.homePos.x && mouseY < this.homeSize + this.homePos.y && mouseY > this.homePos.y) {
+            tint(150);
+            if (mouseIsPressed) {
+                this.currentScene = this.sceneMenu;
+                this.clearScene();
+                return;
+            }
+        } else if (false) { // hovering over questionmark
+
+        }
+        else {
+            tint(255);
+        }
     }
 }

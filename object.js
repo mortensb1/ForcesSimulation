@@ -32,12 +32,15 @@ class PhysicsObject {
    * @param {number} s
    */
   force(f, s = 1) {
-
     let acc = f.clone();
     acc.scale(this.invMass);
 
     this.vel.add(acc, s);
 
-    line(this.x + width / 2, height / 2 - this.y, this.x + width / 2 + f.x, height / 2 - (this.y + f.y));
+    // console.log(this.pos.x + width / 2 + f.x, height / 2 - (this.pos.y + f.y));
+
+    strokeWeight(10);
+    line(this.pos.x + width / 2, height / 2 - this.pos.y, this.pos.x + width / 2 + (f.x / 20) * s, height / 2 - (this.pos.y + (f.y / 20) * s));
+    strokeWeight(1);
   }
 }

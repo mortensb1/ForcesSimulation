@@ -17,7 +17,6 @@ class Scene {
         this.tintDal = false;
         this.tintValSettings = 150;
         this.tintValScenes = 220;
-        
     }
 
     update() {
@@ -104,83 +103,79 @@ class Scene {
         text("Valley", secondScenePos.x, secondScenePos.y - textSpace);
         text("From above", thirdScenePos.x, thirdScenePos.y - textSpace);
 
-        if(this.tintPlatform) {
+        if (this.tintPlatform) {
             tint(this.tintValScenes);
             image(images.platformScene, firstScenePos.x, firstScenePos.y, scenesScale[0], scenesScale[1]);
             this.tintPlatform = false;
-        }
-        else {
+        } else {
             tint(240);
             image(images.platformScene, firstScenePos.x, firstScenePos.y, scenesScale[0], scenesScale[1]);
         }
-        if(this.tintDal) {
+        if (this.tintDal) {
             tint(this.tintValScenes);
             image(images.dalScene, secondScenePos.x, secondScenePos.y, scenesScale[0], scenesScale[1]);
             this.tintDal = false;
-        }
-        else {
+        } else {
             tint(240);
             image(images.dalScene, secondScenePos.x, secondScenePos.y, scenesScale[0], scenesScale[1]);
         }
-        if(this.tintOppefra) {
+        if (this.tintOppefra) {
             fill(184);
             rect(thirdScenePos.x, thirdScenePos.y, scenesScale[0], scenesScale[1]);
             this.tintOppefra = false;
-        }
-        else {
+        } else {
             fill(204);
             rect(thirdScenePos.x, thirdScenePos.y, scenesScale[0], scenesScale[1]);
         }
-        
-        
-        
 
         //Check if mouse is hovering over scene-choice
-        if(mouseX < firstScenePos.x + scenesScale[0]/2 
-          && mouseX > firstScenePos.x - scenesScale[0]/2 
-          && mouseY < firstScenePos.y + scenesScale[1]/2 
-          && mouseY > firstScenePos.y - scenesScale[1]/2) {
+        if (
+            mouseX < firstScenePos.x + scenesScale[0] / 2 &&
+            mouseX > firstScenePos.x - scenesScale[0] / 2 &&
+            mouseY < firstScenePos.y + scenesScale[1] / 2 &&
+            mouseY > firstScenePos.y - scenesScale[1] / 2
+        ) {
             this.tintPlatform = true;
-            if(mouseIsPressed) {
+            if (mouseIsPressed) {
                 this.initializeScene = true;
                 this.currentScene = this.scenePlatform;
                 this.clearScene();
                 return;
             }
-        }
-        else if (mouseX < secondScenePos.x + scenesScale[0]/2 
-                && mouseX > secondScenePos.x - scenesScale[0]/2 
-                && mouseY < secondScenePos.y + scenesScale[1]/2 
-                && mouseY > secondScenePos.y - scenesScale[1]/2) {
+        } else if (
+            mouseX < secondScenePos.x + scenesScale[0] / 2 &&
+            mouseX > secondScenePos.x - scenesScale[0] / 2 &&
+            mouseY < secondScenePos.y + scenesScale[1] / 2 &&
+            mouseY > secondScenePos.y - scenesScale[1] / 2
+        ) {
             this.tintDal = true;
-            if(mouseIsPressed) {
+            if (mouseIsPressed) {
                 this.initializeScene = true;
                 this.currentScene = this.sceneDal;
                 this.clearScene();
                 return;
             }
-        }
-        else if (mouseX < thirdScenePos.x + scenesScale[0]/2 
-                && mouseX > thirdScenePos.x - scenesScale[0]/2 
-                && mouseY < thirdScenePos.y + scenesScale[1]/2 
-                && mouseY > thirdScenePos.y - scenesScale[1]/2) {
+        } else if (
+            mouseX < thirdScenePos.x + scenesScale[0] / 2 &&
+            mouseX > thirdScenePos.x - scenesScale[0] / 2 &&
+            mouseY < thirdScenePos.y + scenesScale[1] / 2 &&
+            mouseY > thirdScenePos.y - scenesScale[1] / 2
+        ) {
             this.tintOppefra = true;
-            if(mouseIsPressed) {
+            if (mouseIsPressed) {
                 this.initializeScene = true;
                 this.currentScene = this.sceneOppefra;
                 this.clearScene();
                 return;
+            } else {
+                noTint();
             }
-        else {
-            noTint();
         }
-    }
     }
 
     sceneOppefra() {
         if (this.initializeScene) {
             this.initializeScene = false;
- 
         }
 
         this.checkAndDrawSettings();
@@ -195,15 +190,47 @@ class Scene {
             let dalTriangleHeight = 200;
             this.polygons.push(new Rect(0, -height / 2 + dalGroundHeight / 2, width, dalGroundHeight, 0, 0, 20, 1, 0, 0, true, this.staticColor));
 
-            this.polygons.push(new Triangle(width / 2 - dalTriangleWidth / 2, -height / 2 + dalGroundHeight, new Vec2(dalTriangleWidth / 2, 0), new Vec2(-dalTriangleWidth / 2, 0), new Vec2(dalTriangleWidth / 2, dalTriangleHeight), 0, 0, 20, 1, 0, 0, true, this.staticColor));
-            this.polygons.push(new Triangle(-width / 2 + dalTriangleWidth / 2, -height / 2 + dalGroundHeight, new Vec2(dalTriangleWidth / 2, 0), new Vec2(-dalTriangleWidth / 2, 0), new Vec2(-dalTriangleWidth / 2, dalTriangleHeight), 0, 0, 20, 1, 0, 0, true, this.staticColor));
+            this.polygons.push(
+                new Triangle(
+                    width / 2 - dalTriangleWidth / 2,
+                    -height / 2 + dalGroundHeight,
+                    new Vec2(dalTriangleWidth / 2, 0),
+                    new Vec2(-dalTriangleWidth / 2, 0),
+                    new Vec2(dalTriangleWidth / 2, dalTriangleHeight),
+                    0,
+                    0,
+                    20,
+                    1,
+                    0,
+                    0,
+                    true,
+                    this.staticColor
+                )
+            );
+            this.polygons.push(
+                new Triangle(
+                    -width / 2 + dalTriangleWidth / 2,
+                    -height / 2 + dalGroundHeight,
+                    new Vec2(dalTriangleWidth / 2, 0),
+                    new Vec2(-dalTriangleWidth / 2, 0),
+                    new Vec2(-dalTriangleWidth / 2, dalTriangleHeight),
+                    0,
+                    0,
+                    20,
+                    1,
+                    0,
+                    0,
+                    true,
+                    this.staticColor
+                )
+            );
 
             for (let i = 0; i < 10; i++) {
                 this.balls.push(new Ball(random(-150, 150), random(-150, 150), 50, random(-150, 150), random(-50, 50), 10, 1));
             }
         }
 
-        this.checkAndDrawSettings();        
+        this.checkAndDrawSettings();
     }
 
     scenePlatform() {
@@ -212,16 +239,15 @@ class Scene {
         if (this.initializeScene) {
             this.initializeScene = false;
 
-            this.polygons.push(new Rect(0, -height/2 + groundHeight/2, width, groundHeight, 0, 0, 20, 1, 0, 0, true, this.staticColor));
-            this.polygons.push(new Rect(-450, 30, 555, 35, 0, 0, 20, 1, -25, 0,true, this.staticColor));
+            this.polygons.push(new Rect(0, -height / 2 + groundHeight / 2, width, groundHeight, 0, 0, 20, 1, 0, 0, true, this.staticColor));
+            this.polygons.push(new Rect(-450, 30, 555, 35, 0, 0, 20, 1, -25, 0, true, this.staticColor));
 
             for (let i = 0; i < 10; i++) {
                 this.balls.push(new Ball(random(-150, 150), random(-150, 150), 50, random(-150, 150), random(-50, 50), 10, 1));
             }
         }
 
-        this.checkAndDrawSettings();   
-
+        this.checkAndDrawSettings();
     }
 
     clearScene() {
@@ -232,10 +258,7 @@ class Scene {
     // Checks if hovering and clicking on settings (home and info) is happening
     checkAndDrawSettings() {
         //Hovering over home:
-        if (mouseX < this.homeSize/2 + this.homePos.x 
-            && mouseX > this.homePos.x - this.homeSize/2 
-            && mouseY < this.homeSize/2 + this.homePos.y 
-            && mouseY > this.homePos.y - this.homeSize/2) {
+        if (mouseX < this.homeSize / 2 + this.homePos.x && mouseX > this.homePos.x - this.homeSize / 2 && mouseY < this.homeSize / 2 + this.homePos.y && mouseY > this.homePos.y - this.homeSize / 2) {
             this.tintHome = true;
             if (mouseIsPressed) {
                 this.initializeScene = true;
@@ -243,14 +266,15 @@ class Scene {
                 this.clearScene();
                 return;
             }
-        // hovering over questionmark:
-        } else if (mouseX < this.infoSize/2 + this.infoPos.x 
-            && mouseX > this.infoPos.x - this.infoSize/2 
-            && mouseY < this.infoSize/2 + this.infoPos.y 
-            && mouseY > this.infoPos.y - this.infoSize/2) { 
+            // hovering over questionmark:
+        } else if (
+            mouseX < this.infoSize / 2 + this.infoPos.x &&
+            mouseX > this.infoPos.x - this.infoSize / 2 &&
+            mouseY < this.infoSize / 2 + this.infoPos.y &&
+            mouseY > this.infoPos.y - this.infoSize / 2
+        ) {
             this.tintInfo = true;
             if (mouseIsPressed) {
-                
             }
         }
 
@@ -259,8 +283,7 @@ class Scene {
             image(images.home, this.homePos.x, this.homePos.y, this.homeSize, this.homeSize);
             this.tintHome = false;
             noTint();
-        }
-        else {
+        } else {
             image(images.home, this.homePos.x, this.homePos.y, this.homeSize, this.homeSize);
         }
         if (this.tintInfo) {
@@ -268,8 +291,7 @@ class Scene {
             image(images.info, this.infoPos.x, this.infoPos.y, this.infoSize, this.infoSize);
             this.tintInfo = false;
             noTint();
-        }
-        else {
+        } else {
             image(images.info, this.infoPos.x, this.infoPos.y, this.infoSize, this.infoSize);
         }
     }

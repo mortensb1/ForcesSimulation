@@ -14,6 +14,15 @@ class Vec2 {
     }
 
     /**
+     * Calculate the z value of the Cross product as the z of the vectors must be 0
+     * @param {Vec2} v
+     */
+    cross(v) {
+        let z = this.x * v.y - v.x * this.y;
+        return z;
+    }
+
+    /**
      *
      * @returns {Vec2} Returns the Cross vector (Rotated 90°)
      */
@@ -110,6 +119,7 @@ class Vec2 {
     scale(s) {
         this.x *= s;
         this.y *= s;
+        return this;
     }
 
     /**

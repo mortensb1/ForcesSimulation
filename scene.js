@@ -287,7 +287,6 @@ class Scene {
         if (mouseIsPressed && this.allowColorChange) {
             this.reading = false;
             this.allowColorChange = false;
-            console.log("tjek");
             this.changeColorOnAll([this.readingColorChangeVal, this.readingColorChangeVal, this.readingColorChangeVal]);
         }
 

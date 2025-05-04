@@ -203,6 +203,21 @@ function collisionBall(ball1, ball2) {
     return { collision: true, normal: normal, depth: depth };
 }
 
+function collisionBallNoCorr(ball1, ball2) {
+    let normal = new Vec2();
+    normal.subtractVectors(ball2.pos, ball1.pos);
+
+    depth = ball1.r + ball2.r - normal.length();
+
+    if (depth < 0) {
+        return { collision: false, normal: null, depth: null };
+    }
+
+    normal.normalize();
+
+    return { collision: true, normal: normal, depth: depth };
+}
+
 /**
  * Calculate the closest points on polygon to point
  * @param {Vec2} pos

@@ -6,10 +6,9 @@ function drawForce(force, forceType, obj, relPos = new Vec2(0,0)) {
     mag -= arrowHead;
     push();
     translate(obj.pos.x + width/2 + relPos.x, height/2 - (obj.pos.y + relPos.y));
-    console.log(force);
     rotate(-dir);
     if(forceType == "Gravity") {
-        fill(218, 193, 193);
+        fill(gravityColor[0], gravityColor[1], gravityColor[2]);
     }
     rect(mag/2, 0, mag, arrowWeight);
     triangle(mag, arrowHead, mag, -arrowHead, mag + arrowHead + arrowWeight, 0);

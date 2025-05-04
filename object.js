@@ -39,6 +39,7 @@ class PhysicsObject {
             this.angle += this.angularVel / fps;
             this.updateCorners();
         }
+
         this.pos.add(this.vel, 1 / fps);
     }
 

@@ -13,6 +13,7 @@ class Ball extends PhysicsObject {
         super(x, y, velX, velY, mass, elasticity, color);
         this.r = r;
         this.type = Ball;
+        this.angle = 0;
 
         this.inertia = this.calcRotInertia();
         if (!this.isStatic) {

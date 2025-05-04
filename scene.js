@@ -99,8 +99,13 @@ class Scene {
             }
         }
         for (let i = 0; i < mouseBallContacts.length; i++) {
-            let tempForce = mouseBall.pos.clone().subtract(mouseBallContacts[0].pos);
-            mouseBallContacts[i].force(tempForce, "", 1);
+            let distance = mouseBall.pos.clone().subtract(mouseBallContacts[0].pos);
+            let relativeVel = mouseBallContacts[0].vel;
+
+            let totalForce = distance.add(relativeVel.clone().scale(-0.05));
+            // console.log(totalForce);
+
+            mouseBallContacts[i].force(totalForce, "", 1);
             if (!mouseIsPressed) {
                 mouseBallContacts = [];
                 break;

@@ -76,6 +76,26 @@ class Scene {
             }
         }
 
+        mouseBall.pos.x = mouseX - width / 2;
+        mouseBall.pos.y = height / 2 - mouseY;
+        mouseBall.draw();
+        for (let i = 0; i < this.balls.length; i++) {
+            let res = collisionBallNoCorr(mouseBall, this.balls[i]);
+            if (res.collision) {
+                if (mouseIsPressed) {
+                    mouseBallContacts.push(this.balls[i]);
+                }
+            }
+        }
+        for (let i = 0; i < mouseBallContacts.length; i++) {
+            let tempForce = mouseBall.pos.clone().subtract(mouseBallContacts[i].pos);
+            mouseBallContacts[i].force(tempForce, "", 1);
+            if (!mouseIsPressed) {
+                mouseBallContacts = [];
+                break;
+            }
+        }
+
         // for (let i = 0; i < contactPointsList.length; i++) {
         //     fill(255, 0, 0);
         //     square(width / 2 + contactPointsList[i].x, height / 2 - contactPointsList[i].y, 10);
@@ -257,8 +277,7 @@ class Scene {
             this.polygons.push(new Rect(-450, 30, 555, 35, 0, 0, 20, 1, -0.436, 0, true, this.staticColor));
 
             this.balls.push(new Ball(0, 0, 100, 0, 0, 30, 0.8));
-            this.polygons.push(new Rect(200, 0, 70, 70, 0, 0, 20, 0.8));
-            this.polygons.push(new Triangle(500, 0, new Vec2(-60, -60), new Vec2(60, -60), new Vec2(0, 60), 0, 0, 20, 0.8));
+            this.polygons.push(new Rect(-200, 0, 70, 70, 0, 0, 20, 0.8));
         }
 
         this.checkAndDrawSettings();

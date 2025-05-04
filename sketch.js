@@ -9,6 +9,8 @@ let polygons = [];
 let images = {};
 let fonts = {};
 let backgroundColor = [217, 217, 217];
+let mouseBall;
+let mouseBallContacts = [];
 
 // 100 pixels equals to 1 meter
 
@@ -30,6 +32,7 @@ function setup() {
     G = new Vec2(0, -982);
     airDensity = 1.3;
     isWindOn = false;
+    mouseBall = new Ball(mouseX, mouseX, 10, 0, 0, 10, 0, [0, 0, 0], true);
 
     scene = new Scene();
 }

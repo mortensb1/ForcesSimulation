@@ -110,6 +110,7 @@ class Vec2 {
     scale(s) {
         this.x *= s;
         this.y *= s;
+        return this;
     }
 
     /**

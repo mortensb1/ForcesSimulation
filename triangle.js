@@ -6,6 +6,7 @@ class Triangle extends PhysicsObject {
         this.startP3 = p3;
 
         this.type = Triangle;
+        this.formfac = 1.0;
 
         this.corners = {
             p1: new Vec2(),

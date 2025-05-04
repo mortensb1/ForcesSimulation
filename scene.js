@@ -21,6 +21,8 @@ class Scene {
         this.allowColorChange = false;
         this.readingColorChangeVal = 60;
         this.arrow;
+
+        this.windIsOn = false;
         
     }
 
@@ -234,9 +236,11 @@ class Scene {
             );
 
             for (let i = 0; i < 10; i++) {
-                this.balls.push(new Ball(random(-150, 150), random(-150, 150), 50, random(-150, 150), random(-50, 50), 10, 1));
+                this.balls.push(new Ball(random(-150, 150), random(-150, 150), 50, random(-10, 10), random(-10, 10), 10, 1));
             }
         }
+
+        // isWindOn = true;
 
         this.checkAndDrawSettings();
     }
@@ -318,6 +322,7 @@ class Scene {
             text("- Checkboxes turn off and on the arrows, but the forces will remain.", width/2, underTitleSpace + 140 + 2*textSpace);
             text("- Sliders can be used to modify the magnitude of the forces.", width/2, underTitleSpace + 140 + 3*textSpace)
             text("- Grab an object with the mouse and see how it affects other objects.", width/2, underTitleSpace + 140 + 4*textSpace)
+            text("PRESS ANYWHERE TO CONTINUE", width/2, underTitleSpace + 140 + 5*textSpace)
         }
 
         // If info is showing and mouse has been relesed once, the colors are allowed to change

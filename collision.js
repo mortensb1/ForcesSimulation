@@ -562,11 +562,9 @@ function resolveCollision(manifold) {
 
         bodyB.force(impulse, "Applied", 1);
         bodyB.angularVel += rb.cross(impulse) * bodyB.invInertia;
-        // console.log(impulse.length());
-        if (impulse.length() > 200) {
-            drawForce(impulse.clone().scale(2), "Applied", bodyA, ra.clone());
-            drawForce(impulse.clone().scale(2), "Applied", bodyB, rb.clone());
-        }
+
+        drawForce(impulse.clone().scale(2), "Applied", bodyA, ra.clone());
+        drawForce(impulse.clone().scale(2), "Applied", bodyB, rb.clone());
     }
 
     // FRICTION
@@ -673,5 +671,5 @@ function drawNormalsRect(rect) {
 }
 
 function compareFloat(a, b) {
-    return abs(a - b) < 10;
+    return abs(a - b) < 5;
 }

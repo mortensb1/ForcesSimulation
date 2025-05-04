@@ -229,8 +229,8 @@ class Scene {
                 )
             );
 
-            // this.polygons.push(new Rect(0, -200, 200, 100, 0, 0, 10, 1, 0.1, 0, false));
-            // this.polygons.push(new Rect(-500, -200, 200, 100, 0, 0, 10, 0.1, Math.PI / 2, 0, false));
+            this.polygons.push(new Rect(0, -200, 200, 100, 0, 0, 10, 1, 0.1, 0, false));
+            this.polygons.push(new Rect(-500, -200, 200, 100, 0, 0, 10, 0.1, Math.PI / 2, 0, false));
             // this.polygons.push(new Rect(-500, 20, 200, 100, 0, 0, 10, 0.1, Math.PI / 2, 0, false));
             // this.polygons.push(new Rect(0, -200, 200, 100, 0, 0, 10, 0.1, 0, 0, false));
             // this.polygons.push(new Rect(-110, 20, 200, 100, 0, 0, 10, 0.8, Math.PI / 2, 0, false));

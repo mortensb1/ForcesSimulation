@@ -15,7 +15,7 @@ class Ball extends PhysicsObject {
         this.type = Ball;
         this.angle = 0;
         this.formfac = 0.5;
-        this.A = (this.r / 100)**2 * PI; //cross section area. Dividing by 100 because of pixel-meter ratio
+        this.A = (this.r / 100) ** 2 * PI; //cross section area. Dividing by 100 because of pixel-meter ratio
 
         this.inertia = this.calcRotInertia();
         if (!this.isStatic) {
@@ -25,7 +25,7 @@ class Ball extends PhysicsObject {
         }
 
         //Calculate wind resistance Const
-        this.windConst = 1/2 * this.formfac * airDensity * this.A;
+        this.windConst = (1 / 2) * this.formfac * airDensity * this.A;
     }
 
     /**
@@ -37,7 +37,7 @@ class Ball extends PhysicsObject {
         rotate(-this.angle);
         fill(this.color);
         circle(0, 0, 2 * this.r);
-        stroke(0, 255);
+        stroke(0, 100);
         line(0, 0, this.r, 0);
         stroke(0, 0);
         pop();

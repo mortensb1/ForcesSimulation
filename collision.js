@@ -472,10 +472,10 @@ function resolveCollisionRotation(manifold) {
         let ra = raList[i];
         let rb = rbList[i];
 
-        bodyA.force(impulse, -1);
+        bodyA.force(impulse, "Applied", -1);
         bodyA.angularVel += -ra.cross(impulse) * bodyA.invInertia;
 
-        bodyB.force(impulse, 1);
+        bodyB.force(impulse, "Applied", 1);
         bodyB.angularVel += rb.cross(impulse) * bodyB.invInertia;
     }
 }
@@ -557,10 +557,10 @@ function resolveCollision(manifold) {
         let ra = raList[i];
         let rb = rbList[i];
 
-        bodyA.force(impulse, -1);
+        bodyA.force(impulse, "Applied", -1);
         bodyA.angularVel += -ra.cross(impulse) * bodyA.invInertia;
 
-        bodyB.force(impulse, 1);
+        bodyB.force(impulse, "Applied", 1);
         bodyB.angularVel += rb.cross(impulse) * bodyB.invInertia;
     }
 
@@ -618,10 +618,10 @@ function resolveCollision(manifold) {
         let ra = raList[i];
         let rb = rbList[i];
 
-        bodyA.force(frictionImpulse, -1);
+        bodyA.force(frictionImpulse, "Applied", -1);
         bodyA.angularVel += -ra.cross(frictionImpulse) * bodyA.invInertia;
 
-        bodyB.force(frictionImpulse, 1);
+        bodyB.force(frictionImpulse, "Applied", 1);
         bodyB.angularVel += rb.cross(frictionImpulse) * bodyB.invInertia;
     }
 }
@@ -652,8 +652,8 @@ function resolveCollisionBasic(manifold) {
     let impulse = normal.clone();
     impulse.scale(j);
 
-    obj1.force(impulse, -1);
-    obj2.force(impulse, 1);
+    obj1.force(impulse, "Applied", -1);
+    obj2.force(impulse, "Applied", 1);
 }
 
 function drawNormalsRect(rect) {

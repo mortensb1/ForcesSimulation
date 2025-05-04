@@ -22,6 +22,15 @@ class PhysicsObject {
 
         this.inertia;
         this.invInertia;
+
+        this.arrows = {
+            gravity: new Arrow(0, 0, "Gravity"),
+            applied: new Arrow(0, 0, "Applied"),
+            wind: new Arrow(0, 0, "Wind"),
+            friction: new Arrow(0, 0, "Friction"),
+            result: new Arrow(0, 0, "Result"),
+            normal: new Arrow(0, 0, "Normal")
+        };
     }
 
     /**
@@ -30,7 +39,8 @@ class PhysicsObject {
     update() {
         if (!this.isStatic) {
             this.vel.add(G, 1 / fps);
-            
+            this.drawForce(G.clone().scale(this.mass),"Gravity");
+
             if(isWindOn) {
                 this.force(this.windForce, 1/fps);
             }
@@ -46,7 +56,7 @@ class PhysicsObject {
      * @param {Vec2} f
      * @param {number} s
      */
-    force(f, s = 1) {
+    force(f, forceType, s = 1) {
         let acc = f.clone();
         acc.scale(this.invMass);
 
@@ -59,5 +69,15 @@ class PhysicsObject {
 
     changeColor(newColor) {
         this.color = newColor;
+    }
+
+    drawForce(force, forceType) {
+        if (forceType == "Gravity") {
+            this.arrows.gravity.x = this.pos.x;
+            this.arrows.gravity.y = this.pos.y;
+            this.arrows.gravity.forceVec.y = force.y;
+            this.arrows.gravity.draw();
+            
+        }
     }
 }

@@ -109,6 +109,9 @@ class Scene {
     sceneMenu() {
         if (this.initializeScene) {
             this.initializeScene = false;
+            gravitySlider.hide();
+            frictionSlider.hide();
+            windSlider.hide();
         }
 
         let sceneSpace = 572;
@@ -394,12 +397,21 @@ class Scene {
         textFont(fonts.light);
 
         if(this.currentScene == this.sceneOppefra) {
-
+            gravitySlider.hide();
+            frictionSlider.show();
+            windSlider.show();
         }
         else {
             // Big rect
             fill(this.settingsColor[0], this.settingsColor[1], this.settingsColor[2]);
             rect(width - 373/2, 445/2, 373, 445);
+            gravitySlider.show();
+            gravitySlider.position(1650, 65);
+            frictionSlider.show();
+            frictionSlider.position(1650, 165);
+            windSlider.show();
+            windSlider.position(1650, 265);
+
 
             // Gravity checkbox
             fill(0)

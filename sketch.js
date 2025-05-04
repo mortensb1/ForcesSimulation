@@ -51,14 +51,11 @@ function setup() {
     resultCheckBox = false;
 
     gravitySlider = createSlider(0, 2000, 982, 100);
-    gravitySlider.position(1650, 65);
     gravitySlider.size(230);
     frictionSlider = createSlider(0, 1, 0.5, 0.05);
-    frictionSlider.position(1650, 165);
     frictionSlider.size(230);
-    frictionSlider = createSlider(0, 1, 0.5, 0.05);
-    frictionSlider.position(1650, 265);
-    frictionSlider.size(230);
+    windSlider = createSlider(0, 1, 0.5, 0.05);
+    windSlider.size(230);
 
     scene = new Scene();
 }

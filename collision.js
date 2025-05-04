@@ -203,6 +203,87 @@ function collisionBall(ball1, ball2) {
     return { collision: true, normal: normal, depth: depth };
 }
 
+function collisionRectBallNoCorr(rect, ball) {
+    rect.updateCorners();
+    let depth = Infinity;
+    let normal;
+
+    // Check collision for the rect normals first
+    for (let i = 0; i < rect.normals.length; i++) {
+        let axis = rect.normals[i];
+        axis.normalize();
+
+        let minRect = Infinity;
+        let minBall = Infinity;
+
+        let maxRect = -Infinity;
+        let maxBall = -Infinity;
+
+        // Calc the max and min points projected on the axis
+        minBall = ball.pos.clone().add(axis, -ball.r).dot(axis);
+        maxBall = ball.pos.clone().add(axis, ball.r).dot(axis);
+
+        // Calc the max and min points projected on the axis
+        for (let point in rect.corners) {
+            let dotProduct = rect.corners[point].dot(axis);
+            minRect = min(minRect, dotProduct);
+            maxRect = max(maxRect, dotProduct);
+        }
+
+        // If NO collision return false
+        if (minRect >= maxBall || minBall >= maxRect) {
+            return { collision: false, normal: null, depth: null };
+        }
+
+        // Calculate the dept of the intersection and save the smallest
+        let axisDepth = min(maxBall - minRect, maxRect - minBall);
+        if (axisDepth < depth) {
+            depth = axisDepth;
+            normal = axis;
+        }
+    }
+
+    // Find the closest point on polygon and calculate the axis between the point and the ball center
+    let minPoint = closestPointOnPolygon(ball.pos, rect.corners);
+    let axis = minPoint.subtract(ball.pos).normalize();
+
+    let minRect = Infinity;
+    let minBall = Infinity;
+
+    let maxRect = -Infinity;
+    let maxBall = -Infinity;
+
+    // Calc the max and min points projected on the axis
+    minBall = ball.pos.clone().add(axis, -ball.r).dot(axis);
+    maxBall = ball.pos.clone().add(axis, ball.r).dot(axis);
+
+    // Calc the max and min points projected on the axis
+    for (let point in rect.corners) {
+        let dotProduct = rect.corners[point].dot(axis);
+        minRect = min(minRect, dotProduct);
+        maxRect = max(maxRect, dotProduct);
+    }
+
+    // If NO collision return false
+    if (minRect >= maxBall || minBall >= maxRect) {
+        return { collision: false, normal: null, depth: null };
+    }
+
+    // Calculate the dept of the intersection and save the smallest
+    let axisDepth = min(maxBall - minRect, maxRect - minBall);
+    if (axisDepth < depth) {
+        depth = axisDepth;
+        normal = axis;
+    }
+
+    // Make sure the normal is not rotated 180 degrees
+    let posDif = new Vec2();
+    posDif.subtractVectors(rect.pos, ball.pos);
+    if (posDif.dot(normal) < 0) normal.scale(-1);
+
+    return { collision: true, normal: normal, depth: depth };
+}
+
 function collisionBallNoCorr(ball1, ball2) {
     let normal = new Vec2();
     normal.subtractVectors(ball2.pos, ball1.pos);

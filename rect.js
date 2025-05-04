@@ -6,8 +6,8 @@ class Rect extends PhysicsObject {
         this.corners = {
             tl: new Vec2(), // Top Left
             tr: new Vec2(), // Top Right
-            bl: new Vec2(), // Bottom Left
             br: new Vec2(), // Bottom Right
+            bl: new Vec2(), // Bottom Left
         };
         this.cornersMinAndMax = {};
         this.normals = [];

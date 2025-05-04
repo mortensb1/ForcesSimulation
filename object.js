@@ -4,7 +4,7 @@ class PhysicsObject {
         this.vel = new Vec2(velX, velY);
         this.mass = mass;
         this.angle = angle;
-        this.rotVel = rotVel;
+        this.angularVel = rotVel;
         this.color = color;
 
         this.elasticity = elasticity;
@@ -17,6 +17,9 @@ class PhysicsObject {
         } else {
             this.invMass = 0;
         }
+
+        this.inertia;
+        this.invInertia;
     }
 
     /**
@@ -25,9 +28,13 @@ class PhysicsObject {
     update() {
         if (!this.isStatic) {
             this.vel.add(G, 1 / fps);
+            
             if(isWindOn) {
                 this.force(this.windForce, 1/fps);
             }
+
+            this.angle += this.angularVel / fps;
+            this.updateCorners();
         }
         this.pos.add(this.vel, 1 / fps);
     }
@@ -42,8 +49,6 @@ class PhysicsObject {
         acc.scale(this.invMass);
 
         this.vel.add(acc, s);
-
-        // console.log(this.pos.x + width / 2 + f.x, height / 2 - (this.pos.y + f.y));
 
         strokeWeight(10);
         line(this.pos.x + width / 2, height / 2 - this.pos.y, this.pos.x + width / 2 + (f.x / 20) * s, height / 2 - (this.pos.y + (f.y / 20) * s));

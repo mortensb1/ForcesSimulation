@@ -22,12 +22,11 @@ function preload() {
 
 function setup() {
     rectMode(CENTER);
-    angleMode(DEGREES);
     textAlign(CENTER, CENTER);
     imageMode(CENTER);
     createCanvas(1920, 1080);
     frameRate(fps);
-    noStroke();
+    stroke(0, 0);
     G = new Vec2(0, -9.82);
     airDensity = 1.3;
     isWindOn = false;

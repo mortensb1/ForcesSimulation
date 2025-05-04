@@ -3,7 +3,7 @@ class Manifold {
      * Object that contains everything about an collision
      * @param {PhysicsObject} bodyA
      * @param {PhysicsObject} bodyB
-     * @param {Number} normal
+     * @param {Vec2} normal
      * @param {Number} depth
      * @param {Vec2} contact1
      * @param {Vec2} contact2

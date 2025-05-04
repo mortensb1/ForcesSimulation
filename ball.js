@@ -31,8 +31,15 @@ class Ball extends PhysicsObject {
      * Draw object
      */
     draw() {
+        push();
+        translate(this.pos.x + width / 2, height / 2 - this.pos.y);
+        rotate(-this.angle);
         fill(this.color);
-        circle(this.pos.x + width / 2, height / 2 - this.pos.y, 2 * this.r);
+        circle(0, 0, 2 * this.r);
+        stroke(0, 255);
+        line(0, 0, this.r, 0);
+        stroke(0, 0);
+        pop();
     }
 
     /**
@@ -60,4 +67,6 @@ class Ball extends PhysicsObject {
     calcRotInertia() {
         return (1 / 2) * this.mass * this.r ** 2;
     }
+
+    updateCorners() {}
 }

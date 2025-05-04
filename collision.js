@@ -332,7 +332,7 @@ function findContactRect(rect1, rect2) {
             let contact = res.contact;
 
             if (compareFloat(distSquared, minDistSq)) {
-                if (!contact.equal(contact1)) {
+                if (!contact.equal(contact1) && !contact.equal(contact2)) {
                     contact2 = contact;
                     contactCount = 2;
                 }
@@ -356,7 +356,7 @@ function findContactRect(rect1, rect2) {
             let contact = res.contact;
 
             if (compareFloat(distSquared, minDistSq)) {
-                if (!contact.equal(contact1)) {
+                if (!contact.equal(contact1) && !contact.equal(contact2)) {
                     contact2 = contact;
                     contactCount = 2;
                 }
@@ -405,11 +405,87 @@ function pointLineDistance(p, a, b) {
 }
 
 /**
+ * Resolve collison for two objects with rotation
+ * @param {Manifold} manifold
+ */
+function resolveCollision(manifold) {
+    let bodyA = manifold.bodyA;
+    let bodyB = manifold.bodyB;
+    let normal = manifold.normal;
+    let contact1 = manifold.contact1;
+    let contact2 = manifold.contact2;
+    let contactCount = manifold.contactCount;
+
+    let e = min(bodyA.elasticity, bodyB.elasticity);
+
+    let contactList = [contact1, contact2];
+    let impulseList = [];
+    let raList = [];
+    let rbList = [];
+
+    for (let i = 0; i < contactCount; i++) {
+        impulseList[i] = new Vec2();
+        raList[i] = new Vec2();
+        rbList[i] = new Vec2();
+    }
+
+    for (let i = 0; i < contactCount; i++) {
+        let ra = new Vec2();
+        ra.subtractVectors(contactList[i], bodyA.pos);
+        let rb = new Vec2();
+        rb.subtractVectors(contactList[i], bodyB.pos);
+
+        raList[i] = ra;
+        rbList[i] = rb;
+
+        let raPerp = ra.clone().hat();
+        let rbPerp = rb.clone().hat();
+
+        let angularLinVelA = raPerp.clone().scale(bodyA.angularVel);
+        let angularLinVelB = rbPerp.clone().scale(bodyB.angularVel);
+
+        let t1 = bodyA.vel.clone().add(angularLinVelA);
+        let t2 = bodyB.vel.clone().add(angularLinVelB);
+        let relativeVel = new Vec2();
+        relativeVel.subtractVectors(t2, t1); // R = V_a + V_ra - V_b + V_rb
+
+        // Do nothing if objects are already moving apart
+        let contactVelMag = relativeVel.dot(normal);
+        if (contactVelMag > 0) {
+            continue;
+        }
+
+        let raPerpDotN = raPerp.dot(normal);
+        let rbPerpDotN = rbPerp.dot(normal);
+
+        // Calculate the impulse [j]
+        let j = -(1 + e) * contactVelMag;
+        j = j / (bodyA.invMass + bodyB.invMass + raPerpDotN * raPerpDotN * bodyA.invInertia + rbPerpDotN * rbPerpDotN * bodyB.invInertia);
+        j = j / contactCount;
+
+        let impulse = normal.clone().scale(j);
+        impulseList[i] = impulse;
+    }
+
+    for (let i = 0; i < contactCount; i++) {
+        let impulse = impulseList[i];
+        let ra = raList[i];
+        let rb = rbList[i];
+
+        bodyA.force(impulse, -1);
+        bodyA.angularVel += -ra.cross(impulse) * bodyA.invInertia;
+
+        bodyB.force(impulse, 1);
+        bodyB.angularVel += rb.cross(impulse) * bodyB.invInertia;
+    }
+}
+
+/**
  * Resolves collision between two objects
  * @param {Manifold} manifold
  * @returns
  */
-function resolveCollision(manifold) {
+function resolveCollisionBasic(manifold) {
     let obj1 = manifold.bodyA;
     let obj2 = manifold.bodyB;
     let normal = manifold.normal;
@@ -423,6 +499,7 @@ function resolveCollision(manifold) {
 
     let e = min(obj1.elasticity, obj1.elasticity);
 
+    // Calculate the impulse [j] (j = (-(1 + e) * v * n) / ((1 / m_1) + (1 / m_2)))
     let j = -(1 + e) * relativeVel.dot(normal);
     j = j / (obj1.invMass + obj2.invMass);
 
@@ -434,11 +511,13 @@ function resolveCollision(manifold) {
 }
 
 function drawNormalsRect(rect) {
+    console.log(rect.normals.length);
     for (let i = 0; i < rect.normals.length; i++) {
+        strokeWeight(1);
         line(rect.pos.x + width / 2, height / 2 - rect.pos.y, rect.pos.x + rect.normals[i].x + width / 2, height / 2 - (rect.pos.y + rect.normals[i].y));
     }
 }
 
 function compareFloat(a, b) {
-    return abs(a - b) < 0.00001;
+    return abs(a - b) < 0.0001;
 }

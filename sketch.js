@@ -27,7 +27,7 @@ function setup() {
     createCanvas(1920, 1080);
     frameRate(fps);
     stroke(0, 0);
-    G = new Vec2(0, -9.82);
+    G = new Vec2(0, -982);
     airDensity = 1.3;
     isWindOn = false;
 

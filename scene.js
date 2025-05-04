@@ -246,13 +246,14 @@ class Scene {
             }
         }
 
-        // isWindOn = true;
+        isWindOn = true;
 
         this.checkAndDrawSettings();
     }
 
     scenePlatform() {
         let groundHeight = 150;
+        isWindOn = false;
 
         if (this.initializeScene) {
             this.initializeScene = false;
@@ -260,9 +261,8 @@ class Scene {
             this.polygons.push(new Rect(0, -height / 2 + groundHeight / 2, width, groundHeight, 0, 0, 20, 1, 0, 0, true, this.staticColor));
             this.polygons.push(new Rect(-450, 30, 555, 35, 0, 0, 20, 1, -0.436, 0, true, this.staticColor));
 
-            for (let i = 0; i < 10; i++) {
-                this.balls.push(new Ball(random(-150, 150), random(-150, 150), 50, random(-150, 150), random(-50, 50), 10, 1));
-            }
+            this.balls.push(new Ball(0, 0, 100, 0, 0, 30, 0.8));
+            this.polygons.push(new Rect(200, 0, 70, 70, 0, 0, 20, 0.8));   
         }
 
         this.checkAndDrawSettings();

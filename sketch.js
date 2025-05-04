@@ -31,7 +31,6 @@ function setup() {
     G = new Vec2(0, -982);
     airDensity = 1.3;
     isWindOn = false;
-    mouseIsReleased = false;
 
     gravityColor = [218, 193, 193];
     frictionColor = [204, 210, 200];
@@ -39,6 +38,13 @@ function setup() {
     normalColor = [232, 231, 208];
     appliedColor = [218, 206, 219];
     resultColor = [102, 102, 102];
+
+    gravityCheckBox = false;
+    frictionCheckBox = false;
+    windCheckBox = false;
+    normalCheckBox = false;
+    appliedCheckBox = false;
+    resultCheckBox = false;
 
     scene = new Scene();
 }

@@ -20,14 +20,7 @@ class Scene {
         this.reading = false;
         this.allowColorChange = false;
         this.allowCheckBoxChange = true;
-        this.readingColorChangeVal = 60;
-
-        this.gravityCheckBox = false;
-        this.frictionCheckBox = false;
-        this.windCheckBox = false;
-        this.normalCheckBox = false;
-        this.appliedCheckBox = false;
-        this.resultCheckBox = false;
+        this.readingColorChangeVal = 100;
 
         this.settingsColor = [222, 222, 222];
 
@@ -191,8 +184,8 @@ class Scene {
         if (this.initializeScene) {
             this.initializeScene = false;
         }
-        this.checkAndDrawSettings();
         this.checkAndDrawForceModifiers();
+        this.checkAndDrawSettings();
     }
 
     sceneDal() {
@@ -253,8 +246,8 @@ class Scene {
 
         isWindOn = false;
 
-        this.checkAndDrawSettings();
         this.checkAndDrawForceModifiers();
+        this.checkAndDrawSettings();
     }
 
     scenePlatform() {
@@ -272,8 +265,8 @@ class Scene {
             this.polygons.push(new Triangle(500, 0, new Vec2(-60, -60), new Vec2(60, -60), new Vec2(0, 60), 0, 0, 20, 0.8));
         }
 
-        this.checkAndDrawSettings();
         this.checkAndDrawForceModifiers();
+        this.checkAndDrawSettings();
     }
 
     clearScene() {
@@ -517,9 +510,16 @@ class Scene {
     }
 
     changeColorOnAll(col) {
-        backgroundColor[0] += col[0];
-        backgroundColor[1] += col[1];
-        backgroundColor[2] += col[2];
+        for (let i = 0; i < 3; i++) {
+            backgroundColor[i] += col[i];
+            this.settingsColor[i] += col[i];
+            gravityColor[i] += col[i];
+            frictionColor[i] += col[i];
+            windColor[i] += col[i];
+            normalColor[i] += col[i];
+            appliedColor[i] += col[i];
+            resultColor[i] += col[i];
+        }
         for (let i = 0; i < this.balls.length; i++) {
             this.balls[i].changeColor([this.balls[i].color[0] + col[0], this.balls[i].color[1] + col[1], this.balls[i].color[2] + col[2]]);
         }

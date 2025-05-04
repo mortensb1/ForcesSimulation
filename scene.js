@@ -225,6 +225,13 @@ class Scene {
                 )
             );
 
+            // this.polygons.push(new Rect(0, -200, 200, 100, 0, 0, 10, 1, 0.1, 0, false));
+            this.polygons.push(new Rect(-500, -200, 200, 100, 0, 0, 10, 1, Math.PI / 2, 0, false));
+            this.polygons.push(new Rect(-500, 20, 200, 100, 0, 0, 10, 1, Math.PI / 2, 0, false));
+            this.polygons.push(new Rect(0, -200, 200, 100, 0, 0, 10, 1, 0, 0, false));
+            // this.polygons.push(new Rect(-110, 20, 200, 100, 0, 0, 10, 1, Math.PI / 2, 0, false));
+            // this.polygons.push(new Rect(-100, 0, 200, 100, 0, 0, 10, 1, 0, 0, false));
+
             for (let i = 0; i < 10; i++) {
                 this.balls.push(new Ball(random(-150, 150), random(-150, 150), 50, random(-150, 150), random(-50, 50), 10, 1));
             }
@@ -240,7 +247,7 @@ class Scene {
             this.initializeScene = false;
 
             this.polygons.push(new Rect(0, -height / 2 + groundHeight / 2, width, groundHeight, 0, 0, 20, 1, 0, 0, true, this.staticColor));
-            this.polygons.push(new Rect(-450, 30, 555, 35, 0, 0, 20, 1, -25, 0, true, this.staticColor));
+            this.polygons.push(new Rect(-450, 30, 555, 35, 0, 0, 20, 1, -0.436, 0, true, this.staticColor));
 
             for (let i = 0; i < 10; i++) {
                 this.balls.push(new Ball(random(-150, 150), random(-150, 150), 50, random(-150, 150), random(-50, 50), 10, 1));

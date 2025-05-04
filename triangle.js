@@ -18,6 +18,13 @@ class Triangle extends PhysicsObject {
 
         this.updateCorners();
         this.updateNormals();
+
+        this.inertia = this.calcRotInertia();
+        if (!this.isStatic) {
+            this.invInertia = 1 / this.inertia;
+        } else {
+            this.invInertia = 0;
+        }
     }
 
     draw() {
@@ -37,6 +44,9 @@ class Triangle extends PhysicsObject {
     }
 
     updateCorners() {
+        this.Cos = cos(this.angle);
+        this.Sin = sin(this.angle);
+
         this.corners.p1.x = this.Cos * this.startP1.x - this.Sin * this.startP1.y;
         this.corners.p1.y = this.Sin * this.startP1.x + this.Cos * this.startP1.y;
         this.corners.p1.add(this.pos);
@@ -48,6 +58,8 @@ class Triangle extends PhysicsObject {
         this.corners.p3.x = this.Cos * this.startP3.x - this.Sin * this.startP3.y;
         this.corners.p3.y = this.Sin * this.startP3.x + this.Cos * this.startP3.y;
         this.corners.p3.add(this.pos);
+
+        this.updateNormals();
     }
 
     rotate(angleChange) {
@@ -56,6 +68,14 @@ class Triangle extends PhysicsObject {
         this.Cos = cos(this.angle);
         this.Sin = sin(this.angle);
         this.updateCorners();
+    }
+
+    /**
+     * @todo IMPLEMENT
+     * @returns
+     */
+    calcRotInertia() {
+        return 1;
     }
 
     wallCollision() {}

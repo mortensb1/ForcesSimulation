@@ -54,4 +54,6 @@ class Ball extends PhysicsObject {
     calcRotInertia() {
         return (1 / 2) * this.mass * this.r ** 2;
     }
+
+    updateCorners() {}
 }

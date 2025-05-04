@@ -49,6 +49,9 @@ class Rect extends PhysicsObject {
     }
 
     updateCorners() {
+        this.Cos = cos(this.angle);
+        this.Sin = sin(this.angle);
+
         // Calculate new pos of corners
         this.corners.tl.x = this.Cos * (-this.w / 2) - this.Sin * (this.h / 2); // x2 = cos(a)*x1 - sin(a)*y1
         this.corners.tl.y = this.Sin * (-this.w / 2) + this.Cos * (this.h / 2); // y2 = sin(a)*x1 + cos(a)*y1
@@ -65,16 +68,17 @@ class Rect extends PhysicsObject {
         this.corners.bl.x = this.Cos * (-this.w / 2) - this.Sin * (-this.h / 2); // x2 = cos(a)*x1 - sin(a)*y1
         this.corners.bl.y = this.Sin * (-this.w / 2) + this.Cos * (-this.h / 2); // y2 = sin(a)*x1 + cos(a)*y1
         this.corners.bl.add(this.pos);
-    }
 
-    rotate(angleChange) {
-        if (angleChange == 0) return; // Stop if no change
-        this.angle += angleChange;
-        this.Cos = cos(this.angle);
-        this.Sin = sin(this.angle);
-        this.updateCorners();
         this.updateNormals();
     }
+
+    // rotate(angleChange) {
+    //     if (angleChange == 0) return; // Stop if no change
+    //     this.angle += angleChange;
+    //     this.Cos = cos(this.angle);
+    //     this.Sin = sin(this.angle);
+    //     this.updateCorners();
+    // }
 
     updateCornersMinAndMax() {
         this.updateCorners();

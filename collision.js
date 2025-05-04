@@ -610,7 +610,6 @@ function resolveCollision(manifold) {
             fritctionImpulse = tangent.clone().scale(-j * dynamicFriction);
         }
 
-        console.log(fritctionImpulse);
         fritctionImpulseList[i] = fritctionImpulse;
     }
 

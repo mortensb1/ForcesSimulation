@@ -29,6 +29,8 @@ class Scene {
         let collisions = [];
         let contactPointsList = [];
 
+        this.currentScene();
+
         // UPDATING SHAPES
         // UPDATING SHAPES
         for (let i = 0; i < this.polygons.length; i++) {
@@ -110,7 +112,6 @@ class Scene {
         //     square(width / 2 + contactPointsList[i].x, height / 2 - contactPointsList[i].y, 10);
         //     fill(255);
         // }
-        this.currentScene();
     }
 
     sceneMenu() {

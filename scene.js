@@ -107,6 +107,10 @@ class Scene {
             }
         }
 
+        if (this.currentScene != this.sceneMenu) {
+            this.checkAndDrawSettings();
+        }
+
         // for (let i = 0; i < contactPointsList.length; i++) {
         //     fill(255, 0, 0);
         //     square(width / 2 + contactPointsList[i].x, height / 2 - contactPointsList[i].y, 10);
@@ -216,7 +220,6 @@ class Scene {
             this.initializeScene = false;
         }
         this.checkAndDrawForceModifiers();
-        this.checkAndDrawSettings();
     }
 
     sceneDal() {
@@ -276,7 +279,6 @@ class Scene {
         }
 
         this.checkAndDrawForceModifiers();
-        this.checkAndDrawSettings();
     }
 
     scenePlatform() {
@@ -293,7 +295,6 @@ class Scene {
         }
 
         this.checkAndDrawForceModifiers();
-        this.checkAndDrawSettings();
     }
 
     clearScene() {

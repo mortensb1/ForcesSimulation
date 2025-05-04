@@ -19,6 +19,7 @@ function preload() {
     images.dalScene = loadImage("Images/Dal.png");
     images.check = loadImage("Images/Check.svg");
     fonts.regular = loadFont("Fonts/QuicksandRegular.ttf");
+    fonts.light = loadFont("Fonts/QuicksandLight.ttf");
 }
 
 function setup() {
@@ -45,6 +46,16 @@ function setup() {
     normalCheckBox = false;
     appliedCheckBox = false;
     resultCheckBox = false;
+
+    gravitySlider = createSlider(0, 2000, 982, 100);
+    gravitySlider.position(1650, 65);
+    gravitySlider.size(230);
+    frictionSlider = createSlider(0, 1, 0.5, 0.05);
+    frictionSlider.position(1650, 165);
+    frictionSlider.size(230);
+    frictionSlider = createSlider(0, 1, 0.5, 0.05);
+    frictionSlider.position(1650, 265);
+    frictionSlider.size(230);
 
     scene = new Scene();
 }

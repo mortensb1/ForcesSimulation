@@ -30,7 +30,9 @@ class PhysicsObject {
     update() {
         if (!this.isStatic) {
             this.vel.add(G, 1 / fps);
-            drawForce(G.clone().scale(-this.mass), "Gravity", this);
+            if (gravityCheckBox) {
+                drawForce(G.clone().scale(-this.mass), "Gravity", this);
+            }
 
             if (isWindOn) {
                 this.force(this.windForce, 1 / fps);

@@ -371,6 +371,8 @@ class Scene {
         let normalBoxPos = new Vec2(1600, 375);
         let appliedBoxPos = new Vec2(1728, 375);
         let resultBoxPos = new Vec2(1856, 375);
+        textSize(20);
+        textFont(fonts.light);
 
         if(this.currentScene == this.sceneOppefra) {
 
@@ -381,15 +383,17 @@ class Scene {
             rect(width - 373/2, 445/2, 373, 445);
 
             // Gravity checkbox
+            fill(0)
+            text("GRAVITY", 1765, 50);
             if(mouseX > gravityBoxPos.x-25 && mouseX < gravityBoxPos.x + 25 && mouseY > gravityBoxPos.y-25 && mouseY < gravityBoxPos.y+25) {
                 fill(gravityColor[0] + tintBox, gravityColor[1] + tintBox, gravityColor[2] + tintBox)
                 if(mouseIsPressed && this.allowCheckBoxChange) {
                     this.allowCheckBoxChange = false;
-                    if(!this.gravityCheckBox) {
-                        this.gravityCheckBox = true;
+                    if(!gravityCheckBox) {
+                        gravityCheckBox = true;
                     }
                     else {
-                        this.gravityCheckBox = false;
+                        gravityCheckBox = false;
                     }
                 }
             }
@@ -397,20 +401,22 @@ class Scene {
                 fill(gravityColor[0], gravityColor[1], gravityColor[2]);
             }
             rect(gravityBoxPos.x, gravityBoxPos.y, 50, 50);
-            if(this.gravityCheckBox) {
+            if(gravityCheckBox) {
                 image(images.check, gravityBoxPos.x, gravityBoxPos.y, 38, 38);
             }
 
             // Friction checkbox
+            fill(0)
+            text("FRICTION", 1765, 150);
             if(mouseX > frictionBoxPos.x-25 && mouseX < frictionBoxPos.x + 25 && mouseY > frictionBoxPos.y-25 && mouseY < frictionBoxPos.y+25) {
                 fill(frictionColor[0] + tintBox, frictionColor[1] + tintBox, frictionColor[2] + tintBox);
                 if(mouseIsPressed && this.allowCheckBoxChange) {
                     this.allowCheckBoxChange = false;
-                    if(!this.frictionCheckBox) {
-                        this.frictionCheckBox = true;
+                    if(!frictionCheckBox) {
+                        frictionCheckBox = true;
                     }
                     else {
-                        this.frictionCheckBox = false;
+                        frictionCheckBox = false;
                     }
                 }
             }
@@ -418,20 +424,22 @@ class Scene {
                 fill(frictionColor[0], frictionColor[1], frictionColor[2]);
             }
             rect(frictionBoxPos.x, frictionBoxPos.y, 50, 50);
-            if(this.frictionCheckBox) {
+            if(frictionCheckBox) {
                 image(images.check, frictionBoxPos.x,frictionBoxPos.y, 38, 38);
             }
 
             // Wind checkbox
+            fill(0)
+            text("WIND", 1765, 250);
             if(mouseX > windBoxPos.x-25 && mouseX < windBoxPos.x + 25 && mouseY > windBoxPos.y-25 && mouseY < windBoxPos.y+25) {
                 fill(windColor[0] + tintBox, windColor[1] + tintBox, windColor[2] + tintBox);
                 if(mouseIsPressed && this.allowCheckBoxChange) {
                     this.allowCheckBoxChange = false;
-                    if(!this.windCheckBox) {
-                        this.windCheckBox = true;
+                    if(!windCheckBox) {
+                        windCheckBox = true;
                     }
                     else {
-                        this.windCheckBox = false;
+                        windCheckBox = false;
                     }
                 }
             }
@@ -439,20 +447,24 @@ class Scene {
                 fill(windColor[0], windColor[1], windColor[2]);
             }
             rect(windBoxPos.x, windBoxPos.y, 50, 50);
-            if(this.windCheckBox) {
+            if(windCheckBox) {
                 image(images.check, windBoxPos.x,windBoxPos.y, 38, 38);
             }
 
+            textSize(12)
+
             // normalforce checkbox
+            fill(0)
+            text("NORMAL FORCE", 1600, 330);
             if(mouseX > normalBoxPos.x-25 && mouseX < normalBoxPos.x + 25 && mouseY > normalBoxPos.y-25 && mouseY < normalBoxPos.y+25) {
                 fill(normalColor[0] + tintBox, normalColor[1] + tintBox, normalColor[2] + tintBox);
                 if(mouseIsPressed && this.allowCheckBoxChange) {
                     this.allowCheckBoxChange = false;
-                    if(!this.normalCheckBox) {
-                        this.normalCheckBox = true;
+                    if(!normalCheckBox) {
+                        normalCheckBox = true;
                     }
                     else {
-                        this.normalCheckBox = false;
+                        normalCheckBox = false;
                     }
                 }
             }
@@ -460,20 +472,22 @@ class Scene {
                 fill(normalColor[0], normalColor[1], normalColor[2]);
             }
             rect(normalBoxPos.x, normalBoxPos.y, 50, 50);
-            if(this.normalCheckBox) {
+            if(normalCheckBox) {
                 image(images.check, normalBoxPos.x,normalBoxPos.y, 38, 38);
             }
 
             // appliedforce checkbox
+            fill(0)
+            text("APPLIED FORCE", 1728, 330);
             if(mouseX > appliedBoxPos.x-25 && mouseX < appliedBoxPos.x + 25 && mouseY > appliedBoxPos.y-25 && mouseY < appliedBoxPos.y+25) {
                 fill(appliedColor[0] + tintBox, appliedColor[1] + tintBox, appliedColor[2] + tintBox);
                 if(mouseIsPressed && this.allowCheckBoxChange) {
                     this.allowCheckBoxChange = false;
-                    if(!this.appliedCheckBox) {
-                        this.appliedCheckBox = true;
+                    if(!appliedCheckBox) {
+                        appliedCheckBox = true;
                     }
                     else {
-                        this.appliedCheckBox = false;
+                        appliedCheckBox = false;
                     }
                 }
             }
@@ -481,20 +495,22 @@ class Scene {
                 fill(appliedColor[0], appliedColor[1], appliedColor[2]);
             }
             rect(appliedBoxPos.x, appliedBoxPos.y, 50, 50);
-            if(this.appliedCheckBox) {
+            if(appliedCheckBox) {
                 image(images.check, appliedBoxPos.x,appliedBoxPos.y, 38, 38);
             }
 
             // resultforce checkbox
+            fill(0)
+            text("RESULTANT FORCE", 1856, 330);
             if(mouseX > resultBoxPos.x-25 && mouseX < resultBoxPos.x + 25 && mouseY > resultBoxPos.y-25 && mouseY < resultBoxPos.y+25) {
                 fill(resultColor[0] + tintBox, resultColor[1] + tintBox, resultColor[2] + tintBox);
                 if(mouseIsPressed && this.allowCheckBoxChange) {
                     this.allowCheckBoxChange = false;
-                    if(!this.resultCheckBox) {
-                        this.resultCheckBox = true;
+                    if(!resultCheckBox) {
+                        resultCheckBox = true;
                     }
                     else {
-                        this.resultCheckBox = false;
+                        resultCheckBox = false;
                     }
                 }
             }
@@ -502,7 +518,7 @@ class Scene {
                 fill(resultColor[0], resultColor[1], resultColor[2]);
             }
             rect(resultBoxPos.x, resultBoxPos.y, 50, 50);
-            if(this.resultCheckBox) {
+            if(resultCheckBox) {
                 image(images.check, resultBoxPos.x,resultBoxPos.y, 38, 38);
             }
 

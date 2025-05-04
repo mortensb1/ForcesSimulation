@@ -26,6 +26,7 @@ class Ball extends PhysicsObject {
      * Draw object
      */
     draw() {
+        fill(this.color);
         circle(this.pos.x + width / 2, height / 2 - this.pos.y, 2 * this.r);
     }
 

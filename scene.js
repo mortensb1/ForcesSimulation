@@ -17,13 +17,17 @@ class Scene {
         this.tintDal = false;
         this.tintValSettings = 150;
         this.tintValScenes = 220;
+        this.reading = false;
+        this.allowColorChange = false;
+        this.readingColorChangeVal = 60;
+        this.arrow;
+        
     }
 
     update() {
-        this.currentScene();
         let collisions = [];
         let contactPointsList = [];
-
+        
         // UPDATING SHAPES
         // UPDATING SHAPES
         for (let i = 0; i < this.balls.length; i++) {
@@ -36,7 +40,7 @@ class Scene {
                     collisions.push(new Manifold(this.balls[i], this.balls[j], res.normal, res.depth, contacts.contact1, contacts.contact2, contacts.contactCount));
                 }
             }
-
+            
             for (let j = 0; j < this.polygons.length; j++) {
                 let res = collisionRectBall(this.polygons[j], this.balls[i]);
                 if (res.collision) {
@@ -46,7 +50,7 @@ class Scene {
             }
             this.balls[i].wallCollision();
         }
-
+        
         for (let i = 0; i < this.polygons.length; i++) {
             this.polygons[i].draw();
             this.polygons[i].update();
@@ -59,10 +63,10 @@ class Scene {
             }
             this.polygons[i].wallCollision();
         }
-
+        
         for (let i = 0; i < collisions.length; i++) {
             resolveCollision(collisions[i]);
-
+            
             // console.log(collisions[i]);
             if (collisions[i].contactCount > 0) {
                 contactPointsList.push(collisions[i].contact1);
@@ -71,14 +75,15 @@ class Scene {
                 }
             }
         }
-
+        
         for (let i = 0; i < contactPointsList.length; i++) {
             fill(255, 0, 0);
             square(width / 2 + contactPointsList[i].x, height / 2 - contactPointsList[i].y, 10);
             fill(255);
         }
+        this.currentScene();
     }
-
+    
     sceneMenu() {
         if (this.initializeScene) {
             this.initializeScene = false;
@@ -176,8 +181,11 @@ class Scene {
     sceneOppefra() {
         if (this.initializeScene) {
             this.initializeScene = false;
+
+            this.arrow = new Arrow(10, 100, "Gravity", 100, 0);
         }
 
+        this.arrow.draw();
         this.checkAndDrawSettings();
     }
 
@@ -264,10 +272,11 @@ class Scene {
 
     // Checks if hovering and clicking on settings (home and info) is happening
     checkAndDrawSettings() {
-        //Hovering over home:
+        // Hovering over home:
         if (mouseX < this.homeSize / 2 + this.homePos.x && mouseX > this.homePos.x - this.homeSize / 2 && mouseY < this.homeSize / 2 + this.homePos.y && mouseY > this.homePos.y - this.homeSize / 2) {
             this.tintHome = true;
-            if (mouseIsPressed) {
+            // If home is pressed go home
+            if (mouseIsPressed && !this.reading) {
                 this.initializeScene = true;
                 this.currentScene = this.sceneMenu;
                 this.clearScene();
@@ -278,13 +287,54 @@ class Scene {
             mouseX < this.infoSize / 2 + this.infoPos.x &&
             mouseX > this.infoPos.x - this.infoSize / 2 &&
             mouseY < this.infoSize / 2 + this.infoPos.y &&
-            mouseY > this.infoPos.y - this.infoSize / 2
-        ) {
+            mouseY > this.infoPos.y - this.infoSize / 2) {
             this.tintInfo = true;
-            if (mouseIsPressed) {
+            // If questionmark is pressed, change color on everything and show text info
+            if (mouseIsPressed && !this.reading){
+                this.reading = true;
+                this.changeColorOnAll([-this.readingColorChangeVal, -this.readingColorChangeVal, -this.readingColorChangeVal]);
             }
         }
 
+        // Gives information when the questionmark is pressed
+        if(this.reading) {
+            let titleSpace = height/2 - 350;
+            let underTitleSpace = titleSpace + 100;
+            let textSpace = 70;
+            fill(255);
+            textSize(100);
+            textFont(fonts.regular)
+            if(this.currentScene == this.sceneDal) {
+                text("VALLEY", width/2, titleSpace);
+                textSize(40);
+                text("This scene contaions two slopes and is seen from a normal perspective.", width/2, underTitleSpace);
+            }
+            else if(this.currentScene == this.sceneOppefra) {
+                text("FROM ABOVE", width/2, titleSpace);
+                textSize(40);
+                text("This scene is seen from above. For that reason there is no gravity.", width/2, underTitleSpace);
+            }
+            else if(this.currentScene == this.scenePlatform) {
+                text("PLATFORM", width/2, titleSpace);
+                textSize(40);
+                text("This scene contains a platform with a slope.", width/2, underTitleSpace);
+            }
+            text("- The colors of the arrows, checkboxes and sliders indicate the force they belong to.", width/2, underTitleSpace + 100);
+            text("- The arrows on the objects symbolizes the direction and magnitude of the force.", width/2, underTitleSpace + 100 + textSpace);
+            text("No arrow of that force means none of that force is acting on the object.", width/2, underTitleSpace + 140 + textSpace);
+            text("- Checkboxes turn off and on the arrows, but the forces will remain.", width/2, underTitleSpace + 140 + 2*textSpace);
+            text("- Sliders can be used to modify the magnitude of the forces.", width/2, underTitleSpace + 140 + 3*textSpace)
+            text("- Grab an object with the mouse and see how it affects other objects.", width/2, underTitleSpace + 140 + 4*textSpace)
+        }
+
+        // If info is showing and mouse has been relesed once, the colors are allowed to change
+        if (mouseIsPressed && this.allowColorChange) {
+            this.reading = false;
+            this.allowColorChange = false;
+            this.changeColorOnAll([this.readingColorChangeVal, this.readingColorChangeVal, this.readingColorChangeVal]);
+        }
+
+        // Tinting the images
         if (this.tintHome) {
             tint(this.tintValSettings);
             image(images.home, this.homePos.x, this.homePos.y, this.homeSize, this.homeSize);
@@ -301,5 +351,24 @@ class Scene {
         } else {
             image(images.info, this.infoPos.x, this.infoPos.y, this.infoSize, this.infoSize);
         }
+    }
+
+    changeColorOnAll(col) {
+        backgroundColor[0] += col[0];
+        backgroundColor[1] += col[1];
+        backgroundColor[2] += col[2];
+        for (let i = 0; i < this.balls.length; i++) {
+            this.balls[i].changeColor([this.balls[i].color[0] + col[0], this.balls[i].color[1] + col[1], this.balls[i].color[2] + col[2]]);
+        }
+        for (let i = 0; i < this.polygons.length; i++) {
+            this.polygons[i].changeColor([this.polygons[i].color[0] + col[0], this.polygons[i].color[1] + col[1], this.polygons[i].color[2] + col[2]]);
+        }
+    }
+
+}
+
+function mouseReleased() {
+    if(scene.reading) {
+        scene.allowColorChange = true;
     }
 }

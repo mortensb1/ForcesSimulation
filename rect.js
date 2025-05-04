@@ -33,7 +33,7 @@ class Rect extends PhysicsObject {
         push();
         translate(this.pos.x + width / 2, height / 2 - this.pos.y);
         rotate(-this.angle);
-        fill(this.color[0], this.color[1], this.color[2]);
+        fill(this.color);
         rect(0, 0, this.w, this.h);
         pop();
     }

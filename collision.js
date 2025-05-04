@@ -559,9 +559,11 @@ function resolveCollision(manifold) {
 
         bodyA.force(impulse, "Applied", -1);
         bodyA.angularVel += -ra.cross(impulse) * bodyA.invInertia;
+        drawForce(impulse, "Applied", bodyA, ra);
 
         bodyB.force(impulse, "Applied", 1);
         bodyB.angularVel += rb.cross(impulse) * bodyB.invInertia;
+        drawForce(impulse, "Applied", bodyB, rb);
     }
 
     // FRICTION

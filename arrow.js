@@ -5,7 +5,7 @@ function drawForce(force, forceType, obj, relPos = new Vec2(0,0)) {
     let dir = atan(force.y/force.x);
     mag -= arrowHead;
     push();
-    translate(obj.pos.x + width/2 + relPos.x, height/2 - obj.pos.y + relPos.y);
+    translate(obj.pos.x + width/2 + relPos.x, height/2 - (obj.pos.y + relPos.y));
     console.log(force);
     rotate(-dir);
     if(forceType == "Gravity") {

@@ -519,5 +519,5 @@ function drawNormalsRect(rect) {
 }
 
 function compareFloat(a, b) {
-    return abs(a - b) < 11;
+    return abs(a - b) < 0.0001;
 }

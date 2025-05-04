@@ -12,6 +12,7 @@ class Rect extends PhysicsObject {
         this.cornersMinAndMax = {};
         this.normals = [];
         this.type = Rect;
+        this.formfac = 1.3;
 
         this.Cos = cos(this.angle);
         this.Sin = sin(this.angle);

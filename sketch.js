@@ -10,6 +10,8 @@ let images = {};
 let fonts = {};
 let backgroundColor = [217, 217, 217];
 
+// 100 pixels equals to 1 meter
+
 function preload() {
     images.home = loadImage("Images/Home.png");
     images.info = loadImage("Images/QuestionMark.png");
@@ -26,7 +28,8 @@ function setup() {
     frameRate(fps);
     stroke(0, 0);
     G = new Vec2(0, -9.82);
-    //G = new Vec2(0, 0);
+    airDensity = 1.3;
+    isWindOn = false;
 
     scene = new Scene();
 }

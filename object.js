@@ -11,8 +11,10 @@ class PhysicsObject {
 
         this.elasticity = elasticity;
         this.isStatic = isStatic;
+        this.windForce = new Vec2(1000, 0);
+        this.windConst;
 
-        if (!this.isStatic) {
+        if(!this.isStatic) {
             this.invMass = 1 / this.mass;
         } else {
             this.invMass = 0;
@@ -28,6 +30,11 @@ class PhysicsObject {
     update() {
         if (!this.isStatic) {
             this.vel.add(G, 1 / fps);
+            
+            if(isWindOn) {
+                this.force(this.windForce, 1/fps);
+            }
+
             this.angle += this.angularVel / fps;
             this.updateCorners();
         }

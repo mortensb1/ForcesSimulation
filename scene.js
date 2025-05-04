@@ -20,6 +20,7 @@ class Scene {
         this.reading = false;
         this.allowColorChange = false;
         this.readingColorChangeVal = 60;
+        this.arrow;
         
     }
 
@@ -180,8 +181,11 @@ class Scene {
     sceneOppefra() {
         if (this.initializeScene) {
             this.initializeScene = false;
+
+            this.arrow = new Arrow(10, 100, "Gravity", 100, 0);
         }
 
+        this.arrow.draw();
         this.checkAndDrawSettings();
     }
 
@@ -310,7 +314,7 @@ class Scene {
             }
             text("- The colors of the arrows, checkboxes and sliders indicate the force they belong to.", width/2, underTitleSpace + 100);
             text("- The arrows on the objects symbolizes the direction and magnitude of the force.", width/2, underTitleSpace + 100 + textSpace);
-            text("No arrow of that force means none of that force is acting on the object", width/2, underTitleSpace + 140 + textSpace);
+            text("No arrow of that force means none of that force is acting on the object.", width/2, underTitleSpace + 140 + textSpace);
             text("- Checkboxes turn off and on the arrows, but the forces will remain.", width/2, underTitleSpace + 140 + 2*textSpace);
             text("- Sliders can be used to modify the magnitude of the forces.", width/2, underTitleSpace + 140 + 3*textSpace)
             text("- Grab an object with the mouse and see how it affects other objects.", width/2, underTitleSpace + 140 + 4*textSpace)

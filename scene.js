@@ -274,15 +274,12 @@ class Scene {
             }
         }
 
-        isWindOn = false;
-
         this.checkAndDrawForceModifiers();
         this.checkAndDrawSettings();
     }
 
     scenePlatform() {
         let groundHeight = 150;
-        isWindOn = false;
 
         if (this.initializeScene) {
             this.initializeScene = false;

@@ -33,7 +33,6 @@ function setup() {
     stroke(0, 0);
     G = new Vec2(0, -982);
     airDensity = 1.3;
-    isWindOn = false;
     mouseBall = new Ball(mouseX, mouseX, 10, 0, 0, 10, 0, [0, 0, 0], true);
 
     gravityColor = [218, 193, 193];
@@ -62,5 +61,6 @@ function setup() {
 
 function draw() {
     background(backgroundColor);
+    G.y = gravitySlider.value() * -1;
     scene.update();
 }

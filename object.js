@@ -31,12 +31,14 @@ class PhysicsObject {
         if (!this.isStatic) {
             this.vel.add(G, 1 / fps);
             if (gravityCheckBox) {
-                drawForce(G.clone().scale(-this.mass), "Gravity", this);
+                if(G.y != 0) {
+                    drawForce(G.clone().scale(-this.mass), "Gravity", this);
+                }
             }
 
-            if (isWindOn) {
-                this.force(this.windForce, 1 / fps);
-            }
+            // if (isWindOn) {
+            //     this.force(this.windForce, 1 / fps);
+            // }
 
             this.angle += this.angularVel / fps;
             this.updateCorners();

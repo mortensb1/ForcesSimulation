@@ -24,7 +24,7 @@ function setup() {
     imageMode(CENTER);
     createCanvas(1920, 1080);
     frameRate(fps);
-    noStroke();
+    stroke(0, 0);
     G = new Vec2(0, -9.82);
     //G = new Vec2(0, 0);
 

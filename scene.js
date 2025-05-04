@@ -20,7 +20,6 @@ class Scene {
         this.reading = false;
         this.allowColorChange = false;
         this.readingColorChangeVal = 60;
-        this.arrow;
 
         this.windIsOn = false;
     }
@@ -31,6 +30,19 @@ class Scene {
 
         // UPDATING SHAPES
         // UPDATING SHAPES
+        for (let i = 0; i < this.polygons.length; i++) {
+            this.polygons[i].draw();
+            this.polygons[i].update();
+            for (let j = i + 1; j < this.polygons.length; j++) {
+                let res = collisionRect(this.polygons[i], this.polygons[j]);
+                if (res.collision) {
+                    let contacts = findContactPoints(this.polygons[i], this.polygons[j]);
+                    collisions.push(new Manifold(this.polygons[j], this.polygons[i], res.normal, res.depth, contacts.contact1, contacts.contact2, contacts.contactCount));
+                }
+            }
+            this.polygons[i].wallCollision();
+        }
+
         for (let i = 0; i < this.balls.length; i++) {
             this.balls[i].draw();
             this.balls[i].update();
@@ -50,19 +62,6 @@ class Scene {
                 }
             }
             this.balls[i].wallCollision();
-        }
-
-        for (let i = 0; i < this.polygons.length; i++) {
-            this.polygons[i].draw();
-            this.polygons[i].update();
-            for (let j = i + 1; j < this.polygons.length; j++) {
-                let res = collisionRect(this.polygons[i], this.polygons[j]);
-                if (res.collision) {
-                    let contacts = findContactPoints(this.polygons[i], this.polygons[j]);
-                    collisions.push(new Manifold(this.polygons[j], this.polygons[i], res.normal, res.depth, contacts.contact1, contacts.contact2, contacts.contactCount));
-                }
-            }
-            this.polygons[i].wallCollision();
         }
 
         for (let i = 0; i < collisions.length; i++) {
@@ -183,10 +182,7 @@ class Scene {
         if (this.initializeScene) {
             this.initializeScene = false;
 
-            this.arrow = new Arrow(10, 100, "Gravity", new Vec2(300, 200));
         }
-
-        this.arrow.draw();
         this.checkAndDrawSettings();
     }
 

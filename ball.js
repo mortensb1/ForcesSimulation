@@ -13,6 +13,7 @@ class Ball extends PhysicsObject {
         super(x, y, velX, velY, mass, elasticity, color);
         this.r = r;
         this.type = Ball;
+        this.angle = 0;
         this.formfac = 0.5;
         this.A = (this.r / 100)**2 * PI; //cross section area. Dividing by 100 because of pixel-meter ratio
 

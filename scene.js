@@ -76,11 +76,11 @@ class Scene {
             }
         }
 
-        for (let i = 0; i < contactPointsList.length; i++) {
-            fill(255, 0, 0);
-            square(width / 2 + contactPointsList[i].x, height / 2 - contactPointsList[i].y, 10);
-            fill(255);
-        }
+        // for (let i = 0; i < contactPointsList.length; i++) {
+        //     fill(255, 0, 0);
+        //     square(width / 2 + contactPointsList[i].x, height / 2 - contactPointsList[i].y, 10);
+        //     fill(255);
+        // }
         this.currentScene();
     }
 
@@ -181,7 +181,6 @@ class Scene {
     sceneOppefra() {
         if (this.initializeScene) {
             this.initializeScene = false;
-
         }
         this.checkAndDrawSettings();
     }
@@ -231,15 +230,15 @@ class Scene {
             );
 
             // this.polygons.push(new Rect(0, -200, 200, 100, 0, 0, 10, 1, 0.1, 0, false));
-            this.polygons.push(new Rect(-500, -200, 200, 100, 0, 0, 10, 0.1, Math.PI / 2, 0, false));
-            this.polygons.push(new Rect(-500, 20, 200, 100, 0, 0, 10, 0.1, Math.PI / 2, 0, false));
-            this.polygons.push(new Rect(0, -200, 200, 100, 0, 0, 10, 0.1, 0, 0, false));
-            // this.polygons.push(new Rect(-110, 20, 200, 100, 0, 0, 10, 1, Math.PI / 2, 0, false));
+            // this.polygons.push(new Rect(-500, -200, 200, 100, 0, 0, 10, 0.1, Math.PI / 2, 0, false));
+            // this.polygons.push(new Rect(-500, 20, 200, 100, 0, 0, 10, 0.1, Math.PI / 2, 0, false));
+            // this.polygons.push(new Rect(0, -200, 200, 100, 0, 0, 10, 0.1, 0, 0, false));
+            // this.polygons.push(new Rect(-110, 20, 200, 100, 0, 0, 10, 0.8, Math.PI / 2, 0, false));
             // this.polygons.push(new Rect(-100, 0, 200, 100, 0, 0, 10, 1, 0, 0, false));
-            this.polygons.push(new Triangle(300, 200, new Vec2(-60, -60), new Vec2(60, -60), new Vec2(0, 60), 0, 0, 20, 0.8));
-            // for (let i = 0; i < 10; i++) {
-            //     this.balls.push(new Ball(random(-150, 150), random(-150, 150), 50, random(-10, 10), random(-10, 10), 10, 1));
-            // }
+            // this.polygons.push(new Triangle(300, 200, new Vec2(-60, -60), new Vec2(60, -60), new Vec2(0, 60), 0, 0, 20, 0.8));
+            for (let i = 0; i < 10; i++) {
+                this.balls.push(new Ball(random(-150, 150), random(-150, 150), 50, random(-10, 10), random(-10, 10), 10, 0.8));
+            }
         }
 
         isWindOn = false;

@@ -2,7 +2,7 @@ let x = 200;
 let y = 200;
 let velx = 2;
 let vely = 2;
-const fps = 60;
+const fps = 120;
 let G;
 let balls = [];
 let polygons = [];

@@ -1,17 +1,24 @@
-function drawForce(force, forceType, obj, relPos = new Vec2(0,0)) {
+function drawForce(force, forceType, obj, relPos = new Vec2(0, 0), inverse = false) {
     let arrowWeight = 10;
-    let arrowHead = arrowWeight*2
-    let mag = sqrt(force.x**2 + force.y**2) / 100;
-    let dir = atan(force.y/force.x);
+    let arrowHead = arrowWeight * 2;
+    let mag = sqrt(force.x ** 2 + force.y ** 2) / 100;
+    let dirVec = force.clone().normalize();
+    let dir;
+    if (Math.asin(dirVec.y) < 0) {
+        dir = Math.acos(dirVec.x);
+    } else {
+        dir = 2 * Math.PI - Math.acos(dirVec.x);
+    }
     mag -= arrowHead;
     push();
-    translate(obj.pos.x + width/2 + relPos.x, height/2 - (obj.pos.y + relPos.y));
-    console.log(force);
+    translate(obj.pos.x + width / 2 + relPos.x, height / 2 - (obj.pos.y + relPos.y));
     rotate(-dir);
-    if(forceType == "Gravity") {
+    if (forceType == "Gravity") {
         fill(218, 193, 193);
+    } else if ((forceType = "Applied")) {
+        fill(0);
     }
-    rect(mag/2, 0, mag, arrowWeight);
+    rect(mag / 2, 0, mag, arrowWeight);
     triangle(mag, arrowHead, mag, -arrowHead, mag + arrowHead + arrowWeight, 0);
     pop();
 }

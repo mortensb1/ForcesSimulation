@@ -14,7 +14,7 @@ function drawForce(force, forceType, obj, relPos = new Vec2(0, 0), inverse = fal
     translate(obj.pos.x + width / 2 + relPos.x, height / 2 - (obj.pos.y + relPos.y));
     rotate(-dir);
     if (forceType == "Gravity") {
-        fill(218, 193, 193);
+        fill(gravityColor[0], gravityColor[1], gravityColor[2]);
     } else if ((forceType = "Applied")) {
         fill(0);
     }

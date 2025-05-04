@@ -578,8 +578,8 @@ function resolveCollision(manifold) {
         bodyB.force(impulse, "Applied", 1);
         bodyB.angularVel += rb.cross(impulse) * bodyB.invInertia;
 
-        drawForce(impulse.clone().scale(2), "Applied", bodyA, ra.clone());
-        drawForce(impulse.clone().scale(2), "Applied", bodyB, rb.clone());
+        // drawForce(impulse.clone().scale(2), "Applied", bodyA, ra.clone());
+        // drawForce(impulse.clone().scale(2), "Applied", bodyB, rb.clone());
     }
 
     // FRICTION

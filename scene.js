@@ -19,9 +19,11 @@ class Scene {
         this.tintValScenes = 220;
         this.reading = false;
         this.allowColorChange = false;
-        this.readingColorChangeVal = 60;
+        this.allowCheckBoxChange = true;
+        this.readingColorChangeVal = 100;
 
-        this.windIsOn = false;
+        this.settingsColor = [222, 222, 222];
+
     }
 
     update() {
@@ -202,6 +204,7 @@ class Scene {
         if (this.initializeScene) {
             this.initializeScene = false;
         }
+        this.checkAndDrawForceModifiers();
         this.checkAndDrawSettings();
     }
 
@@ -263,6 +266,7 @@ class Scene {
 
         isWindOn = false;
 
+        this.checkAndDrawForceModifiers();
         this.checkAndDrawSettings();
     }
 
@@ -280,6 +284,7 @@ class Scene {
             this.polygons.push(new Rect(-200, 0, 70, 70, 0, 0, 20, 0.8));
         }
 
+        this.checkAndDrawForceModifiers();
         this.checkAndDrawSettings();
     }
 
@@ -291,7 +296,10 @@ class Scene {
     // Checks if hovering and clicking on settings (home and info) is happening
     checkAndDrawSettings() {
         // Hovering over home:
-        if (mouseX < this.homeSize / 2 + this.homePos.x && mouseX > this.homePos.x - this.homeSize / 2 && mouseY < this.homeSize / 2 + this.homePos.y && mouseY > this.homePos.y - this.homeSize / 2) {
+        if (mouseX < this.homeSize / 2 + this.homePos.x 
+            && mouseX > this.homePos.x - this.homeSize / 2 
+            && mouseY < this.homeSize / 2 + this.homePos.y 
+            && mouseY > this.homePos.y - this.homeSize / 2) {
             this.tintHome = true;
             // If home is pressed go home
             if (mouseIsPressed && !this.reading) {
@@ -352,6 +360,9 @@ class Scene {
             this.changeColorOnAll([this.readingColorChangeVal, this.readingColorChangeVal, this.readingColorChangeVal]);
         }
 
+        fill(this.settingsColor[0], this.settingsColor[1], this.settingsColor[2]);
+        rect(0, 0, 400, 230);
+
         // Tinting the images
         if (this.tintHome) {
             tint(this.tintValSettings);
@@ -371,10 +382,163 @@ class Scene {
         }
     }
 
+    checkAndDrawForceModifiers() {
+        let tintBox = -20
+        let gravityBoxPos = new Vec2(1600, 75);
+        let frictionBoxPos = new Vec2(1600, 175);
+        let windBoxPos = new Vec2(1600, 275);
+        let normalBoxPos = new Vec2(1600, 375);
+        let appliedBoxPos = new Vec2(1728, 375);
+        let resultBoxPos = new Vec2(1856, 375);
+
+        if(this.currentScene == this.sceneOppefra) {
+
+        }
+        else {
+            // Big rect
+            fill(this.settingsColor[0], this.settingsColor[1], this.settingsColor[2]);
+            rect(width - 373/2, 445/2, 373, 445);
+
+            // Gravity checkbox
+            if(mouseX > gravityBoxPos.x-25 && mouseX < gravityBoxPos.x + 25 && mouseY > gravityBoxPos.y-25 && mouseY < gravityBoxPos.y+25) {
+                fill(gravityColor[0] + tintBox, gravityColor[1] + tintBox, gravityColor[2] + tintBox)
+                if(mouseIsPressed && this.allowCheckBoxChange) {
+                    this.allowCheckBoxChange = false;
+                    if(!this.gravityCheckBox) {
+                        this.gravityCheckBox = true;
+                    }
+                    else {
+                        this.gravityCheckBox = false;
+                    }
+                }
+            }
+            else {
+                fill(gravityColor[0], gravityColor[1], gravityColor[2]);
+            }
+            rect(gravityBoxPos.x, gravityBoxPos.y, 50, 50);
+            if(this.gravityCheckBox) {
+                image(images.check, gravityBoxPos.x, gravityBoxPos.y, 38, 38);
+            }
+
+            // Friction checkbox
+            if(mouseX > frictionBoxPos.x-25 && mouseX < frictionBoxPos.x + 25 && mouseY > frictionBoxPos.y-25 && mouseY < frictionBoxPos.y+25) {
+                fill(frictionColor[0] + tintBox, frictionColor[1] + tintBox, frictionColor[2] + tintBox);
+                if(mouseIsPressed && this.allowCheckBoxChange) {
+                    this.allowCheckBoxChange = false;
+                    if(!this.frictionCheckBox) {
+                        this.frictionCheckBox = true;
+                    }
+                    else {
+                        this.frictionCheckBox = false;
+                    }
+                }
+            }
+            else {
+                fill(frictionColor[0], frictionColor[1], frictionColor[2]);
+            }
+            rect(frictionBoxPos.x, frictionBoxPos.y, 50, 50);
+            if(this.frictionCheckBox) {
+                image(images.check, frictionBoxPos.x,frictionBoxPos.y, 38, 38);
+            }
+
+            // Wind checkbox
+            if(mouseX > windBoxPos.x-25 && mouseX < windBoxPos.x + 25 && mouseY > windBoxPos.y-25 && mouseY < windBoxPos.y+25) {
+                fill(windColor[0] + tintBox, windColor[1] + tintBox, windColor[2] + tintBox);
+                if(mouseIsPressed && this.allowCheckBoxChange) {
+                    this.allowCheckBoxChange = false;
+                    if(!this.windCheckBox) {
+                        this.windCheckBox = true;
+                    }
+                    else {
+                        this.windCheckBox = false;
+                    }
+                }
+            }
+            else {
+                fill(windColor[0], windColor[1], windColor[2]);
+            }
+            rect(windBoxPos.x, windBoxPos.y, 50, 50);
+            if(this.windCheckBox) {
+                image(images.check, windBoxPos.x,windBoxPos.y, 38, 38);
+            }
+
+            // normalforce checkbox
+            if(mouseX > normalBoxPos.x-25 && mouseX < normalBoxPos.x + 25 && mouseY > normalBoxPos.y-25 && mouseY < normalBoxPos.y+25) {
+                fill(normalColor[0] + tintBox, normalColor[1] + tintBox, normalColor[2] + tintBox);
+                if(mouseIsPressed && this.allowCheckBoxChange) {
+                    this.allowCheckBoxChange = false;
+                    if(!this.normalCheckBox) {
+                        this.normalCheckBox = true;
+                    }
+                    else {
+                        this.normalCheckBox = false;
+                    }
+                }
+            }
+            else {
+                fill(normalColor[0], normalColor[1], normalColor[2]);
+            }
+            rect(normalBoxPos.x, normalBoxPos.y, 50, 50);
+            if(this.normalCheckBox) {
+                image(images.check, normalBoxPos.x,normalBoxPos.y, 38, 38);
+            }
+
+            // appliedforce checkbox
+            if(mouseX > appliedBoxPos.x-25 && mouseX < appliedBoxPos.x + 25 && mouseY > appliedBoxPos.y-25 && mouseY < appliedBoxPos.y+25) {
+                fill(appliedColor[0] + tintBox, appliedColor[1] + tintBox, appliedColor[2] + tintBox);
+                if(mouseIsPressed && this.allowCheckBoxChange) {
+                    this.allowCheckBoxChange = false;
+                    if(!this.appliedCheckBox) {
+                        this.appliedCheckBox = true;
+                    }
+                    else {
+                        this.appliedCheckBox = false;
+                    }
+                }
+            }
+            else {
+                fill(appliedColor[0], appliedColor[1], appliedColor[2]);
+            }
+            rect(appliedBoxPos.x, appliedBoxPos.y, 50, 50);
+            if(this.appliedCheckBox) {
+                image(images.check, appliedBoxPos.x,appliedBoxPos.y, 38, 38);
+            }
+
+            // resultforce checkbox
+            if(mouseX > resultBoxPos.x-25 && mouseX < resultBoxPos.x + 25 && mouseY > resultBoxPos.y-25 && mouseY < resultBoxPos.y+25) {
+                fill(resultColor[0] + tintBox, resultColor[1] + tintBox, resultColor[2] + tintBox);
+                if(mouseIsPressed && this.allowCheckBoxChange) {
+                    this.allowCheckBoxChange = false;
+                    if(!this.resultCheckBox) {
+                        this.resultCheckBox = true;
+                    }
+                    else {
+                        this.resultCheckBox = false;
+                    }
+                }
+            }
+            else {
+                fill(resultColor[0], resultColor[1], resultColor[2]);
+            }
+            rect(resultBoxPos.x, resultBoxPos.y, 50, 50);
+            if(this.resultCheckBox) {
+                image(images.check, resultBoxPos.x,resultBoxPos.y, 38, 38);
+            }
+
+        }
+    }
+
     changeColorOnAll(col) {
-        backgroundColor[0] += col[0];
-        backgroundColor[1] += col[1];
-        backgroundColor[2] += col[2];
+        for (let i = 0; i < 3; i++) {
+            backgroundColor[i] += col[i];
+            this.settingsColor[i] += col[i];
+            gravityColor[i] += col[i];
+            frictionColor[i] += col[i];
+            windColor[i] += col[i];
+            normalColor[i] += col[i];
+            appliedColor[i] += col[i];
+            resultColor[i] += col[i];
+        }
         for (let i = 0; i < this.balls.length; i++) {
             this.balls[i].changeColor([this.balls[i].color[0] + col[0], this.balls[i].color[1] + col[1], this.balls[i].color[2] + col[2]]);
         }
@@ -387,5 +551,8 @@ class Scene {
 function mouseReleased() {
     if (scene.reading) {
         scene.allowColorChange = true;
+    }
+    if (!scene.allowCheckBoxChange) {
+        scene.allowCheckBoxChange = true;
     }
 }

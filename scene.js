@@ -287,7 +287,7 @@ class Scene {
     }
 
     scenePlatform() {
-        let groundHeight = 150;
+        let groundHeight = 200;
 
         if (this.initializeScene) {
             this.initializeScene = false;
@@ -295,8 +295,9 @@ class Scene {
             this.polygons.push(new Rect(0, -height / 2 + groundHeight / 2, width, groundHeight, 0, 0, 20, 1, 0, 0, true, this.staticColor));
             this.polygons.push(new Rect(-450, 30, 555, 35, 0, 0, 20, 1, -0.436, 0, true, this.staticColor));
 
-            this.balls.push(new Ball(0, 0, 100, 0, 0, 30, 0.8));
-            this.polygons.push(new Rect(-200, 0, 70, 70, 0, 0, 20, 0.8));
+            this.balls.push(new Ball(0, 0, 100, 0, 0, 10, 0.8));
+            this.polygons.push(new Rect(-200, 0, 200, 200, 0, 0, 20, 0.8));
+            this.polygons.push(new Rect(-600, 0, 250, 150, 0, 0, 10, 0.8));
         }
 
         this.checkAndDrawForceModifiers();

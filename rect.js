@@ -25,12 +25,15 @@ class Rect extends PhysicsObject {
         } else {
             this.invInertia = 0;
         }
+        this.updateCornersMinAndMax();
     }
 
     /**
      * Draw Object
      */
     draw() {
+        this.windConst = 1/2 * airDensity * this.formfac * (this.h/100)**2;
+
         push();
         translate(this.pos.x + width / 2, height / 2 - this.pos.y);
         rotate(-this.angle);

@@ -12,6 +12,8 @@ class PhysicsObject {
         this.elasticity = elasticity;
         this.isStatic = isStatic;
         this.windConst;
+        this.windAcc = new Vec2();
+        this.relVel;
 
         if (!this.isStatic) {
             this.invMass = 1 / this.mass;
@@ -29,7 +31,20 @@ class PhysicsObject {
     update() {
         if (!this.isStatic) {
             this.vel.add(G, 1 / fps);
-            this.vel.add(windStrength, 1 / fps);
+            this.vel.add(this.windAcc, 1 / fps);
+            let c = 1;
+
+            this.relVel = this.vel.clone().subtract(windStrength);
+            if (this.relVel.x < 0) {
+                c = -1
+            }
+            this.windAcc = new Vec2((-this.windConst * (this.relVel.x/100)**2 * c) / this.mass, 0)
+            if (this.relVel.x < 1000000) {
+                
+                
+            }
+            
+
             if (gravityBox.checkBoxBool) {
                 if (G.y != 0) {
                     drawForce(G.clone().scale(-this.mass), "Gravity", this);
@@ -37,7 +52,7 @@ class PhysicsObject {
             }
             if (windBox.checkBoxBool) {
                 if (windStrength.x != 0) {
-                    drawForce(windStrength.clone().scale(this.mass), "Wind", this);
+                    drawForce(this.windAcc.clone().scale(this.mass), "Wind", this);
                 }
             }
 

@@ -223,6 +223,9 @@ class Scene {
     sceneOppefra() {
         if (this.initializeScene) {
             this.initializeScene = false;
+            G = new Vec2(0,0);
+
+            this.balls.push(new Ball(0,0, 50, 0,0,20,0.8));
         }
         this.checkAndDrawForceModifiers();
     }

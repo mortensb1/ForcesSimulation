@@ -33,7 +33,7 @@ function setup() {
     stroke(0, 0);
 
     G = new Vec2(0, -982);
-    windStrength = new Vec2(10, 0);
+    windStrength = new Vec2(0, 0);
     airDensity = 1.3;
     mouseBall = new Ball(mouseX, mouseX, 10, 0, 0, 10, 0, [0, 0, 0], true);
 
@@ -56,7 +56,7 @@ function setup() {
     gravitySlider.size(230);
     frictionSlider = createSlider(0, 1, 0.5, 0.05);
     frictionSlider.size(230);
-    windSlider = createSlider(-400, 400, 0, 50);
+    windSlider = createSlider(-1000, 1000, 0, 50);
     windSlider.size(230);
 
     scene = new Scene();

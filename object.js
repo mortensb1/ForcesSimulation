@@ -30,21 +30,22 @@ class PhysicsObject {
      */
     update() {
         if (!this.isStatic) {
-            this.vel.add(G, 1 / fps);
-            this.vel.add(this.windAcc, 1 / fps);
             let c = 1;
 
             this.relVel = this.vel.clone().subtract(windStrength);
             if (this.relVel.x < 0) {
                 c = -1
             }
-            this.windAcc = new Vec2((-this.windConst * (this.relVel.x/100)**2 * c) / this.mass, 0)
-            if (this.relVel.x < 1000000) {
-                
-                
-            }
-            
+            this.windAcc = new Vec2((-this.windConst * (this.relVel.x/100)**2 * c) / this.mass, 0);
 
+            // Adding accelerations
+            this.vel.add(G, 1 / fps);
+            this.vel.add(this.windAcc, 1 / fps);
+
+            this.angle += this.angularVel / fps;
+            this.updateCorners();
+
+            //Draw forces
             if (gravityBox.checkBoxBool) {
                 if (G.y != 0) {
                     drawForce(G.clone().scale(-this.mass), "Gravity", this);
@@ -55,9 +56,6 @@ class PhysicsObject {
                     drawForce(this.windAcc.clone().scale(this.mass), "Wind", this);
                 }
             }
-
-            this.angle += this.angularVel / fps;
-            this.updateCorners();
         }
 
         this.pos.add(this.vel, 1 / fps);

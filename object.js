@@ -11,7 +11,6 @@ class PhysicsObject {
 
         this.elasticity = elasticity;
         this.isStatic = isStatic;
-        this.windForce = new Vec2(1000, 0);
         this.windConst;
 
         if (!this.isStatic) {
@@ -30,15 +29,17 @@ class PhysicsObject {
     update() {
         if (!this.isStatic) {
             this.vel.add(G, 1 / fps);
+            this.vel.add(windStrength, 1 / fps);
             if (gravityCheckBox) {
-                if(G.y != 0) {
+                if (G.y != 0) {
                     drawForce(G.clone().scale(-this.mass), "Gravity", this);
                 }
             }
-
-            // if (isWindOn) {
-            //     this.force(this.windForce, 1 / fps);
-            // }
+            if (windCheckBox) {
+                if (windStrength.x != 0) {
+                    drawForce(windStrength.clone().scale(this.mass), "Wind", this);
+                }
+            }
 
             this.angle += this.angularVel / fps;
             this.updateCorners();

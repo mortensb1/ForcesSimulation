@@ -32,6 +32,7 @@ function setup() {
     frameRate(fps);
     stroke(0, 0);
     G = new Vec2(0, -982);
+    windStrength = new Vec2(10, 0);
     airDensity = 1.3;
     mouseBall = new Ball(mouseX, mouseX, 10, 0, 0, 10, 0, [0, 0, 0], true);
 
@@ -53,7 +54,7 @@ function setup() {
     gravitySlider.size(230);
     frictionSlider = createSlider(0, 1, 0.5, 0.05);
     frictionSlider.size(230);
-    windSlider = createSlider(0, 1, 0.5, 0.05);
+    windSlider = createSlider(0, 400, 0, 10);
     windSlider.size(230);
 
     scene = new Scene();
@@ -61,6 +62,5 @@ function setup() {
 
 function draw() {
     background(backgroundColor);
-    G.y = gravitySlider.value() * -1;
     scene.update();
 }

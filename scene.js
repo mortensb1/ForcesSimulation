@@ -420,6 +420,10 @@ class Scene {
             windSlider.show();
             windSlider.position(1650, 265);
 
+            //Update sliders
+            G.y = gravitySlider.value() * -1;
+            windStrength.x = windSlider.value();
+
 
             // Gravity checkbox
             fill(0);

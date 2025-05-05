@@ -30,12 +30,12 @@ class PhysicsObject {
         if (!this.isStatic) {
             this.vel.add(G, 1 / fps);
             this.vel.add(windStrength, 1 / fps);
-            if (gravityCheckBox) {
+            if (gravityBox.checkBoxBool) {
                 if (G.y != 0) {
                     drawForce(G.clone().scale(-this.mass), "Gravity", this);
                 }
             }
-            if (windCheckBox) {
+            if (windBox.checkBoxBool) {
                 if (windStrength.x != 0) {
                     drawForce(windStrength.clone().scale(this.mass), "Wind", this);
                 }

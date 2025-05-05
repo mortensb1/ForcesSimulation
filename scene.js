@@ -394,164 +394,101 @@ class Scene {
     }
 
     checkAndDrawForceModifiers() {
-        let tintBox = -20;
-        let gravityBoxPos = new Vec2(1600, 75);
-        let frictionBoxPos = new Vec2(1600, 175);
-        let windBoxPos = new Vec2(1600, 275);
-        let normalBoxPos = new Vec2(1600, 375);
-        let appliedBoxPos = new Vec2(1728, 375);
-        let resultBoxPos = new Vec2(1856, 375);
         textSize(20);
         textFont(fonts.light);
 
         if(this.currentScene == this.sceneOppefra) {
+            //Big rect
+            fill(this.settingsColor[0], this.settingsColor[1], this.settingsColor[2]);
+            rect(width - 373/2, 339/2, 373, 339);
+
+            // Sliders
             gravitySlider.hide();
             frictionSlider.show();
+            frictionSlider.position(1650, 65);
             windSlider.show();
+            windSlider.position(1650, 165);
+            windStrength.x = windSlider.value();
+
+            // Friction check box
+            fill(0);
+            text("FRICTION", 1765, 50);
+            frictionBox.pos = new Vec2(1600, 75);
+            frictionBox.update();
+
+            // Wind checkbox
+            fill(0);
+            text("WIND", 1765, 150);
+            windBox.pos = new Vec2(1600, 175);
+            windBox.update();
+
+            textSize(15);
+
+            // Applied checkbox
+            fill(0);
+            text("APPLIED FORCE", 1660, 230);
+            appliedBox.pos = new Vec2(1660, 275);
+            appliedBox.update();
+
+            // Result checkbox
+            fill(0);
+            text("RESULTANT FORCE", 1810, 230);
+            resultBox.pos = new Vec2(1810, 275);
+            resultBox.update();
+
         }
         else {
             // Big rect
             fill(this.settingsColor[0], this.settingsColor[1], this.settingsColor[2]);
             rect(width - 373/2, 445/2, 373, 445);
+
+            // Sliders
             gravitySlider.show();
             gravitySlider.position(1650, 65);
             frictionSlider.show();
             frictionSlider.position(1650, 165);
             windSlider.show();
             windSlider.position(1650, 265);
-
-            //Update sliders
             G.y = gravitySlider.value() * -1;
             windStrength.x = windSlider.value();
-
 
             // Gravity checkbox
             fill(0);
             text("GRAVITY", 1765, 50);
-            if (mouseX > gravityBoxPos.x - 25 && mouseX < gravityBoxPos.x + 25 && mouseY > gravityBoxPos.y - 25 && mouseY < gravityBoxPos.y + 25) {
-                fill(gravityColor[0] + tintBox, gravityColor[1] + tintBox, gravityColor[2] + tintBox);
-                if (mouseIsPressed && this.allowCheckBoxChange) {
-                    this.allowCheckBoxChange = false;
-                    if (!gravityCheckBox) {
-                        gravityCheckBox = true;
-                    } else {
-                        gravityCheckBox = false;
-                    }
-                }
-            } else {
-                fill(gravityColor[0], gravityColor[1], gravityColor[2]);
-            }
-            rect(gravityBoxPos.x, gravityBoxPos.y, 50, 50);
-            if (gravityCheckBox) {
-                image(images.check, gravityBoxPos.x, gravityBoxPos.y, 38, 38);
-            }
+            gravityBox.pos = new Vec2(1600, 75);
+            gravityBox.update();
 
             // Friction checkbox
             fill(0);
             text("FRICTION", 1765, 150);
-            if (mouseX > frictionBoxPos.x - 25 && mouseX < frictionBoxPos.x + 25 && mouseY > frictionBoxPos.y - 25 && mouseY < frictionBoxPos.y + 25) {
-                fill(frictionColor[0] + tintBox, frictionColor[1] + tintBox, frictionColor[2] + tintBox);
-                if (mouseIsPressed && this.allowCheckBoxChange) {
-                    this.allowCheckBoxChange = false;
-                    if (!frictionCheckBox) {
-                        frictionCheckBox = true;
-                    } else {
-                        frictionCheckBox = false;
-                    }
-                }
-            } else {
-                fill(frictionColor[0], frictionColor[1], frictionColor[2]);
-            }
-            rect(frictionBoxPos.x, frictionBoxPos.y, 50, 50);
-            if (frictionCheckBox) {
-                image(images.check, frictionBoxPos.x, frictionBoxPos.y, 38, 38);
-            }
+            frictionBox.pos = new Vec2(1600, 175);
+            frictionBox.update();
 
             // Wind checkbox
             fill(0);
             text("WIND", 1765, 250);
-            if (mouseX > windBoxPos.x - 25 && mouseX < windBoxPos.x + 25 && mouseY > windBoxPos.y - 25 && mouseY < windBoxPos.y + 25) {
-                fill(windColor[0] + tintBox, windColor[1] + tintBox, windColor[2] + tintBox);
-                if (mouseIsPressed && this.allowCheckBoxChange) {
-                    this.allowCheckBoxChange = false;
-                    if (!windCheckBox) {
-                        windCheckBox = true;
-                    } else {
-                        windCheckBox = false;
-                    }
-                }
-            } else {
-                fill(windColor[0], windColor[1], windColor[2]);
-            }
-            rect(windBoxPos.x, windBoxPos.y, 50, 50);
-            if (windCheckBox) {
-                image(images.check, windBoxPos.x, windBoxPos.y, 38, 38);
-            }
+            windBox.pos = new Vec2(1600, 275);
+            windBox.update();
 
             textSize(12);
 
             // normalforce checkbox
             fill(0);
             text("NORMAL FORCE", 1600, 330);
-            if (mouseX > normalBoxPos.x - 25 && mouseX < normalBoxPos.x + 25 && mouseY > normalBoxPos.y - 25 && mouseY < normalBoxPos.y + 25) {
-                fill(normalColor[0] + tintBox, normalColor[1] + tintBox, normalColor[2] + tintBox);
-                if (mouseIsPressed && this.allowCheckBoxChange) {
-                    this.allowCheckBoxChange = false;
-                    if (!normalCheckBox) {
-                        normalCheckBox = true;
-                    } else {
-                        normalCheckBox = false;
-                    }
-                }
-            } else {
-                fill(normalColor[0], normalColor[1], normalColor[2]);
-            }
-            rect(normalBoxPos.x, normalBoxPos.y, 50, 50);
-            if (normalCheckBox) {
-                image(images.check, normalBoxPos.x, normalBoxPos.y, 38, 38);
-            }
-
+            normalBox.pos = new Vec2(1600, 375);
+            normalBox.update();
+            
             // appliedforce checkbox
             fill(0);
             text("APPLIED FORCE", 1728, 330);
-            if (mouseX > appliedBoxPos.x - 25 && mouseX < appliedBoxPos.x + 25 && mouseY > appliedBoxPos.y - 25 && mouseY < appliedBoxPos.y + 25) {
-                fill(appliedColor[0] + tintBox, appliedColor[1] + tintBox, appliedColor[2] + tintBox);
-                if (mouseIsPressed && this.allowCheckBoxChange) {
-                    this.allowCheckBoxChange = false;
-                    if (!appliedCheckBox) {
-                        appliedCheckBox = true;
-                    } else {
-                        appliedCheckBox = false;
-                    }
-                }
-            } else {
-                fill(appliedColor[0], appliedColor[1], appliedColor[2]);
-            }
-            rect(appliedBoxPos.x, appliedBoxPos.y, 50, 50);
-            if (appliedCheckBox) {
-                image(images.check, appliedBoxPos.x, appliedBoxPos.y, 38, 38);
-            }
+            appliedBox.pos = new Vec2(1728, 375);
+            appliedBox.update();
 
             // resultforce checkbox
             fill(0);
             text("RESULTANT FORCE", 1856, 330);
-            if (mouseX > resultBoxPos.x - 25 && mouseX < resultBoxPos.x + 25 && mouseY > resultBoxPos.y - 25 && mouseY < resultBoxPos.y + 25) {
-                fill(resultColor[0] + tintBox, resultColor[1] + tintBox, resultColor[2] + tintBox);
-                if (mouseIsPressed && this.allowCheckBoxChange) {
-                    this.allowCheckBoxChange = false;
-                    if (!resultCheckBox) {
-                        resultCheckBox = true;
-                    } else {
-                        resultCheckBox = false;
-                    }
-                }
-            } else {
-                fill(resultColor[0], resultColor[1], resultColor[2]);
-            }
-            rect(resultBoxPos.x, resultBoxPos.y, 50, 50);
-            if (resultCheckBox) {
-                image(images.check, resultBoxPos.x, resultBoxPos.y, 38, 38);
-            }
+            resultBox.pos = new Vec2(1856, 375);
+            resultBox.update();
         }
     }
 
@@ -579,7 +516,7 @@ function mouseReleased() {
     if (scene.reading) {
         scene.allowColorChange = true;
     }
-    if (!scene.allowCheckBoxChange) {
-        scene.allowCheckBoxChange = true;
+    if (!allowCheckBoxChange) {
+        allowCheckBoxChange = true;
     }
 }

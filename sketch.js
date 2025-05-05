@@ -31,6 +31,7 @@ function setup() {
     createCanvas(1920, 1080);
     frameRate(fps);
     stroke(0, 0);
+
     G = new Vec2(0, -982);
     windStrength = new Vec2(10, 0);
     airDensity = 1.3;
@@ -43,12 +44,13 @@ function setup() {
     appliedColor = [218, 206, 219];
     resultColor = [102, 102, 102];
 
-    gravityCheckBox = false;
-    frictionCheckBox = false;
-    windCheckBox = false;
-    normalCheckBox = false;
-    appliedCheckBox = false;
-    resultCheckBox = false;
+    allowCheckBoxChange = true;
+    gravityBox = new Checkbox(new Vec2(), [gravityColor[0], gravityColor[1], gravityColor[2]]);
+    frictionBox = new Checkbox(new Vec2(), [frictionColor[0], frictionColor[1], frictionColor[2]]);
+    windBox = new Checkbox(new Vec2(), [windColor[0], windColor[1], windColor[2]]);
+    appliedBox = new Checkbox(new Vec2(),  [appliedColor[0], appliedColor[1], appliedColor[2]]);
+    normalBox = new Checkbox(new Vec2(), [normalColor[0], normalColor[1], normalColor[2]]);
+    resultBox = new Checkbox(new Vec2(), [resultColor[0], resultColor[1], resultColor[2]]);
 
     gravitySlider = createSlider(0, 2000, 982, 100);
     gravitySlider.size(230);

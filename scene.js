@@ -43,7 +43,6 @@ class Scene {
                     collisions.push(new Manifold(this.polygons[j], this.polygons[i], res.normal, res.depth, contacts.contact1, contacts.contact2, contacts.contactCount));
                 }
             }
-            this.polygons[i].wallCollision();
         }
 
         for (let i = 0; i < this.balls.length; i++) {
@@ -64,7 +63,6 @@ class Scene {
                     collisions.push(new Manifold(this.balls[i], this.polygons[j], res.normal, res.depth, contacts.contact1, contacts.contact2, contacts.contactCount));
                 }
             }
-            this.balls[i].wallCollision();
         }
 
         for (let i = 0; i < collisions.length; i++) {
@@ -228,6 +226,12 @@ class Scene {
             G = new Vec2(0, 0);
 
             this.balls.push(new Ball(0, 0, 50, 0, 0, 20, 0.8));
+
+            //Edges
+            this.polygons.push(new Rect(-width / 2 - width / 10, 0, width / 5, height, 0, 0, 1, 0.8, 0, 0, true, this.staticColor));
+            this.polygons.push(new Rect(width / 2 + width / 10, 0, width / 5, height, 0, 0, 1, 0.8, 0, 0, true, this.staticColor));
+            this.polygons.push(new Rect(0, -height / 2 - height / 10, width - 20, height / 5, 0, 0, 1, 0.8, 0, 0, true, this.staticColor));
+            this.polygons.push(new Rect(0, height / 2 + height / 10, width - 20, height / 5, 0, 0, 1, 0.8, 0, 0, true, this.staticColor));
         }
         this.checkAndDrawForceModifiers();
     }
@@ -235,6 +239,11 @@ class Scene {
     sceneDal() {
         if (this.initializeScene) {
             this.initializeScene = false;
+
+            //Edges
+            this.polygons.push(new Rect(-width / 2 - width / 10, 0, width / 5, height, 0, 0, 1, 0.8, 0, 0, true, this.staticColor));
+            this.polygons.push(new Rect(width / 2 + width / 10, 0, width / 5, height, 0, 0, 1, 0.8, 0, 0, true, this.staticColor));
+            this.polygons.push(new Rect(0, height / 2 + height / 10, width - 20, height / 5, 0, 0, 1, 0.8, 0, 0, true, this.staticColor));
 
             let dalGroundHeight = 170;
             let dalTriangleWidth = 500;
@@ -296,6 +305,11 @@ class Scene {
 
         if (this.initializeScene) {
             this.initializeScene = false;
+
+            //Edges
+            this.polygons.push(new Rect(-width / 2 - width / 10, 0, width / 5, height, 0, 0, 1, 0.8, 0, 0, true, this.staticColor));
+            this.polygons.push(new Rect(width / 2 + width / 10, 0, width / 5, height, 0, 0, 1, 0.8, 0, 0, true, this.staticColor));
+            this.polygons.push(new Rect(0, height / 2 + height / 10, width - 20, height / 5, 0, 0, 1, 0.8, 0, 0, true, this.staticColor));
 
             this.polygons.push(new Rect(0, -height / 2 + groundHeight / 2, width, groundHeight, 0, 0, 20, 1, 0, 0, true, this.staticColor));
             this.polygons.push(new Rect(-450, 30, 555, 35, 0, 0, 20, 1, -0.436, 0, true, this.staticColor));

@@ -3,7 +3,7 @@ class Scene {
         this.initializeScene = true;
         this.balls = [];
         this.polygons = [];
-        this.currentScene = this.sceneDal;
+        this.currentScene = this.sceneMenu;
         this.staticColor = [96, 88, 88];
 
         this.homeSize = 80;
@@ -68,7 +68,6 @@ class Scene {
         for (let i = 0; i < collisions.length; i++) {
             resolveCollision(collisions[i]);
 
-            // console.log(collisions[i]);
             if (collisions[i].contactCount > 0) {
                 contactPointsList.push(collisions[i].contact1);
                 if (collisions[i].contactCount > 1) {
@@ -102,9 +101,8 @@ class Scene {
             mouseBallContacts[0].mouseHold = true;
 
             let totalForce = distance.add(relativeVel.clone().scale(-0.05));
-            // console.log(totalForce);
 
-            mouseBallContacts[i].force(totalForce, "", 1);
+            mouseBallContacts[i].force(totalForce, "Applied", 1);
             if (!mouseIsPressed) {
                 mouseBallContacts[0].mouseHold = false;
                 mouseBallContacts = [];
@@ -314,7 +312,7 @@ class Scene {
             this.polygons.push(new Rect(0, -height / 2 + groundHeight / 2, width, groundHeight, 0, 0, 20, 1, 0, 0, true, this.staticColor));
             this.polygons.push(new Rect(-450, 30, 555, 35, 0, 0, 20, 1, -0.436, 0, true, this.staticColor));
 
-            this.balls.push(new Ball(0, 0, 100, 0, 0, 10, 0.8));
+            // this.balls.push(new Ball(0, 0, 100, 0, 0, 10, 0.8));
             this.polygons.push(new Rect(-200, 0, 200, 200, 0, 0, 20, 0.8));
             this.polygons.push(new Rect(-600, 0, 250, 150, 0, 0, 10, 0.8));
         }
@@ -479,6 +477,9 @@ class Scene {
             windSlider.position(1650, 265);
             G.y = gravitySlider.value() * -1;
             windStrength.x = windSlider.value();
+
+            staticFriction = frictionSlider.value() + 0.1;
+            dynamicFriction = frictionSlider.value() - 0.1;
             if (frictionSlider.value() < 0.1) {
                 staticFriction = 0;
                 dynamicFriction = 0;

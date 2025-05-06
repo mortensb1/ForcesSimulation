@@ -101,12 +101,14 @@ class Scene {
         for (let i = 0; i < mouseBallContacts.length; i++) {
             let distance = mouseBall.pos.clone().subtract(mouseBallContacts[0].pos);
             let relativeVel = mouseBallContacts[0].vel;
+            mouseBallContacts[0].mouseHold = true;
 
             let totalForce = distance.add(relativeVel.clone().scale(-0.05));
             // console.log(totalForce);
 
             mouseBallContacts[i].force(totalForce, "", 1);
             if (!mouseIsPressed) {
+                mouseBallContacts[0].mouseHold = false;
                 mouseBallContacts = [];
                 break;
             }
@@ -223,9 +225,9 @@ class Scene {
     sceneOppefra() {
         if (this.initializeScene) {
             this.initializeScene = false;
-            G = new Vec2(0,0);
+            G = new Vec2(0, 0);
 
-            this.balls.push(new Ball(0,0, 50, 0,0,20,0.8));
+            this.balls.push(new Ball(0, 0, 50, 0, 0, 20, 0.8));
         }
         this.checkAndDrawForceModifiers();
     }
@@ -401,10 +403,10 @@ class Scene {
         textSize(20);
         textFont(fonts.light);
 
-        if(this.currentScene == this.sceneOppefra) {
+        if (this.currentScene == this.sceneOppefra) {
             //Big rect
             fill(this.settingsColor[0], this.settingsColor[1], this.settingsColor[2]);
-            rect(width - 373/2, 339/2, 373, 339);
+            rect(width - 373 / 2, 339 / 2, 373, 339);
 
             // Sliders
             gravitySlider.hide();
@@ -439,12 +441,10 @@ class Scene {
             text("RESULTANT FORCE", 1810, 230);
             resultBox.pos = new Vec2(1810, 275);
             resultBox.update();
-
-        }
-        else {
+        } else {
             // Big rect
             fill(this.settingsColor[0], this.settingsColor[1], this.settingsColor[2]);
-            rect(width - 373/2, 445/2, 373, 445);
+            rect(width - 373 / 2, 445 / 2, 373, 445);
 
             // Sliders
             gravitySlider.show();
@@ -481,7 +481,7 @@ class Scene {
             text("NORMAL FORCE", 1600, 330);
             normalBox.pos = new Vec2(1600, 375);
             normalBox.update();
-            
+
             // appliedforce checkbox
             fill(0);
             text("APPLIED FORCE", 1728, 330);

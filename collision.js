@@ -659,8 +659,10 @@ function resolveCollision(manifold) {
         bodyB.force(impulse, "Applied", 1);
         bodyB.angularVel += rb.cross(impulse) * bodyB.invInertia;
 
-        // drawForce(impulse.clone().scale(2), "Applied", bodyA, ra.clone());
-        // drawForce(impulse.clone().scale(2), "Applied", bodyB, rb.clone());
+        if (appliedBox.checkBoxBool) {
+            drawForce(impulse.clone().scale(-10 / Math.log(impulse.length())), "Applied", bodyA, ra.clone());
+            drawForce(impulse.clone().scale(-10 / Math.log(impulse.length())), "Applied", bodyB, rb.clone());
+        }
     }
 
     // FRICTION
@@ -723,8 +725,10 @@ function resolveCollision(manifold) {
         bodyB.force(frictionImpulse, "Applied", 1);
         bodyB.angularVel += rb.cross(frictionImpulse) * bodyB.invInertia;
 
-        // drawForce(frictionImpulse.clone().scale(10), "Applied", bodyA, ra.clone());
-        // drawForce(frictionImpulse.clone().scale(10), "Applied", bodyB, rb.clone());
+        if (frictionBox.checkBoxBool) {
+            drawForce(frictionImpulse.clone().scale(-1 / log(frictionImpulse.length())), "Friction", bodyA, ra.clone());
+            drawForce(frictionImpulse.clone().scale(-1 / log(frictionImpulse.length())), "Friction", bodyB, rb.clone());
+        }
     }
 }
 

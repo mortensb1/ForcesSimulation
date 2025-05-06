@@ -24,6 +24,10 @@ class PhysicsObject {
 
         this.inertia;
         this.invInertia;
+
+        this.mouseHold = false;
+
+        this.forcesApplied = [];
     }
 
     /**
@@ -34,16 +38,16 @@ class PhysicsObject {
             // Adding accelerations
             // this.vel.add(G, 1 / fps);
             // this.vel.add(this.windAcc, 1 / fps);
-            this.acc = new Vec2(0,0).addVectors(G, this.windAcc);
+            this.acc = new Vec2(0, 0).addVectors(G, this.windAcc);
 
-            this.vel.add(this.acc, 1/fps);
+            this.vel.add(this.acc, 1 / fps);
 
             let c = 1;
             this.relVel = this.vel.clone().subtract(windStrength);
             if (this.relVel.x < 0) {
-                c = -1
+                c = -1;
             }
-            this.windAcc = new Vec2((-this.windConst * (this.relVel.x/100)**2 * c) / this.mass, 0);
+            this.windAcc = new Vec2((-this.windConst * (this.relVel.x / 100) ** 2 * c) / this.mass, 0);
 
             //Draw forces
             if (gravityBox.checkBoxBool) {
@@ -56,9 +60,13 @@ class PhysicsObject {
                     drawForce(this.windAcc.clone().scale(this.mass), "Wind", this);
                 }
             }
-            if (resultBox.checkBoxBool) {
-                if (this.acc.length != 0) {
+            if (resultBox.checkBoxBool && !this.mouseHold) {
+                if (this.acc.length() != 0) {
                     this.accClone = this.acc.clone();
+                    for (let i = 0; i < this.forcesApplied.length; i++) {
+                        this.accClone.add(this.forcesApplied[i].scale(1 / Math.log(this.forcesApplied[i].length())));
+                    }
+                    this.forcesApplied = [];
                     drawForce(this.accClone.scale(this.mass), "Result", this);
                 }
             }
@@ -77,6 +85,11 @@ class PhysicsObject {
      */
     force(f, forceType, s = 1) {
         let acc = f.clone();
+        if (forceType == "Applied") {
+            this.forcesApplied.push(f.clone().scale(-this.mass));
+        } else {
+            this.forcesApplied.push(f.clone().scale(this.mass));
+        }
         acc.scale(this.invMass);
 
         this.vel.add(acc, s);

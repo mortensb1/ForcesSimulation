@@ -148,7 +148,7 @@ class Scene {
         textSize(50);
         text("Platform", firstScenePos.x, firstScenePos.y - textSpace);
         text("Valley", secondScenePos.x, secondScenePos.y - textSpace);
-        text("From above", thirdScenePos.x, thirdScenePos.y - textSpace);
+        text("No gravity", thirdScenePos.x, thirdScenePos.y - textSpace);
 
         if (this.tintPlatform) {
             tint(this.tintValScenes);
@@ -367,9 +367,9 @@ class Scene {
                 textSize(40);
                 text("This scene contaions two slopes and is seen from a normal perspective.", width / 2, underTitleSpace);
             } else if (this.currentScene == this.sceneOppefra) {
-                text("FROM ABOVE", width / 2, titleSpace);
+                text("NO GRAVITY", width / 2, titleSpace);
                 textSize(40);
-                text("This scene is seen from above. For that reason there is no gravity.", width / 2, underTitleSpace);
+                text("In this scene there is no gravity.", width / 2, underTitleSpace);
             } else if (this.currentScene == this.scenePlatform) {
                 text("PLATFORM", width / 2, titleSpace);
                 textSize(40);

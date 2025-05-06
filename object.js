@@ -38,7 +38,7 @@ class PhysicsObject {
             // Adding accelerations
             // this.vel.add(G, 1 / fps);
             // this.vel.add(this.windAcc, 1 / fps);
-            this.acc = new Vec2(0, 0).addVectors(G, this.windAcc);
+            this.acc = new Vec2().addVectors(G, this.windAcc);
 
             this.vel.add(this.acc, 1 / fps);
 
@@ -52,22 +52,22 @@ class PhysicsObject {
             //Draw forces
             if (gravityBox.checkBoxBool) {
                 if (G.y != 0) {
-                    drawForce(G.clone().scale(this.mass), "Gravity", this);
+                    drawForce(G.clone().scale(10), "Gravity", this);
                 }
             }
             if (windBox.checkBoxBool) {
                 if (windStrength.x != 0) {
-                    drawForce(this.windAcc.clone().scale(this.mass), "Wind", this);
+                    drawForce(this.windAcc.clone().scale(10), "Wind", this);
                 }
             }
-            if (resultBox.checkBoxBool && !this.mouseHold) {
+            if (resultBox.checkBoxBool) {
                 if (this.acc.length() != 0) {
                     this.accClone = this.acc.clone();
                     for (let i = 0; i < this.forcesApplied.length; i++) {
-                        this.accClone.add(this.forcesApplied[i].scale(1 / Math.log(this.forcesApplied[i].length())));
+                        this.accClone.add(this.forcesApplied[i]);
                     }
                     this.forcesApplied = [];
-                    drawForce(this.accClone.scale(this.mass), "Result", this);
+                    drawForce(this.accClone.scale(10), "Result", this);
                 }
             }
 
@@ -85,11 +85,9 @@ class PhysicsObject {
      */
     force(f, forceType, s = 1) {
         let acc = f.clone();
-        if (forceType == "Applied") {
-            this.forcesApplied.push(f.clone().scale(-this.mass));
-        } else {
-            this.forcesApplied.push(f.clone().scale(this.mass));
-        }
+        // if (forceType == "test") {
+        this.forcesApplied.push(f.clone().scale(s));
+        // }
         acc.scale(this.invMass);
 
         this.vel.add(acc, s);

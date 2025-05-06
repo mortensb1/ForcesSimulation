@@ -94,19 +94,6 @@ class Rect extends PhysicsObject {
         };
     }
 
-    /**
-     * Change the Velocity if Obejct collides with Wall
-     */
-    wallCollision() {
-        this.updateCornersMinAndMax();
-        if (this.cornersMinAndMax.maxX > width / 2 || this.cornersMinAndMax.minX < -width / 2) {
-            this.vel.x = -this.vel.x;
-        }
-        if (this.cornersMinAndMax.maxY > height / 2 || this.cornersMinAndMax.minY < -height / 2) {
-            this.vel.y = -this.vel.y;
-        }
-    }
-
     calcRotInertia() {
         return (1 / 12) * this.mass * (this.w ** 2 + this.h ** 2);
     }

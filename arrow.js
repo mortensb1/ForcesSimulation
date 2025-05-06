@@ -20,7 +20,6 @@ function drawForce(force, forceType, obj, relPos = new Vec2(0, 0), inverse = fal
         fill(windColor[0], windColor[1], windColor[2])
     }
     else if (forceType == "Applied") {
-        // console.log("hej", resultColor[0], resultColor[1], resultColor[2])
         fill(appliedColor[0], appliedColor[1], appliedColor[2]);
     }
     else if (forceType == "Result") {

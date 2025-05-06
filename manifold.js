@@ -7,6 +7,7 @@ class Manifold {
      * @param {Number} depth
      * @param {Vec2} contact1
      * @param {Vec2} contact2
+     * @param {Number} contactCount
      */
     constructor(bodyA, bodyB, normal, depth, contact1, contact2, contactCount = 0) {
         this.bodyA = bodyA;

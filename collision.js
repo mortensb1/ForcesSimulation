@@ -504,6 +504,196 @@ function pointLineDistance(p, a, b) {
  * Resolve collison for two objects with rotation
  * @param {Manifold} manifold
  */
+function resolveCollision(manifold) {
+    let bodyA = manifold.bodyA;
+    let bodyB = manifold.bodyB;
+    let normal = manifold.normal;
+    let contact1 = manifold.contact1;
+    let contact2 = manifold.contact2;
+    let contactCount = manifold.contactCount;
+
+    let e = min(bodyA.elasticity, bodyB.elasticity);
+
+    let contactList = [contact1, contact2];
+    let impulseList = [];
+    let raList = [];
+    let rbList = [];
+    let fritctionImpulseList = [];
+    let jList = [];
+
+    for (let i = 0; i < contactCount; i++) {
+        impulseList[i] = new Vec2();
+        raList[i] = new Vec2();
+        rbList[i] = new Vec2();
+        fritctionImpulseList[i] = new Vec2();
+        jList[i] = 0;
+    }
+
+    for (let i = 0; i < contactCount; i++) {
+        // Calculate the vector from Body center to contact point
+        let ra = new Vec2();
+        ra.subtractVectors(contactList[i], bodyA.pos);
+        let rb = new Vec2();
+        rb.subtractVectors(contactList[i], bodyB.pos);
+
+        // Save them to the list
+        raList[i] = ra;
+        rbList[i] = rb;
+
+        // Rotate the vector 90 degrees
+        let raPerp = ra.clone().hat();
+        let rbPerp = rb.clone().hat();
+
+        // Calculate the linear (vector form) angular velocity
+        let angularLinVelA = raPerp.clone().scale(bodyA.angularVel);
+        let angularLinVelB = rbPerp.clone().scale(bodyB.angularVel);
+
+        // Calculate the velocity of the contact points (linear velocity + linear angular velocity)
+        let t1 = bodyA.vel.clone().add(angularLinVelA);
+        let t2 = bodyB.vel.clone().add(angularLinVelB);
+        // Calcultate the relative velocities of the contact points
+        let relativeVel = new Vec2();
+        relativeVel.subtractVectors(t2, t1); // R = V_a + V_ra - V_b + V_rb
+
+        // Do nothing if objects are already moving apart
+        let contactVelMag = relativeVel.dot(normal);
+        if (contactVelMag > 0) {
+            continue;
+        }
+
+        // Calculate the dot product to use later
+        let raPerpDotN = raPerp.dot(normal);
+        let rbPerpDotN = rbPerp.dot(normal);
+
+        // Calculate the skalar impulse [j]
+        let j = -(1 + e) * contactVelMag;
+        j = j / (bodyA.invMass + bodyB.invMass + raPerpDotN * raPerpDotN * bodyA.invInertia + rbPerpDotN * rbPerpDotN * bodyB.invInertia);
+        j = j / contactCount;
+
+        // Save the skalar impulse
+        jList[i] = j;
+
+        // Calculate the linear impulse and save it
+        let impulse = normal.clone().scale(j);
+        impulseList[i] = impulse;
+    }
+
+    // Apply the impulse forces
+    for (let i = 0; i < contactCount; i++) {
+        // read the saved impulses
+        let impulse = impulseList[i];
+        let ra = raList[i];
+        let rb = rbList[i];
+
+        // Apply the force to body A in the negative direction
+        bodyA.force(impulse, "Applied", -1);
+        // Apply the angular velocity in the negative direction
+        bodyA.angularVel += -ra.cross(impulse) * bodyA.invInertia;
+
+        // Apply the force to body B in the positive direction
+        bodyB.force(impulse, "Applied", 1);
+        // Apply the angular velocity in the positive direction
+        bodyB.angularVel += rb.cross(impulse) * bodyB.invInertia;
+
+        // If soppused to drav the forces, draw them.
+        if (appliedBox.checkBoxBool) {
+            drawForce(impulse.clone().scale(-10 / Math.log(impulse.length())), "Applied", bodyA, ra.clone());
+            drawForce(impulse.clone().scale(10 / Math.log(impulse.length())), "Applied", bodyB, rb.clone());
+        }
+    }
+
+    // FRICTION
+    for (let i = 0; i < contactCount; i++) {
+        // Calculate the vector from Body center to contact point
+        let ra = new Vec2();
+        ra.subtractVectors(contactList[i], bodyA.pos);
+        let rb = new Vec2();
+        rb.subtractVectors(contactList[i], bodyB.pos);
+
+        // Save them to the list
+        raList[i] = ra;
+        rbList[i] = rb;
+
+        // Rotate the vector 90 degrees
+        let raPerp = ra.clone().hat();
+        let rbPerp = rb.clone().hat();
+        // Calculate the linear (vector form) angular velocity
+        let angularLinVelA = raPerp.clone().scale(bodyA.angularVel);
+        let angularLinVelB = rbPerp.clone().scale(bodyB.angularVel);
+
+        // Calculate the velocity of the contact points (linear velocity + linear angular velocity)
+        let t1 = bodyA.vel.clone().add(angularLinVelA);
+        let t2 = bodyB.vel.clone().add(angularLinVelB);
+        // Calcultate the relative velocities of the contact points
+        let relativeVel = new Vec2();
+        relativeVel.subtractVectors(t2, t1); // R = V_a + V_ra - V_b + V_rb
+
+        // Calculate the tangent of the collision. The way the friction is applied
+        let tangent = new Vec2();
+        tangent.subtractVectors(relativeVel, normal.clone().scale(relativeVel.dot(normal))); // tangent = relativeVel - relativeVel @ normal * normal
+
+        // if the tangent is 0 there is no friction
+        if (tangent.equal(new Vec2(0, 0))) {
+            continue;
+        }
+        // Normalize
+        tangent.normalize();
+
+        // Calculate the vector rotated 90 degrees
+        let raPerpDotT = raPerp.dot(tangent);
+        let rbPerpDotT = rbPerp.dot(tangent);
+
+        // Calculate the skalar friction impulse [j]
+        let jt = -relativeVel.dot(tangent);
+        jt = jt / (bodyA.invMass + bodyB.invMass + raPerpDotT * raPerpDotT * bodyA.invInertia + rbPerpDotT * rbPerpDotT * bodyB.invInertia);
+        jt = jt / contactCount;
+
+        // load skalar impulse
+        let j = jList[i];
+
+        let fritctionImpulse;
+        // Coulomb's Law: Friction force has to be less than or equal to the normal force times the staticfriction: F_mu <= F_n * mu
+        if (abs(jt) <= j * staticFriction) {
+            fritctionImpulse = tangent.clone().scale(jt);
+        } else {
+            // Else the friction becomes dynamic.
+            fritctionImpulse = tangent.clone().scale(-j * dynamicFriction);
+        }
+
+        // Save the friction impulse
+        fritctionImpulseList[i] = fritctionImpulse;
+    }
+
+    // Apply the friction impulse
+    for (let i = 0; i < contactCount; i++) {
+        // read the saved impulses
+        let frictionImpulse = fritctionImpulseList[i];
+        let ra = raList[i];
+        let rb = rbList[i];
+
+        // Apply the force to body A in the negative direction
+        bodyA.force(frictionImpulse, "Applied", -1);
+        // Apply the angular velocity in the negative direction
+        bodyA.angularVel += -ra.cross(frictionImpulse) * bodyA.invInertia;
+
+        // Apply the force to body A in the negative direction
+        bodyB.force(frictionImpulse, "Applied", 1);
+        // Apply the angular velocity in the negative direction
+        bodyB.angularVel += rb.cross(frictionImpulse) * bodyB.invInertia;
+
+        // If supposed to draw. Draw the forces
+        let frictionImpulseScale = -100 / log(frictionImpulse.length());
+        if (frictionBox.checkBoxBool && frictionImpulseScale != 0) {
+            drawForce(frictionImpulse.clone().scale(frictionImpulseScale), "Friction", bodyA, ra.clone());
+            drawForce(frictionImpulse.clone().scale(frictionImpulseScale), "Friction", bodyB, rb.clone());
+        }
+    }
+}
+
+/**
+ * Resolve collison for two objects with rotation
+ * @param {Manifold} manifold
+ */
 function resolveCollisionRotation(manifold) {
     let bodyA = manifold.bodyA;
     let bodyB = manifold.bodyB;
@@ -573,163 +763,6 @@ function resolveCollisionRotation(manifold) {
 
         bodyB.force(impulse, "Applied", 1);
         bodyB.angularVel += rb.cross(impulse) * bodyB.invInertia;
-    }
-}
-
-/**
- * Resolve collison for two objects with rotation
- * @param {Manifold} manifold
- */
-function resolveCollision(manifold) {
-    let bodyA = manifold.bodyA;
-    let bodyB = manifold.bodyB;
-    let normal = manifold.normal;
-    let contact1 = manifold.contact1;
-    let contact2 = manifold.contact2;
-    let contactCount = manifold.contactCount;
-
-    let e = min(bodyA.elasticity, bodyB.elasticity);
-
-    // let staticFriction = (bodyA.staticFriction + bodyB.staticFriction) / 2;
-    // let dynamicFriction = (bodyA.dynamicFriction + bodyB.dynamicFriction) / 2;
-
-    let contactList = [contact1, contact2];
-    let impulseList = [];
-    let raList = [];
-    let rbList = [];
-    let fritctionImpulseList = [];
-    let jList = [];
-
-    for (let i = 0; i < contactCount; i++) {
-        impulseList[i] = new Vec2();
-        raList[i] = new Vec2();
-        rbList[i] = new Vec2();
-        fritctionImpulseList[i] = new Vec2();
-        jList[i] = 0;
-    }
-
-    for (let i = 0; i < contactCount; i++) {
-        let ra = new Vec2();
-        ra.subtractVectors(contactList[i], bodyA.pos);
-        let rb = new Vec2();
-        rb.subtractVectors(contactList[i], bodyB.pos);
-
-        raList[i] = ra;
-        rbList[i] = rb;
-
-        let raPerp = ra.clone().hat();
-        let rbPerp = rb.clone().hat();
-
-        let angularLinVelA = raPerp.clone().scale(bodyA.angularVel);
-        let angularLinVelB = rbPerp.clone().scale(bodyB.angularVel);
-
-        let t1 = bodyA.vel.clone().add(angularLinVelA);
-        let t2 = bodyB.vel.clone().add(angularLinVelB);
-        let relativeVel = new Vec2();
-        relativeVel.subtractVectors(t2, t1); // R = V_a + V_ra - V_b + V_rb
-
-        // Do nothing if objects are already moving apart
-        let contactVelMag = relativeVel.dot(normal);
-        if (contactVelMag > 0) {
-            continue;
-        }
-
-        let raPerpDotN = raPerp.dot(normal);
-        let rbPerpDotN = rbPerp.dot(normal);
-
-        // Calculate the impulse [j]
-        let j = -(1 + e) * contactVelMag;
-        j = j / (bodyA.invMass + bodyB.invMass + raPerpDotN * raPerpDotN * bodyA.invInertia + rbPerpDotN * rbPerpDotN * bodyB.invInertia);
-        j = j / contactCount;
-
-        jList[i] = j;
-
-        let impulse = normal.clone().scale(j);
-        impulseList[i] = impulse;
-    }
-
-    for (let i = 0; i < contactCount; i++) {
-        let impulse = impulseList[i];
-        let ra = raList[i];
-        let rb = rbList[i];
-
-        bodyA.force(impulse, "Applied", -1);
-        bodyA.angularVel += -ra.cross(impulse) * bodyA.invInertia;
-
-        bodyB.force(impulse, "Applied", 1);
-        bodyB.angularVel += rb.cross(impulse) * bodyB.invInertia;
-
-        if (appliedBox.checkBoxBool) {
-            drawForce(impulse.clone().scale(-10 / Math.log(impulse.length())), "Applied", bodyA, ra.clone());
-            drawForce(impulse.clone().scale(10 / Math.log(impulse.length())), "Applied", bodyB, rb.clone());
-        }
-    }
-
-    // FRICTION
-    for (let i = 0; i < contactCount; i++) {
-        let ra = new Vec2();
-        ra.subtractVectors(contactList[i], bodyA.pos);
-        let rb = new Vec2();
-        rb.subtractVectors(contactList[i], bodyB.pos);
-
-        raList[i] = ra;
-        rbList[i] = rb;
-
-        let raPerp = ra.clone().hat();
-        let rbPerp = rb.clone().hat();
-
-        let angularLinVelA = raPerp.clone().scale(bodyA.angularVel);
-        let angularLinVelB = rbPerp.clone().scale(bodyB.angularVel);
-
-        let t1 = bodyA.vel.clone().add(angularLinVelA);
-        let t2 = bodyB.vel.clone().add(angularLinVelB);
-        let relativeVel = new Vec2();
-        relativeVel.subtractVectors(t2, t1); // R = V_a + V_ra - V_b + V_rb
-
-        let tangent = new Vec2();
-        tangent.subtractVectors(relativeVel, normal.clone().scale(relativeVel.dot(normal))); // tangent = relativeVel - relativeVel @ normal * normal
-
-        if (tangent.equal(new Vec2(0, 0))) {
-            continue;
-        }
-        tangent.normalize();
-
-        let raPerpDotT = raPerp.dot(tangent);
-        let rbPerpDotT = rbPerp.dot(tangent);
-
-        // Calculate the impulse [j]
-        let jt = -relativeVel.dot(tangent);
-        jt = jt / (bodyA.invMass + bodyB.invMass + raPerpDotT * raPerpDotT * bodyA.invInertia + rbPerpDotT * rbPerpDotT * bodyB.invInertia);
-        jt = jt / contactCount;
-
-        let fritctionImpulse;
-        let j = jList[i];
-
-        if (abs(jt) <= j * staticFriction) {
-            fritctionImpulse = tangent.clone().scale(jt);
-        } else {
-            fritctionImpulse = tangent.clone().scale(-j * dynamicFriction);
-        }
-
-        fritctionImpulseList[i] = fritctionImpulse;
-    }
-
-    for (let i = 0; i < contactCount; i++) {
-        let frictionImpulse = fritctionImpulseList[i];
-        let ra = raList[i];
-        let rb = rbList[i];
-
-        bodyA.force(frictionImpulse, "Applied", -1);
-        bodyA.angularVel += -ra.cross(frictionImpulse) * bodyA.invInertia;
-
-        bodyB.force(frictionImpulse, "Applied", 1);
-        bodyB.angularVel += rb.cross(frictionImpulse) * bodyB.invInertia;
-
-        let frictionImpulseScale = -100 / log(frictionImpulse.length());
-        if (frictionBox.checkBoxBool && frictionImpulseScale != 0) {
-            drawForce(frictionImpulse.clone().scale(frictionImpulseScale), "Friction", bodyA, ra.clone());
-            drawForce(frictionImpulse.clone().scale(frictionImpulseScale), "Friction", bodyB, rb.clone());
-        }
     }
 }
 

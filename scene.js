@@ -430,6 +430,16 @@ class Scene {
             windSlider.position(1650, 165);
             windStrength.x = windSlider.value();
 
+            staticFriction = frictionSlider.value() + 0.1;
+            dynamicFriction = frictionSlider.value() - 0.1;
+            if (frictionSlider.value() < 0.1) {
+                staticFriction = 0;
+                dynamicFriction = 0;
+            } else if (frictionSlider.value() > 0.9) {
+                staticFriction = 1;
+                dynamicFriction = 1;
+            }
+
             // Friction check box
             fill(0);
             text("FRICTION", 1765, 50);
@@ -469,6 +479,13 @@ class Scene {
             windSlider.position(1650, 265);
             G.y = gravitySlider.value() * -1;
             windStrength.x = windSlider.value();
+            if (frictionSlider.value() < 0.1) {
+                staticFriction = 0;
+                dynamicFriction = 0;
+            } else if (frictionSlider.value() > 0.9) {
+                staticFriction = 1;
+                dynamicFriction = 1;
+            }
 
             // Gravity checkbox
             fill(0);

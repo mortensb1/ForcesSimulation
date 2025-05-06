@@ -590,8 +590,8 @@ function resolveCollision(manifold) {
 
     let e = min(bodyA.elasticity, bodyB.elasticity);
 
-    let staticFriction = (bodyA.staticFriction + bodyB.staticFriction) / 2;
-    let dynamicFriction = (bodyA.dynamicFriction + bodyB.dynamicFriction) / 2;
+    // let staticFriction = (bodyA.staticFriction + bodyB.staticFriction) / 2;
+    // let dynamicFriction = (bodyA.dynamicFriction + bodyB.dynamicFriction) / 2;
 
     let contactList = [contact1, contact2];
     let impulseList = [];
@@ -725,9 +725,10 @@ function resolveCollision(manifold) {
         bodyB.force(frictionImpulse, "Applied", 1);
         bodyB.angularVel += rb.cross(frictionImpulse) * bodyB.invInertia;
 
-        if (frictionBox.checkBoxBool) {
-            drawForce(frictionImpulse.clone().scale(-1 / log(frictionImpulse.length())), "Friction", bodyA, ra.clone());
-            drawForce(frictionImpulse.clone().scale(-1 / log(frictionImpulse.length())), "Friction", bodyB, rb.clone());
+        let frictionImpulseScale = -100 / log(frictionImpulse.length());
+        if (frictionBox.checkBoxBool && frictionImpulseScale != 0) {
+            drawForce(frictionImpulse.clone().scale(frictionImpulseScale), "Friction", bodyA, ra.clone());
+            drawForce(frictionImpulse.clone().scale(frictionImpulseScale), "Friction", bodyB, rb.clone());
         }
     }
 }

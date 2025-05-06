@@ -11,6 +11,8 @@ let fonts = {};
 let backgroundColor = [217, 217, 217];
 let mouseBall;
 let mouseBallContacts = [];
+let staticFriction = 0.6;
+let dynamicFriction = 0.4;
 
 // 100 pixels equals to 1 meter
 
@@ -48,7 +50,7 @@ function setup() {
     gravityBox = new Checkbox(new Vec2(), [gravityColor[0], gravityColor[1], gravityColor[2]]);
     frictionBox = new Checkbox(new Vec2(), [frictionColor[0], frictionColor[1], frictionColor[2]]);
     windBox = new Checkbox(new Vec2(), [windColor[0], windColor[1], windColor[2]]);
-    appliedBox = new Checkbox(new Vec2(),  [appliedColor[0], appliedColor[1], appliedColor[2]]);
+    appliedBox = new Checkbox(new Vec2(), [appliedColor[0], appliedColor[1], appliedColor[2]]);
     normalBox = new Checkbox(new Vec2(), [normalColor[0], normalColor[1], normalColor[2]]);
     resultBox = new Checkbox(new Vec2(), [resultColor[0], resultColor[1], resultColor[2]]);
 

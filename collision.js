@@ -590,8 +590,8 @@ function resolveCollision(manifold) {
 
     let e = min(bodyA.elasticity, bodyB.elasticity);
 
-    let staticFriction = (bodyA.staticFriction + bodyB.staticFriction) / 2;
-    let dynamicFriction = (bodyA.dynamicFriction + bodyB.dynamicFriction) / 2;
+    // let staticFriction = (bodyA.staticFriction + bodyB.staticFriction) / 2;
+    // let dynamicFriction = (bodyA.dynamicFriction + bodyB.dynamicFriction) / 2;
 
     let contactList = [contact1, contact2];
     let impulseList = [];

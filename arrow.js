@@ -12,15 +12,19 @@ function drawForce(force, forceType, obj, relPos = new Vec2(0, 0), inverse = fal
     mag -= arrowHead;
     push();
     translate(obj.pos.x + width / 2 + relPos.x, height / 2 - (obj.pos.y + relPos.y));
-    rotate(-dir);
+    rotate(dir);
     if (forceType == "Gravity") {
         fill(gravityColor[0], gravityColor[1], gravityColor[2]);
     } 
     else if (forceType == "Wind") {
         fill(windColor[0], windColor[1], windColor[2])
     }
-    else if ((forceType = "Applied")) {
+    else if (forceType == "Applied") {
+        // console.log("hej", resultColor[0], resultColor[1], resultColor[2])
         fill(appliedColor[0], appliedColor[1], appliedColor[2]);
+    }
+    else if (forceType == "Result") {
+        fill(resultColor[0], resultColor[1], resultColor[2])
     }
     rect(mag / 2, 0, mag, arrowWeight);
     triangle(mag, arrowHead, mag, -arrowHead, mag + arrowHead + arrowWeight, 0);

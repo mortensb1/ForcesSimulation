@@ -14,6 +14,7 @@ class PhysicsObject {
         this.windConst;
         this.windAcc = new Vec2();
         this.relVel;
+        this.acc;
 
         if (!this.isStatic) {
             this.invMass = 1 / this.mass;
@@ -30,25 +31,24 @@ class PhysicsObject {
      */
     update() {
         if (!this.isStatic) {
-            let c = 1;
+            // Adding accelerations
+            // this.vel.add(G, 1 / fps);
+            // this.vel.add(this.windAcc, 1 / fps);
+            this.acc = new Vec2(0,0).addVectors(G, this.windAcc);
 
+            this.vel.add(this.acc, 1/fps);
+
+            let c = 1;
             this.relVel = this.vel.clone().subtract(windStrength);
             if (this.relVel.x < 0) {
                 c = -1
             }
             this.windAcc = new Vec2((-this.windConst * (this.relVel.x/100)**2 * c) / this.mass, 0);
 
-            // Adding accelerations
-            this.vel.add(G, 1 / fps);
-            this.vel.add(this.windAcc, 1 / fps);
-
-            this.angle += this.angularVel / fps;
-            this.updateCorners();
-
             //Draw forces
             if (gravityBox.checkBoxBool) {
                 if (G.y != 0) {
-                    drawForce(G.clone().scale(-this.mass), "Gravity", this);
+                    drawForce(G.clone().scale(this.mass), "Gravity", this);
                 }
             }
             if (windBox.checkBoxBool) {
@@ -56,6 +56,15 @@ class PhysicsObject {
                     drawForce(this.windAcc.clone().scale(this.mass), "Wind", this);
                 }
             }
+            if (resultBox.checkBoxBool) {
+                if (this.acc.length != 0) {
+                    this.accClone = this.acc.clone();
+                    drawForce(this.accClone.scale(this.mass), "Result", this);
+                }
+            }
+
+            this.angle += this.angularVel / fps;
+            this.updateCorners();
         }
 
         this.pos.add(this.vel, 1 / fps);

@@ -27,7 +27,6 @@ class Ball extends PhysicsObject {
 
         //Calculate wind resistance Const
         this.windConst = (1 / 2) * this.formfac * airDensity * this.A;
-        console.log("Cirkel " + this.A);
     }
 
     /**

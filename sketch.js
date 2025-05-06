@@ -56,7 +56,7 @@ function setup() {
     gravitySlider.size(230);
     frictionSlider = createSlider(0, 1, 0.5, 0.05);
     frictionSlider.size(230);
-    windSlider = createSlider(-1000, 1000, 0, 50);
+    windSlider = createSlider(-10000, 10000, 0, 1000);
     windSlider.size(230);
 
     scene = new Scene();

@@ -538,6 +538,12 @@ class Scene {
             normalColor[i] += col[i];
             appliedColor[i] += col[i];
             resultColor[i] += col[i];
+
+            gravityBox.color[i] += col[i];
+            frictionBox.color[i] += col[i];
+            windBox.color[i] += col[i];
+            appliedBox.color[i] += col[i];
+            resultBox.color[i] += col[i];
         }
         for (let i = 0; i < this.balls.length; i++) {
             this.balls[i].changeColor([this.balls[i].color[0] + col[0], this.balls[i].color[1] + col[1], this.balls[i].color[2] + col[2]]);

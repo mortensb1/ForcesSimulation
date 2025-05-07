@@ -10,6 +10,98 @@
 
     <script src="libraries/p5.min.js"></script>
     <script src="libraries/p5.sound.min.js"></script>
+
+    <style>
+      .slidecontainer {
+        width: 100%; /* Width of the outside container */
+      }
+
+      /* The slider itself */
+      .windSlider {
+        -webkit-appearance: none;  /* Override default CSS styles */
+        appearance: none;
+        width: 100%; /* Full-width */
+        height: 25px; /* Specified height */
+        background: #d3d3d3; /* Grey background */
+        outline: none; /* Remove outline */
+        opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
+        -webkit-transition: .2s; /* 0.2 seconds transition on hover */
+        transition: opacity .2s;
+      }
+
+      /* Mouse-over effects */
+      .windSlider:hover {
+        opacity: 1; /* Fully shown on mouse-over */
+      }
+
+      /* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
+      .windSlider::-webkit-slider-thumb {
+        -webkit-appearance: none; /* Override default look */
+        appearance: none;
+        width: 32px; /* Set a specific slider handle width */
+        height: 32px; /* Slider handle height */
+        background: #f0ac02; /* Green background */
+        cursor: pointer; /* Cursor on hover */
+        border-radius: 18px;
+      }
+
+      .fricSlider {
+        -webkit-appearance: none;  /* Override default CSS styles */
+        appearance: none;
+        width: 100%; /* Full-width */
+        height: 25px; /* Specified height */
+        background: #d3d3d3; /* Grey background */
+        outline: none; /* Remove outline */
+        opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
+        -webkit-transition: .2s; /* 0.2 seconds transition on hover */
+        transition: opacity .2s;
+      }
+
+      /* Mouse-over effects */
+      .fricSlider:hover {
+        opacity: 1; /* Fully shown on mouse-over */
+      }
+
+      /* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
+      .fricSlider::-webkit-slider-thumb {
+        -webkit-appearance: none; /* Override default look */
+        appearance: none;
+        width: 32px; /* Set a specific slider handle width */
+        height: 32px; /* Slider handle height */
+        background: #eb6105; /* Green background */
+        cursor: pointer; /* Cursor on hover */
+        border-radius: 18px;
+      }
+
+      .gravSlider {
+        -webkit-appearance: none;  /* Override default CSS styles */
+        appearance: none;
+        width: 100%; /* Full-width */
+        height: 25px; /* Specified height */
+        background: #d3d3d3; /* Grey background */
+        outline: none; /* Remove outline */
+        opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
+        -webkit-transition: .2s; /* 0.2 seconds transition on hover */
+        transition: opacity .2s;
+      }
+
+      /* Mouse-over effects */
+      .gravSlider:hover {
+        opacity: 1; /* Fully shown on mouse-over */
+      }
+
+      /* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
+      .gravSlider::-webkit-slider-thumb {
+        -webkit-appearance: none; /* Override default look */
+        appearance: none;
+        width: 32px; /* Set a specific slider handle width */
+        height: 32px; /* Slider handle height */
+        background: #c90000; /* Green background */
+        cursor: pointer; /* Cursor on hover */
+        border-radius: 18px;
+      }
+      
+    </style>
   </head>
 
   <body>
@@ -24,5 +116,9 @@
     <script src="manifold.js"></script>
     <script src="arrow.js"></script>
     <script src="checkbox.js"></script>
+
+    <!-- <div class="slidecontainer">
+      <input type="range" min="1" max="100" value="50" class="slider" id="myRange">
+    </div> -->
   </body>
 </html>

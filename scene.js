@@ -506,24 +506,24 @@ class Scene {
             windBox.pos = new Vec2(1600, 275);
             windBox.update();
 
-            textSize(12);
+            textSize(15);
 
-            // normalforce checkbox
-            fill(0);
-            text("NORMAL FORCE", 1600, 330);
-            normalBox.pos = new Vec2(1600, 375);
-            normalBox.update();
+            // // normalforce checkbox
+            // fill(0);
+            // text("NORMAL FORCE", 1600, 330);
+            // normalBox.pos = new Vec2(1600, 375);
+            // normalBox.update();
 
             // appliedforce checkbox
             fill(0);
-            text("APPLIED FORCE", 1728, 330);
-            appliedBox.pos = new Vec2(1728, 375);
+            text("APPLIED FORCE", 1728-60, 330);
+            appliedBox.pos = new Vec2(1728-60, 375);
             appliedBox.update();
 
             // resultforce checkbox
             fill(0);
-            text("RESULTANT FORCE", 1856, 330);
-            resultBox.pos = new Vec2(1856, 375);
+            text("RESULTANT FORCE", 1856-40, 330);
+            resultBox.pos = new Vec2(1856-40, 375);
             resultBox.update();
         }
     }

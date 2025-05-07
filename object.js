@@ -50,22 +50,23 @@ class PhysicsObject {
             //Draw forces
             if (gravityBox.checkBoxBool) {
                 if (G.y != 0) {
-                    drawForce(G.clone().scale(10), "Gravity", this);
+                    drawForce(G.clone().scale(this.mass), "Gravity", this);
+                    console.log("grav   " + G.clone().scale(this.mass).length())
                 }
             }
             if (windBox.checkBoxBool) {
                 if (windStrength.x != 0) {
-                    drawForce(this.windAcc.clone().scale(10), "Wind", this);
+                    drawForce(this.windAcc.clone().scale(this.mass), "Wind", this);
                 }
             }
             if (resultBox.checkBoxBool) {
                 if (this.acc.length() != 0) {
-                    this.accClone = this.acc.clone();
+                    this.accClone = this.acc.clone().scale(this.mass);
                     for (let i = 0; i < this.forcesApplied.length; i++) {
                         this.accClone.add(this.forcesApplied[i]);
                     }
                     this.forcesApplied = [];
-                    drawForce(this.accClone.scale(10), "Result", this);
+                    drawForce(this.accClone, "Result", this);
                 }
             }
 

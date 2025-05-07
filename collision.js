@@ -598,7 +598,9 @@ function resolveCollision(manifold) {
         // If soppused to drav the forces, draw them.
         if (appliedBox.checkBoxBool) {
             drawForce(impulse.clone().scale(-10 / Math.log(impulse.length())), "Applied", bodyA, ra.clone());
-            drawForce(impulse.clone().scale(10 / Math.log(impulse.length())), "Applied", bodyB, rb.clone());
+            if(!bodyB.isStatic) {
+                drawForce(impulse.clone().scale(10 / Math.log(impulse.length())), "Applied", bodyB, rb.clone());
+            }
         }
     }
 

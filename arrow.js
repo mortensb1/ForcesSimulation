@@ -1,5 +1,5 @@
 function drawForce(force, forceType, obj, relPos = new Vec2(0, 0), inverse = false) {
-    let arrowWeight = 10;
+    let arrowWeight = 5;
     let arrowHead = arrowWeight * 2;
     let mag = sqrt(force.x ** 2 + force.y ** 2) / 100;
     let dirVec = force.clone().normalize();

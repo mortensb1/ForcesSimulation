@@ -39,12 +39,12 @@ function setup() {
     airDensity = 1.3;
     mouseBall = new Ball(mouseX, mouseX, 10, 0, 0, 10, 0, [0, 0, 0], true);
 
-    gravityColor = [218, 193, 193];
-    frictionColor = [204, 210, 200];
-    windColor = [193, 200, 218];
-    normalColor = [232, 231, 208];
-    appliedColor = [218, 206, 219];
-    resultColor = [102, 102, 102];
+    gravityColor = [201,0,0];
+    frictionColor = [235, 97, 5];
+    windColor = [240, 172, 2];
+    normalColor = [0, 191, 51];
+    appliedColor = [3, 132, 252];
+    resultColor = [0, 191, 51];
 
     allowCheckBoxChange = true;
     gravityBox = new Checkbox(new Vec2(), [gravityColor[0], gravityColor[1], gravityColor[2]]);

@@ -51,7 +51,6 @@ class PhysicsObject {
             if (gravityBox.checkBoxBool) {
                 if (G.y != 0) {
                     drawForce(G.clone().scale(this.mass), "Gravity", this);
-                    console.log("grav   " + G.clone().scale(this.mass).length())
                 }
             }
             if (windBox.checkBoxBool) {

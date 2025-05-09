@@ -96,4 +96,7 @@ function keyPressed() {
         console.log("Saved");
         saveTable(mouseTable, "Maling.csv");
     }
+    if (key == "s") {
+        saveCanvas("Background.png");
+    }
 }

@@ -47,10 +47,10 @@ function setup() {
     resultColor = [0, 191, 51];
 
     allowCheckBoxChange = true;
-    gravityBox = new Checkbox(new Vec2(), [gravityColor[0], gravityColor[1], gravityColor[2]]);
+    gravityBox = new Checkbox(new Vec2(), [gravityColor[0], gravityColor[1], gravityColor[2]], true);
     frictionBox = new Checkbox(new Vec2(), [frictionColor[0], frictionColor[1], frictionColor[2]]);
-    windBox = new Checkbox(new Vec2(), [windColor[0], windColor[1], windColor[2]]);
-    appliedBox = new Checkbox(new Vec2(), [appliedColor[0], appliedColor[1], appliedColor[2]]);
+    windBox = new Checkbox(new Vec2(), [windColor[0], windColor[1], windColor[2]], true);
+    appliedBox = new Checkbox(new Vec2(), [appliedColor[0], appliedColor[1], appliedColor[2]], true);
     normalBox = new Checkbox(new Vec2(), [normalColor[0], normalColor[1], normalColor[2]]);
     resultBox = new Checkbox(new Vec2(), [resultColor[0], resultColor[1], resultColor[2]]);
 

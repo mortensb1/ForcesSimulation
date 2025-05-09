@@ -223,7 +223,12 @@ class Scene {
             this.initializeScene = false;
             G = new Vec2(0, 0);
 
+            this.balls.push(new Ball(100, 500, 80, 0, 0, 20, 0.8));
             this.balls.push(new Ball(0, 0, 50, 0, 0, 20, 0.8));
+            this.balls.push(new Ball(-150, -100, 100, 0, 0, 20, 0.8));
+            this.balls.push(new Ball(-400, 10, 100, 0, 0, 20, 0.8));
+            this.polygons.push(new Rect(300,-200, 120, 120, 0, 0, 20, 0.8, 0, 0, false));
+            this.polygons.push(new Rect(300, 200, 200, 200, 0, 0, 20, 0.8, 0, 0, false));
 
             //Edges
             this.polygons.push(new Rect(-width / 2 - width / 10, 0, width / 5, height, 0, 0, 1, 0.8, 0, 0, true, this.staticColor));
@@ -283,15 +288,10 @@ class Scene {
                 )
             );
 
-            this.polygons.push(new Rect(0, -200, 200, 100, 0, 0, 10, 1, 0.1, 0, false));
-            this.polygons.push(new Rect(-500, -200, 200, 100, 0, 0, 10, 0.1, Math.PI / 2, 0, false));
-            // this.polygons.push(new Rect(-500, 20, 200, 100, 0, 0, 10, 0.1, Math.PI / 2, 0, false));
-            // this.polygons.push(new Rect(0, -200, 200, 100, 0, 0, 10, 0.1, 0, 0, false));
-            // this.polygons.push(new Rect(-110, 20, 200, 100, 0, 0, 10, 0.8, Math.PI / 2, 0, false));
-            // this.polygons.push(new Rect(-100, 0, 200, 100, 0, 0, 10, 1, 0, 0, false));
-            // this.polygons.push(new Triangle(300, 200, new Vec2(-60, -60), new Vec2(60, -60), new Vec2(0, 60), 0, 0, 20, 0.8));
-            for (let i = 0; i < 10; i++) {
-                this.balls.push(new Ball(random(-150, 150), random(-150, 150), 50, random(-10, 10), random(-10, 10), 10, 0.8));
+            this.polygons.push(new Rect(0, -200, 300, 200, 0, 0, 10, 1, 0.1, 0, false));
+            this.polygons.push(new Rect(-500, -200, 200, 200, 0, 0, 10, 0.1, Math.PI / 2, 0, false));
+            for (let i = 0; i < 3; i++) {
+                this.balls.push(new Ball(random(-150, 150), random(-150, 150), 100, random(-10, 10), random(-10, 10), 10, 0.8));
             }
         }
 

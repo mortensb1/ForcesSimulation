@@ -1,8 +1,8 @@
 class Checkbox {
-    constructor(pos = new Vec2(), color = [255, 255, 255]) {
+    constructor(pos = new Vec2(), color = [255, 255, 255], checked = false) {
         this.pos = pos;
         this.color = color;
-        this.checkBoxBool = false;
+        this.checkBoxBool = checked;
 
         this.size = 50
         this.tintBox = -20;
